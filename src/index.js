@@ -1,8 +1,18 @@
 'use strict';
 
+import 'babel-polyfill';
+
 import crc from 'crc';
 import moment from 'moment';
 import nmea from 'node-nmea';
+import redisUrl from 'redis-url';
+import nodeGeocoder from 'node-geocoder';
+import bscoords from 'bscoords';
+import Promise from 'bluebird';
+
+Promise.promisifyAll(bscoords);
+
+let client;
 
 const patterns = {
   avl05: /^\$\$([0-9A-F]{2})(\d{15})\|([0-9A]{2})(\$GPRMC\,(\d{6}\.\d{3})\,([AV])\,(\d{4}\.\d{4}\,[NS])\,(\d{5}\.\d{4}\,[WE])\,(\d{1,3}\.\d{1,3})?\,(\d{1,3}\.\d{1,3})?\,(\d{6})\,((\d{1,3}\.\d{1,3})?\,([WE])?)\,?([ADENS])?\*([0-9A-F]{2})|[0]{60})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])\|(\d{14})\|([01])(\d{3})(\d{4})\|(\d{4})(\d{4})\|([0-9A-F]{4})([0-9A-F]{4})\|([01\-]\d{3})\|(\d{1,4}\.\d{1,12})\|(\d{4})\|([0-9A-F]{4})\r\n$/,
@@ -62,9 +72,19 @@ const isValid = (raw, len, checksum) =>{
   return verifyCrc(raw, checksum) && verifyLen(raw, len);
 };
 
-const getAvl05 = (data) => {
-  const match = patterns.avl05.exec(data.toString());
+const checkCurrentInfoPanel = (datetime) => {
+  moment.locale('es');
+  const now = moment.utc();
+  now.subtract(1, 'minutes');
   return {
+    isCurrent: now < moment.utc(datetime),
+    diff: moment.duration(now.diff(datetime)).humanize()
+  };
+};
+
+const getAvl05 = async function(raw, options) {
+  const match = patterns.avl05.exec(raw.toString());
+  const data = {
     raw: match[0],
     type: 'TZ-AVL05',
     imei: parseInt(match[2], 10),
@@ -103,11 +123,25 @@ const getAvl05 = (data) => {
     serialId: parseInt(match[42]),
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[43], 16))
   };
+  data.currentData = checkCurrentInfoPanel(data.datetime);
+  try {
+    if (!data.gprmcData.loc) {
+      const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
+      if (!loc) return data;
+      data.gprmcData.loc = loc;
+    }
+    const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
+    const address = await getAddress(lat, lng);
+    data.gprmcData.address = address;
+    return data;
+  } catch (err) {
+    return data;
+  }
 };
 
-const getAvl08 = (data) => {
-  const match = patterns.avl05.exec(data.toString());
-  return {
+const getAvl08 = async function(raw, options) {
+  const match = patterns.avl05.exec(raw.toString());
+  const data = {
     raw: match[0],
     type: 'TZ-AVL08',
     imei: parseInt(match[2], 10),
@@ -149,11 +183,25 @@ const getAvl08 = (data) => {
     rfidNumber: parseInt(match[43]),
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[44], 16))
   };
+  data.currentData = checkCurrentInfoPanel(data.datetime);
+  try {
+    if (!data.gprmcData.loc) {
+      const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
+      if (!loc) return data;
+      data.gprmcData.loc = loc;
+    }
+    const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
+    const address = await getAddress(lat, lng);
+    data.gprmcData.address = address;
+    return data;
+  } catch (err) {
+    return data;
+  }
 };
 
-const getAvl201 = (data) => {
-  const match = patterns.avl05.exec(data.toString());
-  return {
+const getAvl201 = async function(raw, options) {
+  const match = patterns.avl05.exec(raw.toString());
+  const data = {
     raw: match[0],
     type: 'TZ-AVL201',
     imei: parseInt(match[2], 10),
@@ -186,6 +234,20 @@ const getAvl201 = (data) => {
     serialId: parseInt(match[40]),
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[41], 16))
   };
+  data.currentData = checkCurrentInfoPanel(data.datetime);
+  try {
+    if (!data.gprmcData.loc) {
+      const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
+      if (!loc) return data;
+      data.gprmcData.loc = loc;
+    }
+    const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
+    const address = await getAddress(lat, lng);
+    data.gprmcData.address = address;
+    return data;
+  } catch (err) {
+    return data;
+  }
 };
 
 const getCommand = (data) => {
@@ -253,22 +315,82 @@ const getCommandError = (data) => {
   return {type: 'TZ-ERROR', command: match[0]};
 };
 
-const parse = (data) => {
-  let message;
-  if (patterns.avl05.test(data.toString())) {
-    message = getAvl05(data);
-  } else if (patterns.avl08.test(data.toString())) {
-    message = getAvl08(data);
-  } else if (patterns.avl201.test(data.toString())) {
-    message = getAvl201(data);
-  } else if (patterns.receiveOk.test(data.toString())) {
-    message = getCommand(data);
-  } else if (patterns.picture.test(data.toString())) {
-    message = getPicture(data);
-  } else if (patterns.receiveErr.test(data.toString())) {
-    message = getCommandError(data);
+const setCache = (uri) => {
+  try {
+    client = redisUrl.connect(uri);
+    Promise.promisifyAll(Object.getPrototypeOf(client));
+  } catch (err) {
+    throw err;
   }
-  return message;
+};
+
+const getReverse = async function(lat, lon) {
+  const geocoderProvider = 'google';
+  const httpAdapter = 'http';
+  const geocoder = nodeGeocoder(geocoderProvider, httpAdapter);
+  try {
+    const res = await geocoder.reverse({lat: lat, lon: lon});
+    if (res.length === 0) return null;
+    return res[0].formattedAddress.split(',').map(x => x.trim()).slice(0, 2).join(', ');
+  } catch (err) {
+    return null;
+  }
+};
+
+const getAddress = async function(lat, lng) {
+  try {
+    let address;
+    if (client) {
+      const reply = await client.getAsync(`geocoder:${lat}:${lng}`);
+      if (reply) return reply;
+      address = await getReverse(lat, lng);
+      if (!address) return null;
+      client.set(`geocoder:${lat}:${lng}`, address);
+    } else {
+      address = await getReverse(lat, lng);
+    }
+    return address;
+  } catch (err) {
+    return null;
+  }
+};
+
+const getLoc = async function(mcc, mnc, lac, cellid) {
+  try {
+    const coords = await bscoords.requestGoogleAsync(mcc, mnc, lac, cellid);
+    return {
+      dmm: {
+        latitude: nmea.latToDmm(coords.lat),
+        longitude: nmea.lngToDmm(coords.lon)
+      },
+      geojson: {
+        coordinates: [coords.lon, coords.lat],
+        type: 'Point'
+      }
+    };
+  } catch (err) {
+    return null;
+  }
+};
+
+const parse = async function(raw, options = {}) {
+  options.mcc = options.mcc || 730;
+  options.mnc = options.mnc || 1;
+  let result;
+  if (patterns.avl05.test(raw.toString())) {
+    result = await getAvl05(raw, options);
+  } else if (patterns.avl08.test(raw.toString())) {
+    result = await getAvl08(raw, options);
+  } else if (patterns.avl201.test(raw.toString())) {
+    result = await getAvl201(raw, options);
+  } else if (patterns.receiveOk.test(raw.toString())) {
+    result = getCommand(raw);
+  } else if (patterns.picture.test(raw.toString())) {
+    result = getPicture(raw);
+  } else if (patterns.receiveErr.test(raw.toString())) {
+    result = getCommandError(raw);
+  }
+  return result;
 };
 
 module.exports = {
@@ -279,5 +401,6 @@ module.exports = {
   getAvl201: getAvl201,
   getCommand: getCommand,
   getPicture: getPicture,
-  getCommandError: getCommandError
+  getCommandError: getCommandError,
+  setCache: setCache
 };
