@@ -124,11 +124,13 @@ const getAvl05 = async function(raw, options) {
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[43], 16))
   };
   data.currentData = checkCurrentInfoPanel(data.datetime);
+  data.gps = data.gprmcData.loc ? 'enable' : 'disable';
   try {
     if (!data.gprmcData.loc) {
       const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
       if (!loc) return data;
       data.gprmcData.loc = loc;
+      data.gps = 'triangulation';
     }
     const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
     const address = await getAddress(lat, lng);
@@ -184,11 +186,13 @@ const getAvl08 = async function(raw, options) {
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[44], 16))
   };
   data.currentData = checkCurrentInfoPanel(data.datetime);
+  data.gps = data.gprmcData.loc ? 'enable' : 'disable';
   try {
     if (!data.gprmcData.loc) {
       const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
       if (!loc) return data;
       data.gprmcData.loc = loc;
+      data.gps = 'triangulation';
     }
     const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
     const address = await getAddress(lat, lng);
@@ -235,11 +239,13 @@ const getAvl201 = async function(raw, options) {
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[41], 16))
   };
   data.currentData = checkCurrentInfoPanel(data.datetime);
+  data.gps = data.gprmcData.loc ? 'enable' : 'disable';
   try {
     if (!data.gprmcData.loc) {
       const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
       if (!loc) return data;
       data.gprmcData.loc = loc;
+      data.gps = 'triangulation';
     }
     const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
     const address = await getAddress(lat, lng);
