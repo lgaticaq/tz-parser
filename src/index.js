@@ -20,7 +20,9 @@ const patterns = {
   avl201: /^\$\$([0-9A-F]{2})(\d{15})\|([0-9A]{2})(\$GPRMC\,(\d{6}\.\d{3})\,([AV])\,(\d{4}\.\d{4}\,[NS])\,(\d{5}\.\d{4}\,[WE])\,(\d{1,3}\.\d{1,3})?\,(\d{1,3}\.\d{1,3})?\,(\d{6})\,((\d{1,3}\.\d{1,3})?\,([WE])?)\,?([ADENS])?\*([0-9A-F]{2})|[0]{60})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])\|(\d{14})\|([01])(\d{3})(\d{4})\|([0-9A-F]{4})([0-9A-F]{4})\|([01\-]\d{3})\|(\d{1,4}\.\d{1,12})\|(\d{4})\|([0-9A-F]{4})\r\n$/,
   receiveOk: /^Receive:'\d{3}'OK\r\n\*(\d{6})\,(\d{3})(\S*)?#$/,
   receiveErr: /^Receive:Set Err\r\n(\S*)/,
-  picture: /^(\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#)+(Receive:'210'OK\r\n\*\d{6}\,210#)?$/
+  picture: /^(\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#)+(Receive:'210'OK\r\n\*\d{6}\,210#)?$/,
+  firmware: /^IMEI:(\d{15})\r\nVER:(\S*)\r\nGSMVER:(\S*)\r\n$/,
+  info: /^Lat:(\d{4}\.\d{4}\,[NS])\r\nLong:(\d{5}\.\d{4}\,[WE])Spd:(\d{1,3}\..\d{1,3})km\/h\r\nFix:([AV])\r\nSat:(\d{2})\r\nHDOP:(\d{2}\.\d{1})\r\nGSM:(\d{2})\r\nBatt:(\d{2}\.\d{2})V\r\nMile:(\d{1,4}\.\d{1,12})\r\nTime:(\d{2}\/\d{2}\/\d{2}\ \d{2}:\d{2}:\d{2})\r\n$/
 };
 
 const getAlarm = (alarm) => {
@@ -46,6 +48,8 @@ const getAlarm = (alarm) => {
     '57': {type: 'DI', number: 4, status: true},
     '60': {type: 'Charge', status: true},
     '61': {type: 'Charge', status: false},
+    '66': {type: 'Rfid'},
+    '77': {type: 'Angle'},
     '88': {type: 'Heartbeat'},
     '91': {type: 'Sleep', status: true},
     '92': {type: 'Sleep', status: false},
@@ -256,49 +260,307 @@ const getAvl201 = async function(raw, options) {
   }
 };
 
-const getCommand = (data) => {
-  const match = patterns.receiveOk.exec(data.toString());
+const getCommand = (raw) => {
+  const match = patterns.receiveOk.exec(raw.toString());
+  const password = match[1];
   const code = match[2];
   const extra = match[3] ? match[3].substr(1).split(',') : null;
-  let message = {type: 'TZ-COMMAND'};
-  if (code === '025') {
-    const ports = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'};
+  let data = {type: 'TZ-COMMAND', password: password};
+  if (code === '000') {
+    data.command = 'request_position';
+  } else if (code === '001') {
+    data.command = 'set_password';
+    data.newPassword = extra;
+  } else if (code === '002') {
     let [x, y] = extra;
-    message.command = 'set_digital_output';
-    message.status = y === '1';
-    message.port = ports[x];
-  } else if (code === '500') {
-    message.command = 'clear_mem';
+    data.command = 'set_sms_position';
+    data.enable = x === '0';
+    data.interval = x;
+    data.limit = y;
+  } else if (code === '003') {
+    let [x, f, callNumber, smsNumber] = extra;
+    data.command = 'set_sos_number';
+    data.enable = ((x === '0') && (f === '1'));
+    data.call = callNumber;
+    data.sms = smsNumber;
+  } else if (code === '004') {
+    let [x, y] = extra;
+    data.command = 'set_low_power';
+    data.lowPower = x;
+    data.autoShutdown = y;
   } else if (code === '005') {
     let [s, x, y, z] = extra;
-    message.command = 'set_speed';
-    message.status = s === '1';
-    message.speed = parseInt(x, 10);
-    message.times = parseInt(y, 10);
-    message.interval = parseInt(z, 10);
+    data.command = 'set_speed';
+    data.enable = s === '1';
+    data.speed = parseInt(x, 10);
+    data.times = parseInt(y, 10);
+    data.interval = parseInt(z, 10);
+  } else if (code === '006') {
+    let [lat1, lon1, lat2, lon2, x, y] = extra; // eslint-disable-line no-unused-vars
+    data.command = 'set_geo_fence';
+    if (y === '0') {
+      data.enable = false;
+    } else if (y === '1') {
+      data.enable = true;
+      data.type = 'inside';
+    } else {
+      data.enable = true;
+      data.type = 'outside';
+    }
+    data.geojson = {
+      type: 'Polygon',
+      coordinates: [
+        [parseFloat(lon2), parseFloat(lat2)],
+        [parseFloat(lon2), parseFloat(lat1)],
+        [parseFloat(lon1), parseFloat(lat1)],
+        [parseFloat(lon1), parseFloat(lat2)],
+        [parseFloat(lon2), parseFloat(lat2)]
+      ]
+    };
+  } else if (code === '008') {
+    let [a, b, c, d, e, f, g] = extra; // eslint-disable-line no-unused-vars
+    data.command = 'set_extend';
+    data.callReport = a === '1';
+    data.typeSms = b === '1' ? 'nmea' : 'text';
+    data.hungUp = c === '0';
+    data.adbNormal = e === '0';
+    data.adaNormal = f === '0';
+  } else if (code === '009') {
+    data.command = 'set_band';
+    if (extra === '0') {
+      data.band = '900/1800';
+    } else if (extra === '1') {
+      data.band = '850/1900';
+    } else {
+      data.band = 'auto';
+    }
+  } else if (code === '011') {
+    let [apn, username, pass] = extra;
+    data.command = 'set_apn';
+    data.apn = apn;
+    data.username = username;
+    data.pass = pass;
+  } else if (code === '014') {
+    let [x, dns1, dns2] = extra;
+    data.command = 'set_dns';
+    data.enable = x === '1';
+    data.dns1 = dns1;
+    data.dns2 = dns2;
+  } else if (code === '015') {
+    let [, host, port] = extra;
+    data.command = 'set_server';
+    data.host = host;
+    data.port = port;
   } else if (code === '018') {
-    message.command = 'set_interval_gprs';
+    let [x, y] = extra;
+    data.command = 'set_interval_gprs';
+    data.enable = x !== '0';
+    data.interval = parseInt(x, 10);
+    data.limit = parseInt(y, 10);
   } else if (code === '016') {
     let [x] = extra;
-    message.command = 'set_gprs';
-    message.status = x === '1';
-  } else if (code === '003') {
-    let [x, f, call, sms] = extra;
-    if ((x === '0') && (f === '1')) {
-      message.command = 'set_sos_number';
-      message.call = call;
-      message.sms = sms;
-    } else {
-      message.command = 'setoff_sos_number';
+    data.command = 'set_gprs';
+    data.enable = x === '1';
+  } else if (code === '019') {
+    let [x] = extra;
+    data.command = 'set_gprs_mode';
+    data.mode = x === '1' ? 'tcp' : 'udp';
+  } else if (code === '021') {
+    let [x, y] = extra;
+    data.command = 'set_tremble';
+    data.sleep = x === '1';
+    data.tremble = y === '1';
+  } else if (code === '022') {
+    let [x, y] = extra;
+    data.command = 'set_module';
+    data.closeGps = x === '0';
+    data.closeGsm = y === '0';
+  } else if (code === '025') {
+    const ports = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'};
+    let [x, y] = extra;
+    data.command = 'set_digital_output';
+    data.enable = y === '1';
+    data.port = ports[x];
+  } else if (code === '040') {
+    let [x] = extra;
+    data.command = 'set_heart_beat';
+    data.enable = x === '1';
+  } else if (code === '041') {
+    let [x] = extra;
+    data.command = 'set_heart_beat_interval';
+    data.enable = x !== '0';
+    data.interval = x;
+  } else if (code === '042') {
+    data.command = 'set_heart_beat_init';
+  } else if (code === '044') {
+    let [x] = extra;
+    data.command = 'set_sleep_start';
+    data.after = x;
+  } else if (code === '043') {
+    let [x] = extra;
+    data.command = 'set_wake_up';
+    data.after = x;
+  } else if (code === '110') {
+    let [x] = extra;
+    data.command = 'set_parking';
+    data.enable = x === '1';
+  } else if (code === '801') {
+    data.command = 'request_firmware';
+  } else if (code === '990') {
+    data.command = 'factory_reset';
+  } else if (code === '991') {
+    data.command = 'reboot';
+  } else if (code === '100') {
+    data.command = 'map_link';
+  } else if (code === '113') {
+    let [a, b] = extra;
+    data.command = 'set_oil_sensor';
+    data.empty = parseInt(a, 10) / 100;
+    data.full = parseInt(b, 10) / 100;
+  } else if (code === '117') {
+    let [a, b, c, d] = extra;
+    data.command = 'set_outa_data';
+    data.speed = parseInt(a, 10);
+    data.off = parseInt(b, 10);
+    data.restart = parseInt(c, 10);
+    data.repeat = parseInt(d, 10);
+  } else if (code === '116') {
+    let [a] = extra;
+    data.command = 'set_outa';
+    data.enable = a === '1';
+  } else if (code === '103') {
+    let [s, number] = extra;
+    data.command = 'set_call_a';
+    data.type = s === '0' ? 'gprs' : 'call';
+    data.number = number;
+  } else if (code === '118') {
+    let [a, b, c, d, e, f, g, h] = extra; // eslint-disable-line no-unused-vars
+    data.command = 'set_extend';
+    data.tremble = a === '1';
+    data.input4 = b === '1' ? 'nmea' : 'text';
+    data.input3 = c === '0';
+    data.short = h === '1';
+  } else if (code === '122') {
+    let [s, pin] = extra;
+    data.command = 'set_pin';
+    data.enable = s === '1';
+    data.pin = pin;
+  } else if (code === '300' || code === '400') {
+    let [x, y] = extra;
+    data.command = 'set_angle';
+    if (x === '0') {
+      data.enable = false;
+    } else if (x === '1') {
+      data.enable = true;
+    } else if (x === '2') {
+      data.enable = true;
+      data.port = 4;
+    } else if (x === '3') {
+      data.enable = true;
+      data.port = 3;
     }
+    data.angle = parseInt(y, 10);
+  } else if (code === '600') {
+    let [x, y] = extra;
+    data.command = 'set_reboot';
+    data.enable = x === '1';
+    data.interval = parseInt(y, 10);
+  } else if (code === '120') {
+    let [a, b, c] = extra;
+    data.command = 'set_acceleration';
+    data.enable = a === '1';
+    data.acceleration = parseInt(b, 10);
+    data.deceleration = parseInt(c, 10);
+  } else if (code === '121') {
+    let [x, y, z] = extra;
+    data.command = 'set_roaming';
+    data.enable = x === '1';
+    data.interval = parseInt(y, 10);
+    data.network = z;
+  } else if (code === '123') {
+    let [x] = extra;
+    data.command = 'set_ack';
+    data.enable = x === '1';
+  } else if (code === '130') {
+    let [x, y] = extra;
+    data.command = 'set_call_filter';
+    data.enable = x === '1';
+    data.caller = y;
+  } else if (code === '119') {
+    let [x] = extra;
+    data.command = 'set_send';
+    data.type = x === '0' ? 'gprs' : 'sms';
+  } else if (code === '200') {
+    let [x, y] = extra;
+    data.command = 'set_take_picture';
+    data.interval = parseInt(x, 10);
+    data.times = parseInt(y, 10);
+  } else if (code === '500') {
+    data.command = 'clear_mem';
   } else if (code === '210') {
-    message.command = 'take_picture';
+    data.command = 'take_picture';
   } else if (code === '601') {
     let [x] = extra;
-    message.command = 'set_memory';
-    message.status = x === '1';
+    data.command = 'set_memory';
+    data.enable = x === '1';
+  } else if (code === '156') {
+    let [x, y, z] = extra;
+    data.command = 'set_interval_gprs_by_input';
+    data.enable = x === '1';
+    data.intervalOn = parseInt(y, 10);
+    data.intervalOff = parseInt(z, 10);
+  } else if (code === '151') {
+    let [x, y] = extra;
+    data.command = 'set_send_odometer';
+    data.enable = x === '1';
+    data.range = parseInt(y, 10);
+  } else if (code === '155') {
+    let [x, y] = extra;
+    data.command = 'set_imei';
+    data.enable = x === '1';
+    data.newImei = parseInt(y, 10);
+  } else if (code === '404') {
+    let [x, y] = extra;
+    data.command = 'set_idle';
+    data.enable = x === '1';
+    data.interval = parseInt(y, 10);
+  } else if (code === '023') {
+    let [x, y] = extra;
+    data.command = 'set_interval_gprs_standby';
+    data.enable = x === '1';
+    data.interval = parseInt(y, 10);
+  } else if (code === '201') {
+    let [x, y, z] = extra;
+    data.command = 'set_auto_picture';
+    if (x === '0') {
+      data.enable = false;
+    } else if (x === '1') {
+      data.enable = true;
+      data.port = 4;
+    } else if (x === '2') {
+      data.enable = true;
+      data.port = 3;
+    } else if (x === '3') {
+      data.enable = true;
+      data.port = 2;
+    } else if (x === '4') {
+      data.enable = true;
+      data.port = 1;
+    }
+    if (y === '1') {
+      data.mode = 'open';
+    } else if (y === '2') {
+      data.mode = 'close';
+    } else {
+      data.mode = 'both';
+    }
+    data.times = parseInt(z, 10);
+  } else if (code === '202') {
+    let [x] = extra;
+    data.command = 'set_packet_number_picture';
+    data.number = parseInt(x, 10);
   }
-  return message;
+  return data;
 };
 
 const getPicture = (data) => {
