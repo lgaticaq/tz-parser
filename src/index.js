@@ -16,13 +16,14 @@ let client;
 
 const patterns = {
   avl05: /^\$\$([0-9A-F]{2})(\d{15})\|([0-9A]{2})(\$GPRMC\,(\d{6}\.\d{3})\,([AV])\,(\d{4}\.\d{4}\,[NS])\,(\d{5}\.\d{4}\,[WE])\,(\d{1,3}\.\d{1,3})?\,(\d{1,3}\.\d{1,3})?\,(\d{6})\,((\d{1,3}\.\d{1,3})?\,([WE])?)\,?([ADENS])?\*([0-9A-F]{2})|[0]{60})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])\|(\d{14})\|([01])(\d{3})(\d{4})\|(\d{4})(\d{4})\|([0-9A-F]{4})([0-9A-F]{4})\|([01\-]\d{3})\|(\d{1,4}\.\d{1,12})\|(\d{4})\|([0-9A-F]{4})\r\n$/,
-  avl08: /^\$\$([0-9A-F]{2})(\d{15})\|([0-9A]{2})(\$GPRMC\,(\d{6}\.\d{3})\,([AV])\,(\d{4}\.\d{4}\,[NS])\,(\d{5}\.\d{4}\,[WE])\,(\d{1,3}\.\d{1,3})?\,(\d{1,3}\.\d{1,3})?\,(\d{6})\,((\d{1,3}\.\d{1,3})?\,([WE])?)\,?([ADENS])?\*([0-9A-F]{2})|[0]{60})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])\|(\d{14})\|([01])(\d{3})(\d{4})\|(\d{4})(\d{4})\|([0-9A-F]{4})([0-9A-F]{4})\|([01\-]\d{3})\|(\d{1,4}\.\d{1,12})\|(\d{4})\|(\d{10})\|([0-9A-F]{4})\r\n$/,
+  avl08: /^\$\$([0-9A-F]{2})(\d{15})\|([0-9A]{2})(\$GPRMC\,(\d{6}\.\d{3})\,([AV])\,(\d{4}\.\d{4}\,[NS])\,(\d{5}\.\d{4}\,[WE])\,(\d{1,3}\.\d{1,3})?\,(\d{1,3}\.\d{1,3})?\,(\d{6})\,((\d{1,3}\.\d{1,3})?\,([WE])?)\,?([ADENS])?\*([0-9A-F]{2})|[0]{60})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])\|(\d{14})\|([01])(\d{3})(\d{4})\|(\d{4})(\d{4})\|([0-9A-F]{4})([0-9A-F]{4})\|([01\-]\d{3})\|(\d{1,4}\.\d{1,12})\|(\d{4})\|(\d{10})?\|([0-9A-F]{4})\r\n$/,
   avl201: /^\$\$([0-9A-F]{2})(\d{15})\|([0-9A]{2})(\$GPRMC\,(\d{6}\.\d{3})\,([AV])\,(\d{4}\.\d{4}\,[NS])\,(\d{5}\.\d{4}\,[WE])\,(\d{1,3}\.\d{1,3})?\,(\d{1,3}\.\d{1,3})?\,(\d{6})\,((\d{1,3}\.\d{1,3})?\,([WE])?)\,?([ADENS])?\*([0-9A-F]{2})|[0]{60})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])\|(\d{14})\|([01])(\d{3})(\d{4})\|([0-9A-F]{4})([0-9A-F]{4})\|([01\-]\d{3})\|(\d{1,4}\.\d{1,12})\|(\d{4})\|([0-9A-F]{4})\r\n$/,
   receiveOk: /^Receive:'\d{3}'OK\r\n\*(\d{6})\,(\d{3})(\S*)?#$/,
   receiveErr: /^Receive:Set Err\r\n(\S*)/,
   picture: /^(\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#)+(Receive:'210'OK\r\n\*\d{6}\,210#)?$/,
   firmware: /^IMEI:(\d{15})\r\nVER:(\S*)\r\nGSMVER:(\S*)\r\n$/,
-  info: /^Lat:(\d{4}\.\d{4}\,[NS])\r\nLong:(\d{5}\.\d{4}\,[WE])Spd:(\d{1,3}\..\d{1,3})km\/h\r\nFix:([AV])\r\nSat:(\d{2})\r\nHDOP:(\d{2}\.\d{1})\r\nGSM:(\d{2})\r\nBatt:(\d{2}\.\d{2})V\r\nMile:(\d{1,4}\.\d{1,12})\r\nTime:(\d{2}\/\d{2}\/\d{2}\ \d{2}:\d{2}:\d{2})\r\n$/
+  info: /^Lat:([+-]?\d{4}\.\d{4}[NS])\r\nLong:([+-]?\d{5}\.\d{4}[WE])\r\nSpd:(\d{3})km\/h\r\nFix:([AV])\r\nSat:(\d{2})\r\nHDOP:(\d{2}\.\d{1})\r\nGSM:(\d{2})\r\nBatt:(\d{2}\.\d{2})V\r\nMile:(\d{1,4}\.\d{1,12})\r\nTime:(\d{2}\/\d{2}\/\d{2}\ \d{2}:\d{2}:\d{2})\r\n$/,
+  map: /^http:\/\/maps.google.com\/maps\?f=q&hl=en&q=(-?\d+\.\d+),(-?\d+\.\d+)&ie=UTF8&z=16&iwloc=addr&om=1$/
 };
 
 const getAlarm = (alarm) => {
@@ -146,7 +147,7 @@ const getAvl05 = async function(raw, options) {
 };
 
 const getAvl08 = async function(raw, options) {
-  const match = patterns.avl05.exec(raw.toString());
+  const match = patterns.avl08.exec(raw.toString());
   const data = {
     raw: match[0],
     type: 'TZ-AVL08',
@@ -208,7 +209,7 @@ const getAvl08 = async function(raw, options) {
 };
 
 const getAvl201 = async function(raw, options) {
-  const match = patterns.avl05.exec(raw.toString());
+  const match = patterns.avl201.exec(raw.toString());
   const data = {
     raw: match[0],
     type: 'TZ-AVL201',
@@ -266,28 +267,26 @@ const getCommand = (raw) => {
   const code = match[2];
   const extra = match[3] ? match[3].substr(1).split(',') : null;
   let data = {type: 'TZ-COMMAND', password: password};
-  if (code === '000') {
-    data.command = 'request_position';
-  } else if (code === '001') {
+  if (code === '001') {
     data.command = 'set_password';
     data.newPassword = extra;
   } else if (code === '002') {
     let [x, y] = extra;
     data.command = 'set_sms_position';
-    data.enable = x === '0';
+    data.enable = x !== '0';
     data.interval = x;
     data.limit = y;
   } else if (code === '003') {
     let [x, f, callNumber, smsNumber] = extra;
     data.command = 'set_sos_number';
     data.enable = ((x === '0') && (f === '1'));
-    data.call = callNumber;
-    data.sms = smsNumber;
+    data.callNumber = callNumber;
+    data.smsNumber = smsNumber;
   } else if (code === '004') {
     let [x, y] = extra;
     data.command = 'set_low_power';
-    data.lowPower = x;
-    data.autoShutdown = y;
+    data.lowPower = parseFloat(x) / 100;
+    data.autoShutdown = parseFloat(y) / 100;
   } else if (code === '005') {
     let [s, x, y, z] = extra;
     data.command = 'set_speed';
@@ -300,31 +299,32 @@ const getCommand = (raw) => {
     data.command = 'set_geo_fence';
     if (y === '0') {
       data.enable = false;
-    } else if (y === '1') {
-      data.enable = true;
-      data.type = 'inside';
     } else {
       data.enable = true;
-      data.type = 'outside';
+      data.type = y === '1' ? 'inside' : 'outside';
+      data.geojson = {
+        type: 'Polygon',
+        coordinates: [[
+          [nmea.degToDec(lon2), nmea.degToDec(lat2)],
+          [nmea.degToDec(lon2), nmea.degToDec(lat1)],
+          [nmea.degToDec(lon1), nmea.degToDec(lat1)],
+          [nmea.degToDec(lon1), nmea.degToDec(lat2)],
+          [nmea.degToDec(lon2), nmea.degToDec(lat2)]
+        ]]
+      };
     }
-    data.geojson = {
-      type: 'Polygon',
-      coordinates: [
-        [parseFloat(lon2), parseFloat(lat2)],
-        [parseFloat(lon2), parseFloat(lat1)],
-        [parseFloat(lon1), parseFloat(lat1)],
-        [parseFloat(lon1), parseFloat(lat2)],
-        [parseFloat(lon2), parseFloat(lat2)]
-      ]
-    };
   } else if (code === '008') {
-    let [a, b, c, d, e, f, g] = extra; // eslint-disable-line no-unused-vars
+    let [a, b, c, d, e, f, g] = extra;
     data.command = 'set_extend';
-    data.callReport = a === '1';
-    data.typeSms = b === '1' ? 'nmea' : 'text';
-    data.hungUp = c === '0';
-    data.adbNormal = e === '0';
-    data.adaNormal = f === '0';
+    data.extend = {
+      a: a === '1',
+      b: b === '1',
+      c: c === '1',
+      d: d === '1',
+      e: e === '1',
+      f: f === '1',
+      g: g === '1'
+    };
   } else if (code === '009') {
     data.command = 'set_band';
     if (extra === '0') {
@@ -350,7 +350,7 @@ const getCommand = (raw) => {
     let [, host, port] = extra;
     data.command = 'set_server';
     data.host = host;
-    data.port = port;
+    data.port = parseInt(port, 10);
   } else if (code === '018') {
     let [x, y] = extra;
     data.command = 'set_interval_gprs';
@@ -376,7 +376,7 @@ const getCommand = (raw) => {
     data.closeGps = x === '0';
     data.closeGsm = y === '0';
   } else if (code === '025') {
-    const ports = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'};
+    const ports = {'A': 1, 'B': 2, 'C': 3, 'D': 4};
     let [x, y] = extra;
     data.command = 'set_digital_output';
     data.enable = y === '1';
@@ -395,23 +395,19 @@ const getCommand = (raw) => {
   } else if (code === '044') {
     let [x] = extra;
     data.command = 'set_sleep_start';
-    data.after = x;
+    data.after = parseInt(x, 10);
   } else if (code === '043') {
     let [x] = extra;
     data.command = 'set_wake_up';
-    data.after = x;
+    data.after = parseInt(x, 10);
   } else if (code === '110') {
     let [x] = extra;
     data.command = 'set_parking';
     data.enable = x === '1';
-  } else if (code === '801') {
-    data.command = 'request_firmware';
   } else if (code === '990') {
     data.command = 'factory_reset';
   } else if (code === '991') {
     data.command = 'reboot';
-  } else if (code === '100') {
-    data.command = 'map_link';
   } else if (code === '113') {
     let [a, b] = extra;
     data.command = 'set_oil_sensor';
@@ -434,17 +430,23 @@ const getCommand = (raw) => {
     data.type = s === '0' ? 'gprs' : 'call';
     data.number = number;
   } else if (code === '118') {
-    let [a, b, c, d, e, f, g, h] = extra; // eslint-disable-line no-unused-vars
+    let [a, b, c, d, e, f, g, h] = extra;
     data.command = 'set_extend';
-    data.tremble = a === '1';
-    data.input4 = b === '1' ? 'nmea' : 'text';
-    data.input3 = c === '0';
-    data.short = h === '1';
+    data.extend = {
+      a: a === '1',
+      b: b === '1',
+      c: c === '1',
+      d: d === '1',
+      e: e === '1',
+      f: f === '1',
+      g: g === '1',
+      h: h === '1'
+    };
   } else if (code === '122') {
     let [s, pin] = extra;
     data.command = 'set_pin';
     data.enable = s === '1';
-    data.pin = pin;
+    data.pin = parseInt(pin, 10);
   } else if (code === '300' || code === '400') {
     let [x, y] = extra;
     data.command = 'set_angle';
@@ -565,22 +567,62 @@ const getCommand = (raw) => {
 
 const getPicture = (data) => {
   const results = data.toString().match(/\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#/g).map(x => {
-    const match = /\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#/.exec(x);
+    const match = /\$U(\d{15})(\d{5})(\d{3})(\d{3})([0-9a-fA-F]{1,200})#/.exec(x);
+    console.log(match); // eslint-disable-line
     return {
-      imei: match[1],
-      number: match[2],
-      total: match[3],
-      sequence: match[4],
+      imei: parseInt(match[1], 10),
+      number: parseInt(match[2], 10),
+      total: parseInt(match[3], 10),
+      sequence: parseInt(match[4], 10),
       data: match[5]
     };
   });
-  const finish = /Receive:'210'OK\r\n\*\d{6}\,210#?/.test(data.toString());
-  return {type: 'TZ-IMAGE', finish: finish, data: results};
+  return {type: 'TZ-IMAGE', data: results};
 };
 
 const getCommandError = (data) => {
   const match = patterns.receiveErr.exec(data.toString());
   return {type: 'TZ-ERROR', command: match[0]};
+};
+
+const getCommandFirmware = (data) => {
+  const match = patterns.firmware.exec(data.toString());
+  return {
+    type: 'TZ-FIRMWARE',
+    command: 'request_firmware',
+    imei: parseInt(match[1], 10),
+    firmware: match[2],
+    gsm: match[3]
+  };
+};
+
+const getCommandInfo = (data) => {
+  const match = patterns.info.exec(data.toString());
+  return {
+    type: 'TZ-INFO',
+    command: 'info',
+    latitude: match[1],
+    longitude: match[2],
+    speed: parseInt(match[3], 10),
+    fix: match[4],
+    sat: parseInt(match[5], 10),
+    hdop: parseFloat(match[6]),
+    gsm: parseInt(match[7], 10),
+    battery: parseFloat(match[8]),
+    odometer: parseFloat(match[9]),
+    datetime: moment(`${match[10]}0000`, 'DD/MM/YY HH:mm:ssZZ').toDate()
+  };
+};
+
+const getCommandMap = (data) => {
+  const match = patterns.map.exec(data.toString());
+  return {
+    type: 'TZ-MAP',
+    command: 'map',
+    url: match[0],
+    latitude: parseFloat(match[1]),
+    longitude: parseFloat(match[2])
+  };
 };
 
 const setCache = (uri) => {
@@ -645,6 +687,7 @@ const parse = async function(raw, options = {}) {
   options.mcc = options.mcc || 730;
   options.mnc = options.mnc || 1;
   let result;
+  console.log(raw); // eslint-disable-line
   if (patterns.avl05.test(raw.toString())) {
     result = await getAvl05(raw, options);
   } else if (patterns.avl08.test(raw.toString())) {
@@ -657,6 +700,12 @@ const parse = async function(raw, options = {}) {
     result = getPicture(raw);
   } else if (patterns.receiveErr.test(raw.toString())) {
     result = getCommandError(raw);
+  } else if (patterns.info.test(raw.toString())) {
+    result = getCommandInfo(raw);
+  } else if (patterns.firmware.test(raw.toString())) {
+    result = getCommandFirmware(raw);
+  } else if (patterns.map.test(raw.toString())) {
+    result = getCommandMap(raw);
   }
   return result;
 };
@@ -670,5 +719,10 @@ module.exports = {
   getCommand: getCommand,
   getPicture: getPicture,
   getCommandError: getCommandError,
-  setCache: setCache
+  getCommandFirmware: getCommandFirmware,
+  getCommandInfo: getCommandInfo,
+  getCommandMap: getCommandMap,
+  setCache: setCache,
+  verifyLen: verifyLen,
+  verifyCrc: verifyCrc
 };
