@@ -268,28 +268,28 @@ const getCommand = (raw) => {
   const extra = match[3] ? match[3].substr(1).split(',') : null;
   let data = {type: 'TZ-COMMAND', password: password};
   if (code === '001') {
-    data.command = 'set_password';
+    data.command = 'SetUserPassword';
     data.newPassword = extra[0];
   } else if (code === '002') {
     let [x, y] = extra;
-    data.command = 'set_sms_position';
+    data.command = 'SETINTERVALOFSMS';
     data.enable = x !== '0';
     data.interval = x;
     data.limit = y;
   } else if (code === '003') {
     let [x, f, callNumber, smsNumber] = extra;
-    data.command = 'set_sos_number';
+    data.command = 'SETPHONESMSFORSOS';
     data.enable = ((x === '0') && (f === '1'));
     data.callNumber = callNumber;
     data.smsNumber = smsNumber;
   } else if (code === '004') {
     let [x, y] = extra;
-    data.command = 'set_low_power';
+    data.command = 'SETLOWPOWERALARM';
     data.lowPower = parseFloat(x) / 100;
     data.autoShutdown = parseFloat(y) / 100;
   } else if (code === '005') {
     let [s, x, y, z] = extra;
-    data.command = 'set_speed';
+    data.command = 'SETOVERSPEEDALARM';
     data.enable = s === '1';
     data.speed = parseInt(x, 10);
     data.times = parseInt(y, 10);
@@ -311,7 +311,7 @@ const getCommand = (raw) => {
         }
       }
     };
-    data.command = 'set_geo_fence';
+    data.command = 'SETGEOFENCEALARM';
     if (y === '0') {
       data.enable = false;
     } else {
@@ -330,7 +330,7 @@ const getCommand = (raw) => {
     }
   } else if (code === '008') {
     let [a, b, c, d, e, f, g] = extra;
-    data.command = 'set_extend';
+    data.command = 'SETEXTEND';
     data.extend = {
       a: a === '1',
       b: b === '1',
@@ -341,7 +341,7 @@ const getCommand = (raw) => {
       g: g === '1'
     };
   } else if (code === '009') {
-    data.command = 'set_band';
+    data.command = 'SETGSMBAUD';
     if (extra[0] === '0') {
       data.band = '900/1800';
     } else if (extra[0] === '1') {
@@ -351,102 +351,102 @@ const getCommand = (raw) => {
     }
   } else if (code === '011') {
     let [apn, username, pass] = extra;
-    data.command = 'set_apn';
+    data.command = 'SETAPN';
     data.apn = apn;
     data.username = username;
     data.pass = pass;
   } else if (code === '014') {
     let [x, dns1, dns2] = extra;
-    data.command = 'set_dns';
+    data.command = 'SETDNS';
     data.enable = x === '1';
     data.dns1 = dns1;
     data.dns2 = dns2;
   } else if (code === '015') {
     let [, host, port] = extra;
-    data.command = 'set_server';
+    data.command = 'SETIPANDPORT';
     data.host = host;
     data.port = parseInt(port, 10);
   } else if (code === '018') {
     let [x, y] = extra;
-    data.command = 'set_interval_gprs';
+    data.command = 'SETGPRSINTERVAL';
     data.enable = x !== '0';
     data.interval = parseInt(x, 10);
     data.limit = parseInt(y, 10);
   } else if (code === '016') {
     let [x] = extra;
-    data.command = 'set_gprs';
+    data.command = 'SETSYSSWITCH';
     data.enable = x === '1';
   } else if (code === '019') {
     let [x] = extra;
-    data.command = 'set_gprs_mode';
+    data.command = 'SETTCPSWITCH';
     data.mode = x === '1' ? 'tcp' : 'udp';
   } else if (code === '021') {
     let [x, y] = extra;
-    data.command = 'set_tremble';
+    data.command = 'SETTREMBLESWITCH';
     data.sleep = x === '1';
     data.tremble = y === '1';
   } else if (code === '022') {
     let [x, y] = extra;
-    data.command = 'set_module';
+    data.command = 'SETSLEEPSWITCH';
     data.closeGps = x === '0';
     data.closeGsm = y === '0';
   } else if (code === '025') {
     const ports = {'A': 1, 'B': 2, 'C': 3, 'D': 4};
     let [x, y] = extra;
-    data.command = 'set_digital_output';
+    data.command = 'SETIOSWITCH';
     data.enable = y === '1';
     data.port = ports[x];
   } else if (code === '040') {
     let [x] = extra;
-    data.command = 'set_heart_beat';
+    data.command = 'SETHEARTBEATSWITCH';
     data.enable = x === '1';
   } else if (code === '041') {
     let [x] = extra;
-    data.command = 'set_heart_beat_interval';
+    data.command = 'SETHEARTBEATINTERVAL';
     data.enable = x !== '0';
     data.interval = x;
   } else if (code === '042') {
-    data.command = 'set_heart_beat_init';
+    data.command = 'SETHEARTBEATINIT';
   } else if (code === '044') {
     let [x] = extra;
-    data.command = 'set_sleep_start';
+    data.command = 'SETTREMBLETOSLEEP';
     data.after = parseInt(x, 10);
   } else if (code === '043') {
     let [x] = extra;
-    data.command = 'set_wake_up';
+    data.command = 'SETTREMBLETOWAKEUP';
     data.after = parseInt(x, 10);
   } else if (code === '110') {
     let [x] = extra;
-    data.command = 'set_parking';
+    data.command = 'SETPARKINGALARM';
     data.enable = x === '1';
   } else if (code === '990') {
-    data.command = 'factory_reset';
+    data.command = 'FACTORYRESET';
   } else if (code === '991') {
-    data.command = 'reboot';
+    data.command = 'RBOOT';
   } else if (code === '113') {
     let [a, b] = extra;
-    data.command = 'set_oil_sensor';
+    data.command = 'SETOILSENSER';
     data.empty = parseInt(a, 10) / 100;
     data.full = parseInt(b, 10) / 100;
   } else if (code === '117') {
     let [a, b, c, d] = extra;
-    data.command = 'set_outa_data';
+    data.command = 'SETSHUTOIL';
     data.speed = parseInt(a, 10);
     data.off = parseInt(b, 10);
     data.restart = parseInt(c, 10);
     data.repeat = parseInt(d, 10);
   } else if (code === '116') {
     let [a] = extra;
-    data.command = 'set_outa';
+    data.command = 'SETSHUTOILSWITCH';
     data.enable = a === '1';
   } else if (code === '103') {
     let [s, number] = extra;
-    data.command = 'set_call_a';
+    data.command = 'SETCALLA';
     data.mode = s === '0' ? 'gprs' : 'call';
     data.number = number;
   } else if (code === '118') {
     let [a, b, c, d, e, f, g, h] = extra;
-    data.command = 'set_extend';
+    data.command = 'SETEXTEND2';
     data.extend = {
       a: a === '1',
       b: b === '1',
@@ -459,12 +459,12 @@ const getCommand = (raw) => {
     };
   } else if (code === '122') {
     let [s, pin] = extra;
-    data.command = 'set_pin';
+    data.command = 'SETPIN';
     data.enable = s === '1';
-    data.pin = parseInt(pin, 10);
+    data.pin = pin;
   } else if (code === '300' || code === '400') {
     let [x, y] = extra;
-    data.command = 'set_angle';
+    data.command = 'SETANGLE';
     if (x === '0') {
       data.enable = false;
     } else if (x === '1') {
@@ -479,76 +479,76 @@ const getCommand = (raw) => {
     data.angle = parseInt(y, 10);
   } else if (code === '600') {
     let [x, y] = extra;
-    data.command = 'set_reboot';
+    data.command = 'SETREBOOT';
     data.enable = x === '1';
     data.interval = parseInt(y, 10);
   } else if (code === '120') {
     let [a, b, c] = extra;
-    data.command = 'set_acceleration';
+    data.command = 'SETACCALARM';
     data.enable = a === '1';
     data.acceleration = parseInt(b, 10);
     data.deceleration = parseInt(c, 10);
   } else if (code === '121') {
     let [x, y, z] = extra;
-    data.command = 'set_roaming';
+    data.command = 'SETROAMING';
     data.enable = x === '1';
     data.interval = parseInt(y, 10);
     data.network = z;
   } else if (code === '123') {
     let [x] = extra;
-    data.command = 'set_ack';
+    data.command = 'SETACKSTATE';
     data.enable = x === '1';
   } else if (code === '130') {
     let [x, y] = extra;
-    data.command = 'set_call_filter';
+    data.command = 'SETCALLFILTER';
     data.enable = x === '1';
     data.caller = y;
   } else if (code === '119') {
     let [x] = extra;
-    data.command = 'set_send';
+    data.command = 'SETSENDTYPE';
     data.mode = x === '0' ? 'gprs' : 'sms';
   } else if (code === '200') {
     let [x, y] = extra;
-    data.command = 'set_take_picture';
+    data.command = 'SETPICTUREINTERVAL';
     data.interval = parseInt(x, 10);
     data.times = parseInt(y, 10);
   } else if (code === '500') {
-    data.command = 'clear_mem';
+    data.command = 'CLEARBUF';
   } else if (code === '210') {
-    data.command = 'take_picture';
+    data.command = 'GETPICTURE';
   } else if (code === '601') {
     let [x] = extra;
-    data.command = 'set_memory';
+    data.command = 'SETDATAFLASH';
     data.enable = x === '1';
   } else if (code === '156') {
     let [x, y, z] = extra;
-    data.command = 'set_interval_gprs_by_input';
+    data.command = 'SETTRACKINGINTERVAL';
     data.enable = x === '1';
     data.intervalOn = parseInt(y, 10);
     data.intervalOff = parseInt(z, 10);
   } else if (code === '151') {
     let [x, y] = extra;
-    data.command = 'set_send_odometer';
+    data.command = 'SETSENDODOMETER';
     data.enable = x === '1';
     data.range = parseInt(y, 10);
   } else if (code === '155') {
     let [x, y] = extra;
-    data.command = 'set_imei';
+    data.command = 'SETIMEI';
     data.enable = x === '1';
     data.newImei = parseInt(y, 10);
   } else if (code === '404') {
     let [x, y] = extra;
-    data.command = 'set_idle';
+    data.command = 'SETIDLE';
     data.enable = x === '1';
     data.interval = parseInt(y, 10);
   } else if (code === '023') {
     let [x, y] = extra;
-    data.command = 'set_interval_gprs_standby';
+    data.command = 'SETINTERVALGPRSSTANDBY';
     data.enable = x === '1';
     data.interval = parseInt(y, 10);
   } else if (code === '201') {
     let [x, y, z] = extra;
-    data.command = 'set_auto_picture';
+    data.command = 'SETIOPICTURE';
     if (x === '0') {
       data.enable = false;
     } else if (x === '1') {
@@ -574,7 +574,7 @@ const getCommand = (raw) => {
     data.times = parseInt(z, 10);
   } else if (code === '202') {
     let [x] = extra;
-    data.command = 'set_packet_number_picture';
+    data.command = 'SETPICTUREPACKET';
     data.number = parseInt(x, 10);
   }
   return data;
@@ -700,7 +700,7 @@ const getLoc = async function(mcc, mnc, lac, cellid) {
 const parse = async function(raw, options = {}) {
   options.mcc = options.mcc || 730;
   options.mnc = options.mnc || 1;
-  let result;
+  let result = {type: 'UNKNOWN', raw: raw.toString()};
   if (patterns.avl05.test(raw.toString())) {
     result = await getAvl05(raw, options);
   } else if (patterns.avl08.test(raw.toString())) {

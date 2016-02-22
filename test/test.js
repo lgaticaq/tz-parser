@@ -197,7 +197,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_password', () => {
+  describe('TZ-COMMAND SetUserPassword', () => {
     let data;
     let error;
     before((done) => {
@@ -214,13 +214,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_password');
+        expect(data.command).to.eql('SetUserPassword');
         expect(data.newPassword).to.eql('111111');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_sms_position', () => {
+  describe('TZ-COMMAND SETINTERVALOFSMS', () => {
     let data;
     let error;
     before((done) => {
@@ -237,7 +237,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_sms_position');
+        expect(data.command).to.eql('SETINTERVALOFSMS');
         expect(data.enable).to.be.true;
         expect(data.interval).to.eql('1');
         expect(data.limit).to.eql('999');
@@ -245,7 +245,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_sos_number', () => {
+  describe('TZ-COMMAND SETPHONESMSFORSOS', () => {
     let data;
     let error;
     before((done) => {
@@ -262,7 +262,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_sos_number');
+        expect(data.command).to.eql('SETPHONESMSFORSOS');
         expect(data.enable).to.be.true;
         expect(data.callNumber).to.eql('005695487459');
         expect(data.smsNumber).to.eql('005695487459');
@@ -270,7 +270,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_low_power', () => {
+  describe('TZ-COMMAND SETLOWPOWERALARM', () => {
     let data;
     let error;
     before((done) => {
@@ -287,14 +287,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_low_power');
+        expect(data.command).to.eql('SETLOWPOWERALARM');
         expect(data.lowPower).to.eql(3.8);
         expect(data.autoShutdown).to.eql(3.5);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_speed', () => {
+  describe('TZ-COMMAND SETOVERSPEEDALARM', () => {
     let data;
     let error;
     before((done) => {
@@ -311,7 +311,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_speed');
+        expect(data.command).to.eql('SETOVERSPEEDALARM');
         expect(data.enable).to.be.true;
         expect(data.speed).to.eql(100);
         expect(data.times).to.eql(10);
@@ -320,7 +320,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_geo_fence', () => {
+  describe('TZ-COMMAND SETGEOFENCEALARM', () => {
     let data;
     let error;
     before((done) => {
@@ -337,7 +337,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_geo_fence');
+        expect(data.command).to.eql('SETGEOFENCEALARM');
         expect(data.enable).to.be.true;
         expect(data.mode).to.eql('inside');
         expect(data.geojson.type).to.eql('Polygon');
@@ -352,7 +352,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_extend', () => {
+  describe('TZ-COMMAND SETEXTEND', () => {
     let data;
     let error;
     before((done) => {
@@ -369,13 +369,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_extend');
+        expect(data.command).to.eql('SETEXTEND');
         expect(data.extend).to.eql({a: false, b: false, c: false, d: false, e: false, f: false, g: false});
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_band', () => {
+  describe('TZ-COMMAND SETGSMBAUD', () => {
     let data;
     let error;
     before((done) => {
@@ -392,13 +392,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_band');
+        expect(data.command).to.eql('SETGSMBAUD');
         expect(data.band).to.eql('auto');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_apn', () => {
+  describe('TZ-COMMAND SETAPN', () => {
     let data;
     let error;
     before((done) => {
@@ -415,7 +415,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_apn');
+        expect(data.command).to.eql('SETAPN');
         expect(data.apn).to.eql('imovil.entelpcs.cl');
         expect(data.username).to.eql('entelpcs');
         expect(data.pass).to.eql('entelpcs');
@@ -423,7 +423,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_dns', () => {
+  describe('TZ-COMMAND SETDNS', () => {
     let data;
     let error;
     before((done) => {
@@ -440,7 +440,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_dns');
+        expect(data.command).to.eql('SETDNS');
         expect(data.enable).to.be.true;
         expect(data.dns1).to.eql('8.8.8.8');
         expect(data.dns2).to.eql('8.8.4.4');
@@ -448,7 +448,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_server', () => {
+  describe('TZ-COMMAND SETIPANDPORT', () => {
     let data;
     let error;
     before((done) => {
@@ -465,14 +465,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_server');
+        expect(data.command).to.eql('SETIPANDPORT');
         expect(data.host).to.eql('server.com');
         expect(data.port).to.eql(1331);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_interval_gprs', () => {
+  describe('TZ-COMMAND SETGPRSINTERVAL', () => {
     let data;
     let error;
     before((done) => {
@@ -489,7 +489,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_interval_gprs');
+        expect(data.command).to.eql('SETGPRSINTERVAL');
         expect(data.enable).to.be.true;
         expect(data.interval).to.eql(10);
         expect(data.limit).to.eql(999);
@@ -497,7 +497,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_gprs', () => {
+  describe('TZ-COMMAND SETSYSSWITCH', () => {
     let data;
     let error;
     before((done) => {
@@ -514,13 +514,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_gprs');
+        expect(data.command).to.eql('SETSYSSWITCH');
         expect(data.enable).to.be.true;
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_gprs_mode', () => {
+  describe('TZ-COMMAND SETTCPSWITCH', () => {
     let data;
     let error;
     before((done) => {
@@ -537,13 +537,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_gprs_mode');
+        expect(data.command).to.eql('SETTCPSWITCH');
         expect(data.mode).to.eql('tcp');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_tremble', () => {
+  describe('TZ-COMMAND SETTREMBLESWITCH', () => {
     let data;
     let error;
     before((done) => {
@@ -560,14 +560,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_tremble');
+        expect(data.command).to.eql('SETTREMBLESWITCH');
         expect(data.sleep).to.be.true;
         expect(data.tremble).to.be.true;
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_module', () => {
+  describe('TZ-COMMAND SETSLEEPSWITCH', () => {
     let data;
     let error;
     before((done) => {
@@ -584,14 +584,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_module');
+        expect(data.command).to.eql('SETSLEEPSWITCH');
         expect(data.closeGps).to.be.true;
         expect(data.closeGsm).to.be.true;
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_digital_output', () => {
+  describe('TZ-COMMAND SETIOSWITCH', () => {
     let data;
     let error;
     before((done) => {
@@ -608,14 +608,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_digital_output');
+        expect(data.command).to.eql('SETIOSWITCH');
         expect(data.enable).to.be.true;
         expect(data.port).to.eql(1);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_heart_beat', () => {
+  describe('TZ-COMMAND SETHEARTBEATSWITCH', () => {
     let data;
     let error;
     before((done) => {
@@ -632,13 +632,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_heart_beat');
+        expect(data.command).to.eql('SETHEARTBEATSWITCH');
         expect(data.enable).to.be.false;
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_heart_beat_interval', () => {
+  describe('TZ-COMMAND SETHEARTBEATINTERVAL', () => {
     let data;
     let error;
     before((done) => {
@@ -655,13 +655,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_heart_beat_interval');
+        expect(data.command).to.eql('SETHEARTBEATINTERVAL');
         expect(data.enable).to.be.false;
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_heart_beat_init', () => {
+  describe('TZ-COMMAND SETHEARTBEATINIT', () => {
     let data;
     let error;
     before((done) => {
@@ -678,12 +678,12 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_heart_beat_init');
+        expect(data.command).to.eql('SETHEARTBEATINIT');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_sleep_start', () => {
+  describe('TZ-COMMAND SETTREMBLETOSLEEP', () => {
     let data;
     let error;
     before((done) => {
@@ -700,13 +700,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_sleep_start');
+        expect(data.command).to.eql('SETTREMBLETOSLEEP');
         expect(data.after).to.eql(30);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_wake_up', () => {
+  describe('TZ-COMMAND SETTREMBLETOWAKEUP', () => {
     let data;
     let error;
     before((done) => {
@@ -723,13 +723,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_wake_up');
+        expect(data.command).to.eql('SETTREMBLETOWAKEUP');
         expect(data.after).to.eql(10);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_parking', () => {
+  describe('TZ-COMMAND SETPARKINGALARM', () => {
     let data;
     let error;
     before((done) => {
@@ -746,7 +746,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_parking');
+        expect(data.command).to.eql('SETPARKINGALARM');
         expect(data.enable).to.be.false;
         expect(error).to.be.undefined;
       });
@@ -776,7 +776,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND factory_reset', () => {
+  describe('TZ-COMMAND FACTORYRESET', () => {
     let data;
     let error;
     before((done) => {
@@ -793,12 +793,12 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('factory_reset');
+        expect(data.command).to.eql('FACTORYRESET');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND reboot', () => {
+  describe('TZ-COMMAND RBOOT', () => {
     let data;
     let error;
     before((done) => {
@@ -815,7 +815,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('reboot');
+        expect(data.command).to.eql('RBOOT');
         expect(error).to.be.undefined;
       });
     });
@@ -844,7 +844,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_oil_sensor', () => {
+  describe('TZ-COMMAND SETOILSENSER', () => {
     let data;
     let error;
     before((done) => {
@@ -861,14 +861,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_oil_sensor');
+        expect(data.command).to.eql('SETOILSENSER');
         expect(data.empty).to.eql(1);
         expect(data.full).to.eql(5);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_outa_data', () => {
+  describe('TZ-COMMAND SETSHUTOIL', () => {
     let data;
     let error;
     before((done) => {
@@ -885,7 +885,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_outa_data');
+        expect(data.command).to.eql('SETSHUTOIL');
         expect(data.speed).to.eql(60);
         expect(data.off).to.eql(500);
         expect(data.restart).to.eql(3000);
@@ -894,7 +894,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_outa', () => {
+  describe('TZ-COMMAND SETSHUTOILSWITCH', () => {
     let data;
     let error;
     before((done) => {
@@ -911,13 +911,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_outa');
+        expect(data.command).to.eql('SETSHUTOILSWITCH');
         expect(data.enable).to.be.false;
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_call_a', () => {
+  describe('TZ-COMMAND SETCALLA', () => {
     let data;
     let error;
     before((done) => {
@@ -934,14 +934,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_call_a');
+        expect(data.command).to.eql('SETCALLA');
         expect(data.mode).to.eql('gprs');
         expect(data.number).to.eql('005695487459');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_extend', () => {
+  describe('TZ-COMMAND SETEXTEND2', () => {
     let data;
     let error;
     before((done) => {
@@ -958,13 +958,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_extend');
+        expect(data.command).to.eql('SETEXTEND2');
         expect(data.extend).to.eql({a: false, b: false, c: false, d: false, e: false, f: false, g: false, h: false});
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_pin', () => {
+  describe('TZ-COMMAND SETPIN', () => {
     let data;
     let error;
     before((done) => {
@@ -981,14 +981,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_pin');
+        expect(data.command).to.eql('SETPIN');
         expect(data.enable).to.be.false;
-        expect(data.pin).to.eql(1234);
+        expect(data.pin).to.eql('1234');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_angle', () => {
+  describe('TZ-COMMAND SETANGLE', () => {
     let data;
     let error;
     before((done) => {
@@ -1005,14 +1005,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_angle');
+        expect(data.command).to.eql('SETANGLE');
         expect(data.enable).to.be.false;
         expect(data.angle).to.eql(360);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_angle', () => {
+  describe('TZ-COMMAND SETANGLE', () => {
     let data;
     let error;
     before((done) => {
@@ -1029,14 +1029,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_angle');
+        expect(data.command).to.eql('SETANGLE');
         expect(data.enable).to.be.false;
         expect(data.angle).to.eql(360);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_reboot', () => {
+  describe('TZ-COMMAND SETREBOOT', () => {
     let data;
     let error;
     before((done) => {
@@ -1053,14 +1053,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_reboot');
+        expect(data.command).to.eql('SETREBOOT');
         expect(data.enable).to.be.false;
         expect(data.interval).to.eql(30);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_acceleration', () => {
+  describe('TZ-COMMAND SETACCALARM', () => {
     let data;
     let error;
     before((done) => {
@@ -1077,7 +1077,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_acceleration');
+        expect(data.command).to.eql('SETACCALARM');
         expect(data.enable).to.be.false;
         expect(data.acceleration).to.eql(30);
         expect(data.deceleration).to.eql(30);
@@ -1085,7 +1085,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_roaming', () => {
+  describe('TZ-COMMAND SETROAMING', () => {
     let data;
     let error;
     before((done) => {
@@ -1102,7 +1102,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_roaming');
+        expect(data.command).to.eql('SETROAMING');
         expect(data.enable).to.be.false;
         expect(data.interval).to.eql(30);
         expect(data.network).to.eql('210');
@@ -1110,7 +1110,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_ack', () => {
+  describe('TZ-COMMAND SETACKSTATE', () => {
     let data;
     let error;
     before((done) => {
@@ -1127,13 +1127,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_ack');
+        expect(data.command).to.eql('SETACKSTATE');
         expect(data.enable).to.be.false;
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_call_filter', () => {
+  describe('TZ-COMMAND SETCALLFILTER', () => {
     let data;
     let error;
     before((done) => {
@@ -1150,14 +1150,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_call_filter');
+        expect(data.command).to.eql('SETCALLFILTER');
         expect(data.enable).to.be.false;
         expect(data.caller).to.eql('0');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_send', () => {
+  describe('TZ-COMMAND SETSENDTYPE', () => {
     let data;
     let error;
     before((done) => {
@@ -1174,13 +1174,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_send');
+        expect(data.command).to.eql('SETSENDTYPE');
         expect(data.mode).to.eql('gprs');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_take_picture', () => {
+  describe('TZ-COMMAND SETPICTUREINTERVAL', () => {
     let data;
     let error;
     before((done) => {
@@ -1197,14 +1197,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_take_picture');
+        expect(data.command).to.eql('SETPICTUREINTERVAL');
         expect(data.interval).to.eql(10);
         expect(data.times).to.eql(999);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND clear_mem', () => {
+  describe('TZ-COMMAND CLEARBUF', () => {
     let data;
     let error;
     before((done) => {
@@ -1221,12 +1221,12 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('clear_mem');
+        expect(data.command).to.eql('CLEARBUF');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND take_picture', () => {
+  describe('TZ-COMMAND GETPICTURE', () => {
     let data;
     let error;
     before((done) => {
@@ -1243,12 +1243,12 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('take_picture');
+        expect(data.command).to.eql('GETPICTURE');
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_memory', () => {
+  describe('TZ-COMMAND SETDATAFLASH', () => {
     let data;
     let error;
     before((done) => {
@@ -1265,13 +1265,13 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_memory');
+        expect(data.command).to.eql('SETDATAFLASH');
         expect(data.enable).to.be.true;
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_interval_gprs_by_input', () => {
+  describe('TZ-COMMAND SETTRACKINGINTERVAL', () => {
     let data;
     let error;
     before((done) => {
@@ -1288,7 +1288,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_interval_gprs_by_input');
+        expect(data.command).to.eql('SETTRACKINGINTERVAL');
         expect(data.enable).to.be.false;
         expect(data.intervalOn).to.eql(30);
         expect(data.intervalOff).to.eql(30);
@@ -1296,7 +1296,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_send_odometer', () => {
+  describe('TZ-COMMAND SETSENDODOMETER', () => {
     let data;
     let error;
     before((done) => {
@@ -1313,14 +1313,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_send_odometer');
+        expect(data.command).to.eql('SETSENDODOMETER');
         expect(data.enable).to.be.false;
         expect(data.range).to.eql(100);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_imei', () => {
+  describe('TZ-COMMAND SETIMEI', () => {
     let data;
     let error;
     before((done) => {
@@ -1337,14 +1337,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_imei');
+        expect(data.command).to.eql('SETIMEI');
         expect(data.enable).to.be.false;
         expect(data.newImei).to.eql(0);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_idle', () => {
+  describe('TZ-COMMAND SETIDLE', () => {
     let data;
     let error;
     before((done) => {
@@ -1361,14 +1361,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_idle');
+        expect(data.command).to.eql('SETIDLE');
         expect(data.enable).to.be.false;
         expect(data.interval).to.eql(30);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_interval_gprs_standby', () => {
+  describe('TZ-COMMAND SETINTERVALGPRSSTANDBY', () => {
     let data;
     let error;
     before((done) => {
@@ -1385,14 +1385,14 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_interval_gprs_standby');
+        expect(data.command).to.eql('SETINTERVALGPRSSTANDBY');
         expect(data.enable).to.be.false;
         expect(data.interval).to.eql(30);
         expect(error).to.be.undefined;
       });
     });
   });
-  describe('TZ-COMMAND set_auto_picture', () => {
+  describe('TZ-COMMAND SETIOPICTURE', () => {
     let data;
     let error;
     before((done) => {
@@ -1409,7 +1409,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_auto_picture');
+        expect(data.command).to.eql('SETIOPICTURE');
         expect(data.enable).to.be.true;
         expect(data.port).to.eql(2);
         expect(data.mode).to.eql('both');
@@ -1418,7 +1418,7 @@ describe('tz-parzer', () => {
       });
     });
   });
-  describe('TZ-COMMAND set_packet_number_picture', () => {
+  describe('TZ-COMMAND SETPICTUREPACKET', () => {
     let data;
     let error;
     before((done) => {
@@ -1435,7 +1435,7 @@ describe('tz-parzer', () => {
       it('should return the raw data parsed', () => {
         expect(data.password).to.eql('000000');
         expect(data.type).to.eql('TZ-COMMAND');
-        expect(data.command).to.eql('set_packet_number_picture');
+        expect(data.command).to.eql('SETPICTUREPACKET');
         expect(data.number).to.eql(6);
         expect(error).to.be.undefined;
       });
