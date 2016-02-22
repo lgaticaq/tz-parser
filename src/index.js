@@ -187,7 +187,7 @@ const getAvl08 = async function(raw, options) {
     temperature: parseFloat(match[40]) / 10,
     odometer: parseFloat(match[41]),
     serialId: parseInt(match[42]),
-    rfidNumber: parseInt(match[43]),
+    rfidNumber: match[43] ? parseInt(match[43]) : null,
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[44], 16))
   };
   data.currentData = checkCurrentInfoPanel(data.datetime);
@@ -269,7 +269,7 @@ const getCommand = (raw) => {
   let data = {type: 'TZ-COMMAND', password: password};
   if (code === '001') {
     data.command = 'set_password';
-    data.newPassword = extra;
+    data.newPassword = extra[0];
   } else if (code === '002') {
     let [x, y] = extra;
     data.command = 'set_sms_position';
@@ -296,20 +296,35 @@ const getCommand = (raw) => {
     data.interval = parseInt(z, 10);
   } else if (code === '006') {
     let [lat1, lon1, lat2, lon2, x, y] = extra; // eslint-disable-line no-unused-vars
+    const parseDir = (dir) => {
+      if (/^-/.test(dir)) {
+        if (dir.length === 4) {
+          return `${dir.substr(1)},S`;
+        } else {
+          return `${dir.substr(1)},W`;
+        }
+      } else {
+        if (dir.length === 4) {
+          return `${dir.substr(1)},N`;
+        } else {
+          return `${dir.substr(1)},E`;
+        }
+      }
+    };
     data.command = 'set_geo_fence';
     if (y === '0') {
       data.enable = false;
     } else {
       data.enable = true;
-      data.type = y === '1' ? 'inside' : 'outside';
+      data.mode = y === '1' ? 'inside' : 'outside';
       data.geojson = {
         type: 'Polygon',
         coordinates: [[
-          [nmea.degToDec(lon2), nmea.degToDec(lat2)],
-          [nmea.degToDec(lon2), nmea.degToDec(lat1)],
-          [nmea.degToDec(lon1), nmea.degToDec(lat1)],
-          [nmea.degToDec(lon1), nmea.degToDec(lat2)],
-          [nmea.degToDec(lon2), nmea.degToDec(lat2)]
+          [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat2))],
+          [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat1))],
+          [nmea.degToDec(parseDir(lon1)), nmea.degToDec(parseDir(lat1))],
+          [nmea.degToDec(parseDir(lon1)), nmea.degToDec(parseDir(lat2))],
+          [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat2))]
         ]]
       };
     }
@@ -327,9 +342,9 @@ const getCommand = (raw) => {
     };
   } else if (code === '009') {
     data.command = 'set_band';
-    if (extra === '0') {
+    if (extra[0] === '0') {
       data.band = '900/1800';
-    } else if (extra === '1') {
+    } else if (extra[0] === '1') {
       data.band = '850/1900';
     } else {
       data.band = 'auto';
@@ -427,7 +442,7 @@ const getCommand = (raw) => {
   } else if (code === '103') {
     let [s, number] = extra;
     data.command = 'set_call_a';
-    data.type = s === '0' ? 'gprs' : 'call';
+    data.mode = s === '0' ? 'gprs' : 'call';
     data.number = number;
   } else if (code === '118') {
     let [a, b, c, d, e, f, g, h] = extra;
@@ -491,7 +506,7 @@ const getCommand = (raw) => {
   } else if (code === '119') {
     let [x] = extra;
     data.command = 'set_send';
-    data.type = x === '0' ? 'gprs' : 'sms';
+    data.mode = x === '0' ? 'gprs' : 'sms';
   } else if (code === '200') {
     let [x, y] = extra;
     data.command = 'set_take_picture';
@@ -568,7 +583,6 @@ const getCommand = (raw) => {
 const getPicture = (data) => {
   const results = data.toString().match(/\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#/g).map(x => {
     const match = /\$U(\d{15})(\d{5})(\d{3})(\d{3})([0-9a-fA-F]{1,200})#/.exec(x);
-    console.log(match); // eslint-disable-line
     return {
       imei: parseInt(match[1], 10),
       number: parseInt(match[2], 10),
@@ -618,7 +632,7 @@ const getCommandMap = (data) => {
   const match = patterns.map.exec(data.toString());
   return {
     type: 'TZ-MAP',
-    command: 'map',
+    command: 'map_link',
     url: match[0],
     latitude: parseFloat(match[1]),
     longitude: parseFloat(match[2])
@@ -687,7 +701,6 @@ const parse = async function(raw, options = {}) {
   options.mcc = options.mcc || 730;
   options.mnc = options.mnc || 1;
   let result;
-  console.log(raw); // eslint-disable-line
   if (patterns.avl05.test(raw.toString())) {
     result = await getAvl05(raw, options);
   } else if (patterns.avl08.test(raw.toString())) {
