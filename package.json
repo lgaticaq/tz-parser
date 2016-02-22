@@ -20,7 +20,11 @@
     "url": "https://github.com/lgaticaq/tz-parser.git"
   },
   "keywords": [
-    "rut"
+    "tz-avl",
+    "avl",
+    "gps",
+    "tracking",
+    "parser"
   ],
   "author": "Leonardo Gatica <lgatica@protonmail.com> (https://about.me/lgaticaq)",
   "license": "MIT",
