@@ -3,6 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/tz-parser.svg?style=flat-square)](https://www.npmjs.com/package/tz-parser)
 [![npm downloads](https://img.shields.io/npm/dm/tz-parser.svg?style=flat-square)](https://www.npmjs.com/package/tz-parser)
 [![dependency Status](https://img.shields.io/david/lgaticaq/tz-parser.svg?style=flat-square)](https://david-dm.org/lgaticaq/tz-parser#info=dependencies)
+[![Build Status](https://img.shields.io/travis/lgaticaq/tz-parser.svg?style=flat-square)](https://travis-ci.org/lgaticaq/tz-parser)
 [![devDependency Status](https://img.shields.io/david/dev/lgaticaq/tz-parser.svg?style=flat-square)](https://david-dm.org/lgaticaq/tz-parser#info=devDependencies)
 [![Join the chat at https://gitter.im/lgaticaq/tz-parser](https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/lgaticaq/tz-parser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -56,6 +57,8 @@ const data = tz.parse(raw);
   temperature: 0,
   odometer: 0.6376,
   serialId: 100,
-  valid: true
+  valid: true,
+  currentData: { isCurrent: false, diff: '13 días' },
+  gps: 'enable'
 }*/
 ```
