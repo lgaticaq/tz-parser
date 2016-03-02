@@ -101,7 +101,7 @@ const getAvl05 = (raw) => {
       },
       charge: match[33] === '1'
     },
-    datetime: moment(`${match[32]}0000`, 'YYYYMMDDHHmmssZZ').toDate(),
+    datetime: moment(`${match[32]}+00:00`, 'YYYYMMDDHHmmssZZ').toDate(),
     voltage: {
       battery: parseInt(match[34], 10) / 100,
       inputCharge: parseInt(match[35], 10) / 100,

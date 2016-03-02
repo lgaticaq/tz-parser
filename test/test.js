@@ -32,7 +32,7 @@ describe('tz-parzer', () => {
     expect(data.status.output[1]).to.be.false;
     expect(data.status.output[2]).to.be.false;
     expect(data.status.charge).to.be.true;
-    expect(data.datetime).to.eql(new Date(2016, 1, 9, 19, 43, 26));
+    expect(data.datetime).to.eql(new Date('2016-02-09T19:43:26.000Z'));
     expect(data.voltage.battery).to.eql(3.98);
     expect(data.voltage.inputCharge).to.eql(11.88);
     expect(data.voltage.ada).to.eql(0);
