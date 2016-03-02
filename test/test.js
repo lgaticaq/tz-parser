@@ -75,7 +75,7 @@ describe('tz-parzer', () => {
     expect(data.status.output[3]).to.be.false;
     expect(data.status.output[4]).to.be.false;
     expect(data.status.charge).to.be.true;
-    expect(data.datetime).to.eql(new Date(2016, 1, 9, 19, 43, 26));
+    expect(data.datetime).to.eql(new Date('2016-02-09T19:43:26.000Z'));
     expect(data.voltage.battery).to.eql(3.98);
     expect(data.voltage.inputCharge).to.eql(11.88);
     expect(data.voltage.ada).to.eql(0);
@@ -113,7 +113,7 @@ describe('tz-parzer', () => {
     expect(data.status.input[3]).to.be.false;
     expect(data.status.output[1]).to.be.false;
     expect(data.status.charge).to.be.true;
-    expect(data.datetime).to.eql(new Date(2016, 1, 9, 19, 43, 26));
+    expect(data.datetime).to.eql(new Date('2016-02-09T19:43:26.000Z'));
     expect(data.voltage.battery).to.eql(3.98);
     expect(data.voltage.inputCharge).to.eql(11.88);
     expect(data.lac).to.eql(13011);
@@ -138,7 +138,7 @@ describe('tz-parzer', () => {
     expect(data.gsm).to.eql(29);
     expect(data.battery).to.eql(4.01);
     expect(data.odometer).to.eql(0.1527);
-    expect(data.datetime).to.eql(new Date(2016, 1, 19, 15, 0, 17));
+    expect(data.datetime).to.eql(new Date('2016-02-19T15:00:17.000Z'));
   });
 
   it('should return TZ-COMMAND SetUserPassword data parsed', () => {

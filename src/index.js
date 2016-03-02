@@ -154,7 +154,7 @@ const getAvl08 = (raw) => {
       },
       charge: match[33] === '1'
     },
-    datetime: moment(`${match[32]}0000`, 'YYYYMMDDHHmmssZZ').toDate(),
+    datetime: moment(`${match[32]}+00:00`, 'YYYYMMDDHHmmssZZ').toDate(),
     voltage: {
       battery: parseInt(match[34], 10) / 100,
       inputCharge: parseInt(match[35], 10) / 100,
@@ -202,7 +202,7 @@ const getAvl201 = (raw) => {
       },
       charge: match[33] === '1'
     },
-    datetime: moment(`${match[32]}0000`, 'YYYYMMDDHHmmssZZ').toDate(),
+    datetime: moment(`${match[32]}+00:00`, 'YYYYMMDDHHmmssZZ').toDate(),
     voltage: {
       battery: parseInt(match[34], 10) / 100,
       inputCharge: parseInt(match[35], 10) / 100
@@ -593,7 +593,7 @@ const getCommandInfo = (data) => {
     gsm: parseInt(match[7], 10),
     battery: parseFloat(match[8]),
     odometer: parseFloat(match[9]),
-    datetime: moment(`${match[10]}0000`, 'DD/MM/YY HH:mm:ssZZ').toDate()
+    datetime: moment(`${match[10]} +00:00`, 'DD/MM/YY HH:mm:ss ZZ').toDate()
   };
 };
 
