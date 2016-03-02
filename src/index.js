@@ -1,7 +1,5 @@
 'use strict';
 
-import 'babel-polyfill';
-
 import crc from 'crc';
 import moment from 'moment';
 import nmea from 'node-nmea';
