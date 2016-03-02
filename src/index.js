@@ -634,6 +634,30 @@ const parse = (raw) => {
   return result;
 };
 
+const isTz = (raw) => {
+  let result = false;
+  if (patterns.avl05.test(raw.toString())) {
+    result = true;
+  } else if (patterns.avl08.test(raw.toString())) {
+    result = true;
+  } else if (patterns.avl201.test(raw.toString())) {
+    result = true;
+  } else if (patterns.receiveOk.test(raw.toString())) {
+    result = true;
+  } else if (patterns.picture.test(raw.toString())) {
+    result = true;
+  } else if (patterns.receiveErr.test(raw.toString())) {
+    result = true;
+  } else if (patterns.info.test(raw.toString())) {
+    result = true;
+  } else if (patterns.firmware.test(raw.toString())) {
+    result = true;
+  } else if (patterns.map.test(raw.toString())) {
+    result = true;
+  }
+  return result;
+};
+
 module.exports = {
   parse: parse,
   patterns: patterns,
@@ -647,5 +671,6 @@ module.exports = {
   getCommandInfo: getCommandInfo,
   getCommandMap: getCommandMap,
   verifyLen: verifyLen,
-  verifyCrc: verifyCrc
+  verifyCrc: verifyCrc,
+  isTz: isTz
 };
