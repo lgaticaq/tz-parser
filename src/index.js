@@ -5,14 +5,6 @@ import 'babel-polyfill';
 import crc from 'crc';
 import moment from 'moment';
 import nmea from 'node-nmea';
-import redisUrl from 'redis-url';
-import nodeGeocoder from 'node-geocoder';
-import bscoords from 'bscoords';
-import Promise from 'bluebird';
-
-Promise.promisifyAll(bscoords);
-
-let client;
 
 const patterns = {
   avl05: /^\$\$([0-9A-F]{2})(\d{15})\|([0-9A]{2})(\$GPRMC\,(\d{6}\.\d{3})\,([AV])\,(\d{4}\.\d{4}\,[NS])\,(\d{5}\.\d{4}\,[WE])\,(\d{1,3}\.\d{1,3})?\,(\d{1,3}\.\d{1,3})?\,(\d{6})\,((\d{1,3}\.\d{1,3})?\,([WE])?)\,?([ADENS])?\*([0-9A-F]{2})|[0]{60})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])\|(\d{14})\|([01])(\d{3})(\d{4})\|(\d{4})(\d{4})\|([0-9A-F]{4})([0-9A-F]{4})\|([01\-]\d{3})\|(\d{1,4}\.\d{1,12})\|(\d{4})\|([0-9A-F]{4})\r\n$/,
@@ -77,24 +69,21 @@ const isValid = (raw, len, checksum) =>{
   return verifyCrc(raw, checksum) && verifyLen(raw, len);
 };
 
-const checkCurrentInfoPanel = (datetime) => {
-  moment.locale('es');
-  const now = moment.utc();
-  now.subtract(1, 'minutes');
-  return {
-    isCurrent: now < moment.utc(datetime),
-    diff: moment.duration(now.diff(datetime)).humanize()
-  };
-};
-
-const getAvl05 = async function(raw, options) {
+const getAvl05 = (raw) => {
   const match = patterns.avl05.exec(raw.toString());
+  const gprmcData = nmea.parse(match[4]);
   const data = {
     raw: match[0],
-    type: 'TZ-AVL05',
-    imei: parseInt(match[2], 10),
-    alarmType: getAlarm(match[3]),
-    gprmcData: nmea.parse(match[4]),
+    device: 'TZ-AVL05',
+    type: 'data',
+    imei: match[2],
+    alarm: getAlarm(match[3]),
+    loc: gprmcData.loc ? gprmcData.loc.geojson : null,
+    speed: gprmcData.speed ? gprmcData.speed.kmh : null,
+    gpsStatus: gprmcData.gps,
+    track: gprmcData.track,
+    magneticVariation: gprmcData.magneticVariation,
+    gpsMode: gprmcData.mode,
     pdop: parseFloat(match[17]),
     hdop: parseFloat(match[18]),
     vdop: parseFloat(match[19]),
@@ -102,11 +91,11 @@ const getAvl05 = async function(raw, options) {
       raw: match.slice(20, 32).join(''),
       sos: match[20] === '1',
       input: {
-        '5': match[21] === '1',
         '1': match[24] === '1',
         '2': match[25] === '1',
         '3': match[26] === '1',
-        '4': match[27] === '1'
+        '4': match[27] === '1',
+        '5': match[21] === '1'
       },
       output: {
         '1': match[28] === '1',
@@ -128,32 +117,24 @@ const getAvl05 = async function(raw, options) {
     serialId: parseInt(match[42]),
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[43], 16))
   };
-  data.currentData = checkCurrentInfoPanel(data.datetime);
-  data.gps = data.gprmcData.loc ? 'enable' : 'disable';
-  try {
-    if (!data.gprmcData.loc) {
-      const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
-      if (!loc) return data;
-      data.gprmcData.loc = loc;
-      data.gps = 'triangulation';
-    }
-    const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
-    const address = await getAddress(lat, lng);
-    data.gprmcData.address = address;
-    return data;
-  } catch (err) {
-    return data;
-  }
+  return data;
 };
 
-const getAvl08 = async function(raw, options) {
+const getAvl08 = (raw) => {
   const match = patterns.avl08.exec(raw.toString());
+  const gprmcData = nmea.parse(match[4]);
   const data = {
     raw: match[0],
-    type: 'TZ-AVL08',
-    imei: parseInt(match[2], 10),
-    alarmType: getAlarm(match[3]),
-    gprmcData: nmea.parse(match[4]),
+    device: 'TZ-AVL08',
+    type: 'data',
+    imei: match[2],
+    alarm: getAlarm(match[3]),
+    loc: gprmcData.loc ? gprmcData.loc.geojson : null,
+    speed: gprmcData.speed ? gprmcData.speed.kmh : null,
+    gpsStatus: gprmcData.gps,
+    track: gprmcData.track,
+    magneticVariation: gprmcData.magneticVariation,
+    gpsMode: gprmcData.mode,
     pdop: parseFloat(match[17]),
     hdop: parseFloat(match[18]),
     vdop: parseFloat(match[19]),
@@ -190,32 +171,24 @@ const getAvl08 = async function(raw, options) {
     rfidNumber: match[43] ? parseInt(match[43]) : null,
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[44], 16))
   };
-  data.currentData = checkCurrentInfoPanel(data.datetime);
-  data.gps = data.gprmcData.loc ? 'enable' : 'disable';
-  try {
-    if (!data.gprmcData.loc) {
-      const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
-      if (!loc) return data;
-      data.gprmcData.loc = loc;
-      data.gps = 'triangulation';
-    }
-    const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
-    const address = await getAddress(lat, lng);
-    data.gprmcData.address = address;
-    return data;
-  } catch (err) {
-    return data;
-  }
+  return data;
 };
 
-const getAvl201 = async function(raw, options) {
+const getAvl201 = (raw) => {
   const match = patterns.avl201.exec(raw.toString());
+  const gprmcData = nmea.parse(match[4]);
   const data = {
     raw: match[0],
-    type: 'TZ-AVL201',
-    imei: parseInt(match[2], 10),
-    alarmType: getAlarm(match[3]),
-    gprmcData: nmea.parse(match[4]),
+    device: 'TZ-AVL201',
+    type: 'data',
+    imei: match[2],
+    alarm: getAlarm(match[3]),
+    loc: gprmcData.loc ? gprmcData.loc.geojson : null,
+    speed: gprmcData.speed ? gprmcData.speed.kmh : null,
+    gpsStatus: gprmcData.gps,
+    track: gprmcData.track,
+    magneticVariation: gprmcData.magneticVariation,
+    gpsMode: gprmcData.mode,
     pdop: parseFloat(match[17]),
     hdop: parseFloat(match[18]),
     vdop: parseFloat(match[19]),
@@ -243,22 +216,7 @@ const getAvl201 = async function(raw, options) {
     serialId: parseInt(match[40]),
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[41], 16))
   };
-  data.currentData = checkCurrentInfoPanel(data.datetime);
-  data.gps = data.gprmcData.loc ? 'enable' : 'disable';
-  try {
-    if (!data.gprmcData.loc) {
-      const loc = await getLoc(options.mcc, options.mnc, data.lac, data.cid);
-      if (!loc) return data;
-      data.gprmcData.loc = loc;
-      data.gps = 'triangulation';
-    }
-    const [lng, lat] = data.gprmcData.loc.geojson.coordinates;
-    const address = await getAddress(lat, lng);
-    data.gprmcData.address = address;
-    return data;
-  } catch (err) {
-    return data;
-  }
+  return data;
 };
 
 const getCommand = (raw) => {
@@ -266,7 +224,7 @@ const getCommand = (raw) => {
   const password = match[1];
   const code = match[2];
   const extra = match[3] ? match[3].substr(1).split(',') : null;
-  let data = {type: 'TZ-COMMAND', password: password};
+  let data = {device: 'TZ-COMMAND', type: 'command', password: password};
   if (code === '001') {
     data.command = 'SetUserPassword';
     data.newPassword = extra[0];
@@ -535,7 +493,7 @@ const getCommand = (raw) => {
     let [x, y] = extra;
     data.command = 'SETIMEI';
     data.enable = x === '1';
-    data.newImei = parseInt(y, 10);
+    data.newImei = y;
   } else if (code === '404') {
     let [x, y] = extra;
     data.command = 'SETIDLE';
@@ -580,31 +538,44 @@ const getCommand = (raw) => {
   return data;
 };
 
-const getPicture = (data) => {
-  const results = data.toString().match(/\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#/g).map(x => {
+const getPicture = (raw) => {
+  const results = raw.toString().match(/\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#/g).map(x => {
     const match = /\$U(\d{15})(\d{5})(\d{3})(\d{3})([0-9a-fA-F]{1,200})#/.exec(x);
     return {
-      imei: parseInt(match[1], 10),
+      imei: match[1],
       number: parseInt(match[2], 10),
       total: parseInt(match[3], 10),
       sequence: parseInt(match[4], 10),
       data: match[5]
     };
   });
-  return {type: 'TZ-IMAGE', data: results};
+  const imei = results[0].imei;
+  const number = results[0].number;
+  const total = results[0].total;
+  const data = results.map(x => {
+    return {sequence: x.sequence, data: x.data};
+  });
+  return {
+    device: 'TZ-IMAGE',
+    type: 'image',
+    imei: imei,
+    number: number,
+    total: total,
+    data: data
+  };
 };
 
 const getCommandError = (data) => {
   const match = patterns.receiveErr.exec(data.toString());
-  return {type: 'TZ-ERROR', command: match[0]};
+  return {device: 'TZ-ERROR', type: 'error', command: match[0]};
 };
 
 const getCommandFirmware = (data) => {
   const match = patterns.firmware.exec(data.toString());
   return {
-    type: 'TZ-FIRMWARE',
-    command: 'request_firmware',
-    imei: parseInt(match[1], 10),
+    device: 'TZ-FIRMWARE',
+    type: 'firmware',
+    imei: match[1],
     firmware: match[2],
     gsm: match[3]
   };
@@ -613,8 +584,8 @@ const getCommandFirmware = (data) => {
 const getCommandInfo = (data) => {
   const match = patterns.info.exec(data.toString());
   return {
-    type: 'TZ-INFO',
-    command: 'info',
+    device: 'TZ-INFO',
+    type: 'info',
     latitude: match[1],
     longitude: match[2],
     speed: parseInt(match[3], 10),
@@ -631,82 +602,22 @@ const getCommandInfo = (data) => {
 const getCommandMap = (data) => {
   const match = patterns.map.exec(data.toString());
   return {
-    type: 'TZ-MAP',
-    command: 'map_link',
+    device: 'TZ-MAP',
+    type: 'map_link',
     url: match[0],
     latitude: parseFloat(match[1]),
     longitude: parseFloat(match[2])
   };
 };
 
-const setCache = (uri) => {
-  try {
-    client = redisUrl.connect(uri);
-    Promise.promisifyAll(Object.getPrototypeOf(client));
-  } catch (err) {
-    throw err;
-  }
-};
-
-const getReverse = async function(lat, lon) {
-  const geocoderProvider = 'google';
-  const httpAdapter = 'http';
-  const geocoder = nodeGeocoder(geocoderProvider, httpAdapter);
-  try {
-    const res = await geocoder.reverse({lat: lat, lon: lon});
-    if (res.length === 0) return null;
-    return res[0].formattedAddress.split(',').map(x => x.trim()).slice(0, 2).join(', ');
-  } catch (err) {
-    return null;
-  }
-};
-
-const getAddress = async function(lat, lng) {
-  try {
-    let address;
-    if (client) {
-      const reply = await client.getAsync(`geocoder:${lat}:${lng}`);
-      if (reply) return reply;
-      address = await getReverse(lat, lng);
-      if (!address) return null;
-      client.set(`geocoder:${lat}:${lng}`, address);
-    } else {
-      address = await getReverse(lat, lng);
-    }
-    return address;
-  } catch (err) {
-    return null;
-  }
-};
-
-const getLoc = async function(mcc, mnc, lac, cellid) {
-  try {
-    const coords = await bscoords.requestGoogleAsync(mcc, mnc, lac, cellid);
-    return {
-      dmm: {
-        latitude: nmea.latToDmm(coords.lat),
-        longitude: nmea.lngToDmm(coords.lon)
-      },
-      geojson: {
-        coordinates: [coords.lon, coords.lat],
-        type: 'Point'
-      }
-    };
-  } catch (err) {
-    return null;
-  }
-};
-
-const parse = async function(raw, options = {}) {
-  options.mcc = options.mcc || 730;
-  options.mnc = options.mnc || 1;
+const parse = (raw) => {
   let result = {type: 'UNKNOWN', raw: raw.toString()};
   if (patterns.avl05.test(raw.toString())) {
-    result = await getAvl05(raw, options);
+    result = getAvl05(raw);
   } else if (patterns.avl08.test(raw.toString())) {
-    result = await getAvl08(raw, options);
+    result = getAvl08(raw);
   } else if (patterns.avl201.test(raw.toString())) {
-    result = await getAvl201(raw, options);
+    result = getAvl201(raw);
   } else if (patterns.receiveOk.test(raw.toString())) {
     result = getCommand(raw);
   } else if (patterns.picture.test(raw.toString())) {
@@ -735,7 +646,6 @@ module.exports = {
   getCommandFirmware: getCommandFirmware,
   getCommandInfo: getCommandInfo,
   getCommandMap: getCommandMap,
-  setCache: setCache,
   verifyLen: verifyLen,
   verifyCrc: verifyCrc
 };
