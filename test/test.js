@@ -213,12 +213,12 @@ describe('tz-parzer', () => {
   });
 
   it('should return TZ-COMMAND SETEXTEND data parsed', () => {
-    const raw = new Buffer('Receive:\'008\'OK\r\n*000000,008,0000000#');
+    const raw = new Buffer('Receive:\'008\'OK\r\n*000000,008,1000001#');
     const data = tz.parse(raw);
     expect(data.password).to.eql('000000');
     expect(data.device).to.eql('TZ-COMMAND');
     expect(data.command).to.eql('SETEXTEND');
-    expect(data.extend).to.eql({a: false, b: false, c: false, d: false, e: false, f: false, g: false});
+    expect(data.extend).to.eql({a: true, b: false, c: false, d: false, e: false, f: false, g: true});
   });
 
   it('should return TZ-COMMAND SETGSMBAUD data parsed', () => {
@@ -432,12 +432,12 @@ describe('tz-parzer', () => {
   });
 
   it('should return TZ-COMMAND SETEXTEND2 data parsed', () => {
-    const raw = new Buffer('Receive:\'118\'OK\r\n*000000,118,00000000#');
+    const raw = new Buffer('Receive:\'118\'OK\r\n*000000,118,10000001#');
     const data = tz.parse(raw);
     expect(data.password).to.eql('000000');
     expect(data.device).to.eql('TZ-COMMAND');
     expect(data.command).to.eql('SETEXTEND2');
-    expect(data.extend).to.eql({a: false, b: false, c: false, d: false, e: false, f: false, g: false, h: false});
+    expect(data.extend).to.eql({a: true, b: false, c: false, d: false, e: false, f: false, g: false, h: true});
   });
 
   it('should return TZ-COMMAND SETPIN data parsed', () => {

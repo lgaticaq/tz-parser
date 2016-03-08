@@ -285,7 +285,7 @@ const getCommand = (raw) => {
       };
     }
   } else if (code === '008') {
-    let [a, b, c, d, e, f, g] = extra;
+    let [a, b, c, d, e, f, g] = extra[0].split('');
     data.command = 'SETEXTEND';
     data.extend = {
       a: a === '1',
@@ -401,7 +401,7 @@ const getCommand = (raw) => {
     data.mode = s === '0' ? 'gprs' : 'call';
     data.number = number;
   } else if (code === '118') {
-    let [a, b, c, d, e, f, g, h] = extra;
+    let [a, b, c, d, e, f, g, h] = extra[0].split('');
     data.command = 'SETEXTEND2';
     data.extend = {
       a: a === '1',
