@@ -1,6 +1,6 @@
 {
   "name": "tz-parser",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Parse raw data from TZ-AVL devices",
   "main": "lib",
   "scripts": {
