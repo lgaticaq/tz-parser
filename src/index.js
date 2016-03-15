@@ -656,6 +656,87 @@ const isTz = (raw) => {
   return result;
 };
 
+const parseCommand = (data) => {
+  let command = '';
+  const password = data.password || '000000';
+  let state, digit, port, number, speed, interval, times, trigger, a, b, c, d, e, f, g, h;
+  if (/^set_password$/.test(data.instruction)) {
+    command = `*${password},001,${data.newPassword}#`;
+  } else if (/^[1-4]{1}_(on|off)$/.test(data.instruction)) {
+    [port, state] = data.instruction.split('_');
+    const ports = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'};
+    digit = state === 'on' ? 1 : 0;
+    command = `*${password},025,${ports[port]},${digit}#`;
+  } else if (/^gprs_(on|off)$/.test(data.instruction)) {
+    state = data.instruction.split('_')[1];
+    digit = state === 'on' ? 1 : 0;
+    command = `*${password},016,${digit}#`;
+  } else if (data.instruction === 'clear_mem') {
+    command = `*${password},500#`;
+  } else if (data.instruction === 'set_interval_gprs') {
+    times = data.times || 999;
+    command = `*${password},018,${data.interval},${times}#`;
+  } else if (/^(set|setoff)_sos_number(E)?$/.test(data.instruction)) {
+    number = data.number;
+    state = data.instruction.split('_')[0];
+    digit = state === 'set' ? 1 : 0;
+    command = `*${password},003,0,${digit},00569${number},00569${number}#`;
+  } else if (/^set_speed_(on|off)(E)?$/.test(data.instruction)) {
+    speed = data.speed || 100;
+    state = data.instruction.split('_')[2];
+    times = data.times || 10;
+    interval = data.interval || 60;
+    digit = state === 'on' ? 1 : 0;
+    command = `*${password},005,${digit},${speed},${times},${interval}#`;
+  } else if (data.instruction === 'picture') {
+    interval = data.interval || 5;
+    times = data.times || 1;
+    command = `*${password},200,${interval},${times}#`;
+  } else if (data.instruction === 'take_picture') {
+    command = `*${password},210#`;
+  } else if (data.instruction === 'configure_io_picture') {
+    const triggers = {on: 1, off: 2, both: 3};
+    trigger = triggers[data.trigger || 'both'];
+    number = data.number || 1;
+    command = `*${password},201,${data.port},${trigger},${number}#`;
+  } else if(data.instruction === 'Custom'){
+    command = data.command;
+  } else if (/^set_memory_(on|off)$/.test(data.instruction)) {
+    state = data.instruction.split('_')[2];
+    digit = state === 'on' ? 1 : 0;
+    command = `*${password},601,${digit}#`;
+  } else if (/^set_tremble$/.test(data.instruction)) {
+    command = `*${password},021,${data.sleep ? 1 : 0},${data.tremble ? 1 : 0}#`;
+  } else if (/^set_into_sleep$/.test(data.instruction)) {
+    command = `*${password},044,${data.time}#`;
+  } else if (/^set_wake_up$/.test(data.instruction)) {
+    command = `*${password},043,${data.time}#`;
+  } else if (/^reboot$/.test(data.instruction)) {
+    command = `*${password},991#`;
+  } else if (/^set_extend$/.test(data.instruction)) {
+    a = data.a ? 1 : 0;
+    b = data.b ? 1 : 0;
+    c = data.c ? 1 : 0;
+    d = data.d ? 1 : 0;
+    e = data.e ? 1 : 0;
+    f = data.f ? 1 : 0;
+    g = data.g ? 1 : 0;
+    h = data.h ? 1 : 0;
+    command = `*${password},118,${a}${b}${c}${d}${e}${f}${g}${h}#`;
+  } else if (/^set_heartbeat_(on|off)$/.test(data.instruction)) {
+    state = data.instruction.split('_')[2];
+    digit = state === 'on' ? 1 : 0;
+    command = `*${password},040,${digit}#`;
+  } else if (/^set_interval_heartbeat$/.test(data.instruction)) {
+    command = `*${password},041,${data.times}#`;
+  } else if (/^set_idling_(on|off)$/.test(data.instruction)) {
+    state = data.instruction.split('_')[2];
+    digit = state === 'on' ? 1 : 0;
+    command = `*${password},404,${digit},${data.times}#`;
+  }
+  return command;
+};
+
 module.exports = {
   parse: parse,
   patterns: patterns,
@@ -670,5 +751,6 @@ module.exports = {
   getCommandMap: getCommandMap,
   verifyLen: verifyLen,
   verifyCrc: verifyCrc,
-  isTz: isTz
+  isTz: isTz,
+  parseCommand: parseCommand
 };

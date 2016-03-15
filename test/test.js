@@ -679,9 +679,174 @@ describe('tz-parzer', () => {
     }]);
   });
 
-  it('should return true', () => {
+  it('should return true for valid tz data', () => {
     const raw = new Buffer('$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995F\r\n');
     const data = tz.isTz(raw);
     expect(data).to.be.a.true;
+  });
+
+  it('should return raw command set password', () => {
+    const data = {
+      instruction: 'set_password',
+      newPassword: 111111
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,001,111111#');
+  });
+
+  it('should return raw command di 1 on', () => {
+    const data = {
+      instruction: '1_on'
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,025,A,1#');
+  });
+
+  it('should return raw command gprs on', () => {
+    const data = {
+      instruction: 'gprs_on'
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,016,1#');
+  });
+
+  it('should return raw command clear internal memory', () => {
+    const data = {
+      instruction: 'clear_mem'
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,500#');
+  });
+
+  it('should return raw command set interval gprs', () => {
+    const data = {
+      instruction: 'set_interval_gprs',
+      interval: 10
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,018,10,999#');
+  });
+
+  it('should return raw command set off sos number', () => {
+    const data = {
+      instruction: 'setoff_sos_numberE',
+      number: 92052518
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,003,0,0,0056992052518,0056992052518#');
+  });
+
+  it('should return raw command set on speed', () => {
+    const data = {
+      instruction: 'set_speed_on',
+      speed: 120
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,005,1,120,10,60#');
+  });
+
+  it('should return raw command set time taking pictures', () => {
+    const data = {
+      instruction: 'picture'
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,200,5,1#');
+  });
+
+  it('should return raw command set take picture', () => {
+    const data = {
+      instruction: 'take_picture'
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,210#');
+  });
+
+  it('should return raw command set take picture', () => {
+    const data = {
+      instruction: 'configure_io_picture',
+      password: 589756,
+      port: 3
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*589756,201,3,3,1#');
+  });
+
+  it('should return raw command set memory on', () => {
+    const data = {
+      instruction: 'set_memory_on'
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,601,1#');
+  });
+
+  it('should return raw command set sleep and tremble', () => {
+    const data = {
+      instruction: 'set_tremble',
+      sleep: true,
+      tremble: true
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,021,1,1#');
+  });
+
+  it('should return raw command set into sleep', () => {
+    const data = {
+      instruction: 'set_into_sleep',
+      time: 60
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,044,60#');
+  });
+
+  it('should return raw command set wake up', () => {
+    const data = {
+      instruction: 'set_wake_up',
+      time: 60
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,043,60#');
+  });
+
+  it('should return raw command reboot', () => {
+    const data = {
+      instruction: 'reboot'
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,991#');
+  });
+
+  it('should return raw command extend', () => {
+    const data = {
+      instruction: 'set_extend',
+      a: true
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,118,10000000#');
+  });
+
+  it('should return raw command set heartbeat on', () => {
+    const data = {
+      instruction: 'set_heartbeat_on'
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,040,1#');
+  });
+
+  it('should return raw command set interval heartbeat', () => {
+    const data = {
+      instruction: 'set_interval_heartbeat',
+      times: 3
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,041,3#');
+  });
+
+  it('should return raw command set idling alarm', () => {
+    const data = {
+      instruction: 'set_idling_on',
+      times: 300
+    };
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,404,1,300#');
   });
 });
