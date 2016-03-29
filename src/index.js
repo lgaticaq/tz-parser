@@ -222,7 +222,7 @@ const getCommand = (raw) => {
   const password = match[1];
   const code = match[2];
   const extra = match[3] ? match[3].substr(1).split(',') : null;
-  let data = {device: 'TZ-COMMAND', type: 'command', password: password};
+  let data = {device: 'TZ-COMMAND-OK', type: 'ok', password: password};
   if (code === '001') {
     data.command = 'SetUserPassword';
     data.newPassword = extra[0];
