@@ -686,7 +686,7 @@ const parseCommand = (data) => {
     state = data.instruction.split('_')[2];
     times = data.times || 10;
     interval = data.interval || 60;
-    digit = state === 'on' ? 1 : 0;
+    digit = /on(E)?/.test(state) ? 1 : 0;
     command = `*${password},005,${digit},${speed},${times},${interval}#`;
   } else if (data.instruction === 'picture') {
     interval = data.interval || 5;
