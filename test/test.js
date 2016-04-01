@@ -849,4 +849,14 @@ describe('tz-parzer', () => {
     const raw = tz.parseCommand(data);
     expect(raw).to.eql('*000000,404,1,300#');
   });
+
+  it('should return raw command reboot', () => {
+    const raw = tz.getRebootCommand();
+    expect(raw).to.eql('*000000,991#');
+  });
+
+  it('should return raw command reboot with password', () => {
+    const raw = tz.getRebootCommand('123456');
+    expect(raw).to.eql('*123456,991#');
+  });
 });

@@ -737,6 +737,10 @@ const parseCommand = (data) => {
   return command;
 };
 
+const getRebootCommand = (password='000000') => {
+  return `*${password},991#`;
+};
+
 module.exports = {
   parse: parse,
   patterns: patterns,
@@ -752,5 +756,6 @@ module.exports = {
   verifyLen: verifyLen,
   verifyCrc: verifyCrc,
   isTz: isTz,
-  parseCommand: parseCommand
+  parseCommand: parseCommand,
+  getRebootCommand: getRebootCommand
 };
