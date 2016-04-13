@@ -10,7 +10,8 @@
     "lint": "eslint src",
     "clean": "rimraf lib",
     "pretest": "npm run lint -s",
-    "test": "babel-node ./node_modules/.bin/isparta cover _mocha"
+    "test": "babel-node ./node_modules/.bin/isparta cover _mocha",
+    "coveralls": "coveralls < coverage/lcov.info"
   },
   "engines": {
     "node": ">=0.12"
