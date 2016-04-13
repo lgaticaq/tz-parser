@@ -1,6 +1,6 @@
 'use strict';
 
-import tz from '../lib';
+import tz from '../src';
 import {expect} from 'chai';
 
 describe('tz-parzer', () => {
@@ -19,6 +19,40 @@ describe('tz-parzer', () => {
     expect(data.track).to.eql('0.00');
     expect(data.magneticVariation).to.be.null;
     expect(data.gpsMode).to.eql('Autonomous');
+    expect(data.pdop).to.eql(2.1);
+    expect(data.hdop).to.eql(1.3);
+    expect(data.vdop).to.eql(1.7);
+    expect(data.status.raw).to.eql('000000000000');
+    expect(data.status.sos).to.be.false;
+    expect(data.status.input[1]).to.be.false;
+    expect(data.status.input[2]).to.be.false;
+    expect(data.status.input[3]).to.be.false;
+    expect(data.status.input[4]).to.be.false;
+    expect(data.status.input[5]).to.be.false;
+    expect(data.status.output[1]).to.be.false;
+    expect(data.status.output[2]).to.be.false;
+    expect(data.status.charge).to.be.true;
+    expect(data.datetime).to.eql(new Date('2016-02-09T19:43:26.000Z'));
+    expect(data.voltage.battery).to.eql(3.98);
+    expect(data.voltage.inputCharge).to.eql(11.88);
+    expect(data.voltage.ada).to.eql(0);
+    expect(data.voltage.adb).to.eql(0);
+    expect(data.lac).to.eql(13011);
+    expect(data.cid).to.eql(41023);
+    expect(data.temperature).to.eql(0);
+    expect(data.odometer).to.eql(0.6376);
+    expect(data.serialId).to.eql(100);
+    expect(data.valid).to.be.true;
+  });
+
+  it('should return TZ-AVL05 data with empty GPRMC parsed', () => {
+    const raw = new Buffer('$$AE869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|6CCB\r\n');
+    const data = tz.parse(raw);
+    expect(data.raw).to.eql(raw.toString());
+    expect(data.device).to.eql('TZ-AVL05');
+    expect(data.type).to.eql('data');
+    expect(data.imei).to.eql('869444005480041');
+    expect(data.alarm.type).to.eql('Gps');
     expect(data.pdop).to.eql(2.1);
     expect(data.hdop).to.eql(1.3);
     expect(data.vdop).to.eql(1.7);
@@ -89,6 +123,40 @@ describe('tz-parzer', () => {
     expect(data.rfidNumber).to.be.null;
   });
 
+  it('should return TZ-AVL08 data with empty GPRMC parsed', () => {
+    const raw = new Buffer('$$AF869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100||8195\r\n');
+    const data = tz.parse(raw);
+    expect(data.raw).to.eql(raw.toString());
+    expect(data.device).to.eql('TZ-AVL08');
+    expect(data.type).to.eql('data');
+    expect(data.imei).to.eql('869444005480041');
+    expect(data.alarm.type).to.eql('Gps');
+    expect(data.pdop).to.eql(2.1);
+    expect(data.hdop).to.eql(1.3);
+    expect(data.vdop).to.eql(1.7);
+    expect(data.status.raw).to.eql('000000000000');
+    expect(data.status.sos).to.be.false;
+    expect(data.status.input[1]).to.be.false;
+    expect(data.status.input[2]).to.be.false;
+    expect(data.status.input[3]).to.be.false;
+    expect(data.status.input[4]).to.be.false;
+    expect(data.status.input[5]).to.be.false;
+    expect(data.status.output[1]).to.be.false;
+    expect(data.status.output[2]).to.be.false;
+    expect(data.status.charge).to.be.true;
+    expect(data.datetime).to.eql(new Date('2016-02-09T19:43:26.000Z'));
+    expect(data.voltage.battery).to.eql(3.98);
+    expect(data.voltage.inputCharge).to.eql(11.88);
+    expect(data.voltage.ada).to.eql(0);
+    expect(data.voltage.adb).to.eql(0);
+    expect(data.lac).to.eql(13011);
+    expect(data.cid).to.eql(41023);
+    expect(data.temperature).to.eql(0);
+    expect(data.odometer).to.eql(0.6376);
+    expect(data.serialId).to.eql(100);
+    expect(data.valid).to.be.true;
+  });
+
   it('should return TZ-AVL201 data parsed', () => {
     const raw = new Buffer('$$AD869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|5BEB\r\n');
     const data = tz.parse(raw);
@@ -104,6 +172,34 @@ describe('tz-parzer', () => {
     expect(data.track).to.eql('0.00');
     expect(data.magneticVariation).to.be.null;
     expect(data.gpsMode).to.eql('Autonomous');
+    expect(data.pdop).to.eql(2.1);
+    expect(data.hdop).to.eql(1.3);
+    expect(data.vdop).to.eql(1.7);
+    expect(data.status.raw).to.eql('000000000000');
+    expect(data.status.input[1]).to.be.false;
+    expect(data.status.input[2]).to.be.false;
+    expect(data.status.input[3]).to.be.false;
+    expect(data.status.output[1]).to.be.false;
+    expect(data.status.charge).to.be.true;
+    expect(data.datetime).to.eql(new Date('2016-02-09T19:43:26.000Z'));
+    expect(data.voltage.battery).to.eql(3.98);
+    expect(data.voltage.inputCharge).to.eql(11.88);
+    expect(data.lac).to.eql(13011);
+    expect(data.cid).to.eql(41023);
+    expect(data.temperature).to.eql(0);
+    expect(data.odometer).to.eql(0.6376);
+    expect(data.serialId).to.eql(100);
+    expect(data.valid).to.be.true;
+  });
+
+  it('should return TZ-AVL201 data with empty GPRMC parsed', () => {
+    const raw = new Buffer('$$A5869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|A683\r\n');
+    const data = tz.parse(raw);
+    expect(data.raw).to.eql(raw.toString());
+    expect(data.device).to.eql('TZ-AVL201');
+    expect(data.type).to.eql('data');
+    expect(data.imei).to.eql('869444005480041');
+    expect(data.alarm.type).to.eql('Gps');
     expect(data.pdop).to.eql(2.1);
     expect(data.hdop).to.eql(1.3);
     expect(data.vdop).to.eql(1.7);
