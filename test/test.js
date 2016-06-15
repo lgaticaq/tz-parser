@@ -1,7 +1,7 @@
 'use strict';
 
-import tz from '../src';
-import {expect} from 'chai';
+const tz = require('../src');
+const expect = require('chai').expect;
 
 describe('tz-parzer', () => {
   it('should return TZ-AVL05 data parsed', () => {

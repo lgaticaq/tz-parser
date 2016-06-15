@@ -1,8 +1,8 @@
 'use strict';
 
-import crc from 'crc';
-import moment from 'moment';
-import nmea from 'node-nmea';
+const crc = require('crc');
+const moment = require('moment');
+const nmea = require('node-nmea');
 
 const patterns = {
   avl05: /^\$\$([0-9A-F]{2})(\d{15})\|([0-9A]{2})(\$GPRMC\,(\d{6}\.\d{3})\,([AV])\,(\d{4}\.\d{4}\,[NS])\,(\d{5}\.\d{4}\,[WE])\,(\d{1,3}\.\d{1,3})?\,(\d{1,3}\.\d{1,3})?\,(\d{6})\,((\d{1,3}\.\d{1,3})?\,([WE])?)\,?([ADENS])?\*([0-9A-F]{2})|[0]{60})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|(\d{2}\.\d{1})\|([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])([01])\|(\d{14})\|([01])(\d{3})(\d{4})\|(\d{4})(\d{4})\|([0-9A-F]{4})([0-9A-F]{4})\|([01\-]\d{3})\|(\d{1,4}\.\d{1,12})\|(\d{4})\|([0-9A-F]{4})\r\n$/,
@@ -16,7 +16,7 @@ const patterns = {
   map: /^http:\/\/maps.google.com\/maps\?f=q&hl=en&q=(-?\d+\.\d+),(-?\d+\.\d+)&ie=UTF8&z=16&iwloc=addr&om=1$/
 };
 
-const getAlarm = (alarm) => {
+const getAlarm = alarm => {
   const alarmTypes = {
     '01': {type: 'SOS_Button'},
     '49': {type: 'DI', number: 5, status: false},
@@ -49,7 +49,7 @@ const getAlarm = (alarm) => {
   return alarmTypes[alarm];
 };
 
-const verifyCrc = (raw, checksum) =>{
+const verifyCrc = (raw, checksum) => {
   let crcData;
   const idx = raw.lastIndexOf('|');
   if (idx > 0) {
@@ -67,7 +67,7 @@ const isValid = (raw, len, checksum) =>{
   return verifyCrc(raw, checksum) && verifyLen(raw, len);
 };
 
-const getAvl05 = (raw) => {
+const getAvl05 = raw => {
   const match = patterns.avl05.exec(raw.toString());
   const gprmcData = nmea.parse(match[4]);
   const data = {
@@ -118,7 +118,7 @@ const getAvl05 = (raw) => {
   return data;
 };
 
-const getAvl08 = (raw) => {
+const getAvl08 = raw => {
   const match = patterns.avl08.exec(raw.toString());
   const gprmcData = nmea.parse(match[4]);
   const data = {
@@ -172,7 +172,7 @@ const getAvl08 = (raw) => {
   return data;
 };
 
-const getAvl201 = (raw) => {
+const getAvl201 = raw => {
   const match = patterns.avl201.exec(raw.toString());
   const gprmcData = nmea.parse(match[4]);
   const data = {
@@ -217,7 +217,7 @@ const getAvl201 = (raw) => {
   return data;
 };
 
-const getCommand = (raw) => {
+const getCommand = raw => {
   const match = patterns.receiveOk.exec(raw.toString());
   const password = match[1];
   const code = match[2];
@@ -227,31 +227,43 @@ const getCommand = (raw) => {
     data.command = 'SetUserPassword';
     data.newPassword = extra[0];
   } else if (code === '002') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETINTERVALOFSMS';
     data.enable = x !== '0';
     data.interval = x;
     data.limit = y;
   } else if (code === '003') {
-    let [x, f, callNumber, smsNumber] = extra;
+    let x = extra[0];
+    let f = extra[1];
+    let callNumber = extra[2];
+    let smsNumber = extra[3];
     data.command = 'SETPHONESMSFORSOS';
     data.enable = ((x === '0') && (f === '1'));
     data.callNumber = callNumber;
     data.smsNumber = smsNumber;
   } else if (code === '004') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETLOWPOWERALARM';
     data.lowPower = parseFloat(x) / 100;
     data.autoShutdown = parseFloat(y) / 100;
   } else if (code === '005') {
-    let [s, x, y, z] = extra;
+    let s = extra[0];
+    let x = extra[1];
+    let y = extra[2];
+    let z = extra[3];
     data.command = 'SETOVERSPEEDALARM';
     data.enable = s === '1';
     data.speed = parseInt(x, 10);
     data.times = parseInt(y, 10);
     data.interval = parseInt(z, 10);
   } else if (code === '006') {
-    let [lat1, lon1, lat2, lon2, x, y] = extra; // eslint-disable-line no-unused-vars
+    let lat1 = extra[0];
+    let lon1 = extra[1];
+    let lat2 = extra[2];
+    let lon2 = extra[3];
+    let y = extra[5];
     const parseDir = (dir) => {
       if (/^-/.test(dir)) {
         if (dir.length === 4) {
@@ -285,7 +297,14 @@ const getCommand = (raw) => {
       };
     }
   } else if (code === '008') {
-    let [a, b, c, d, e, f, g] = extra[0].split('');
+    let _data = extra[0].split('');
+    let a = _data[0];
+    let b = _data[1];
+    let c = _data[2];
+    let d = _data[3];
+    let e = _data[4];
+    let f = _data[5];
+    let g = _data[6];
     data.command = 'SETEXTEND';
     data.extend = {
       a: a === '1',
@@ -306,73 +325,82 @@ const getCommand = (raw) => {
       data.band = 'auto';
     }
   } else if (code === '011') {
-    let [apn, username, pass] = extra;
+    let apn = extra[0];
+    let username = extra[1];
+    let pass = extra[2];
     data.command = 'SETAPN';
     data.apn = apn;
     data.username = username;
     data.pass = pass;
   } else if (code === '014') {
-    let [x, dns1, dns2] = extra;
+    let x = extra[0];
+    let dns1 = extra[1];
+    let dns2 = extra[2];
     data.command = 'SETDNS';
     data.enable = x === '1';
     data.dns1 = dns1;
     data.dns2 = dns2;
   } else if (code === '015') {
-    let [, host, port] = extra;
+    let host = extra[1];
+    let port = extra[2];
     data.command = 'SETIPANDPORT';
     data.host = host;
     data.port = parseInt(port, 10);
   } else if (code === '018') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETGPRSINTERVAL';
     data.enable = x !== '0';
     data.interval = parseInt(x, 10);
     data.limit = parseInt(y, 10);
   } else if (code === '016') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETSYSSWITCH';
     data.enable = x === '1';
   } else if (code === '019') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETTCPSWITCH';
     data.mode = x === '1' ? 'tcp' : 'udp';
   } else if (code === '021') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETTREMBLESWITCH';
     data.sleep = x === '1';
     data.tremble = y === '1';
   } else if (code === '022') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETSLEEPSWITCH';
     data.closeGps = x === '0';
     data.closeGsm = y === '0';
   } else if (code === '025') {
     const ports = {'A': 1, 'B': 2, 'C': 3, 'D': 4};
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETIOSWITCH';
     data.enable = y === '1';
     data.port = ports[x];
   } else if (code === '040') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETHEARTBEATSWITCH';
     data.enable = x === '1';
   } else if (code === '041') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETHEARTBEATINTERVAL';
     data.enable = x !== '0';
     data.interval = x;
   } else if (code === '042') {
     data.command = 'SETHEARTBEATINIT';
   } else if (code === '044') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETTREMBLETOSLEEP';
     data.after = parseInt(x, 10);
   } else if (code === '043') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETTREMBLETOWAKEUP';
     data.after = parseInt(x, 10);
   } else if (code === '110') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETPARKINGALARM';
     data.enable = x === '1';
   } else if (code === '990') {
@@ -380,28 +408,41 @@ const getCommand = (raw) => {
   } else if (code === '991') {
     data.command = 'RBOOT';
   } else if (code === '113') {
-    let [a, b] = extra;
+    let a = extra[0];
+    let b = extra[1];
     data.command = 'SETOILSENSER';
     data.empty = parseInt(a, 10) / 100;
     data.full = parseInt(b, 10) / 100;
   } else if (code === '117') {
-    let [a, b, c, d] = extra;
+    let a = extra[0];
+    let b = extra[1];
+    let c = extra[2];
+    let d = extra[3];
     data.command = 'SETSHUTOIL';
     data.speed = parseInt(a, 10);
     data.off = parseInt(b, 10);
     data.restart = parseInt(c, 10);
     data.repeat = parseInt(d, 10);
   } else if (code === '116') {
-    let [a] = extra;
+    let a = extra[0];
     data.command = 'SETSHUTOILSWITCH';
     data.enable = a === '1';
   } else if (code === '103') {
-    let [s, number] = extra;
+    let s = extra[0];
+    let number = extra[1];
     data.command = 'SETCALLA';
     data.mode = s === '0' ? 'gprs' : 'call';
     data.number = number;
   } else if (code === '118') {
-    let [a, b, c, d, e, f, g, h] = extra[0].split('');
+    let _data = extra[0].split('');
+    let a = _data[0];
+    let b = _data[1];
+    let c = _data[2];
+    let d = _data[3];
+    let e = _data[4];
+    let f = _data[5];
+    let g = _data[6];
+    let h = _data[7];
     data.command = 'SETEXTEND2';
     data.extend = {
       a: a === '1',
@@ -414,12 +455,14 @@ const getCommand = (raw) => {
       h: h === '1'
     };
   } else if (code === '122') {
-    let [s, pin] = extra;
+    let s = extra[0];
+    let pin = extra[1];
     data.command = 'SETPIN';
     data.enable = s === '1';
     data.pin = pin;
   } else if (code === '300' || code === '400') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETANGLE';
     if (x === '0') {
       data.enable = false;
@@ -434,37 +477,44 @@ const getCommand = (raw) => {
     }
     data.angle = parseInt(y, 10);
   } else if (code === '600') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETREBOOT';
     data.enable = x === '1';
     data.interval = parseInt(y, 10);
   } else if (code === '120') {
-    let [a, b, c] = extra;
+    let a = extra[0];
+    let b = extra[1];
+    let c = extra[2];
     data.command = 'SETACCALARM';
     data.enable = a === '1';
     data.acceleration = parseInt(b, 10);
     data.deceleration = parseInt(c, 10);
   } else if (code === '121') {
-    let [x, y, z] = extra;
+    let x = extra[0];
+    let y = extra[1];
+    let z = extra[2];
     data.command = 'SETROAMING';
     data.enable = x === '1';
     data.interval = parseInt(y, 10);
     data.network = z;
   } else if (code === '123') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETACKSTATE';
     data.enable = x === '1';
   } else if (code === '130') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETCALLFILTER';
     data.enable = x === '1';
     data.caller = y;
   } else if (code === '119') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETSENDTYPE';
     data.mode = x === '0' ? 'gprs' : 'sms';
   } else if (code === '200') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETPICTUREINTERVAL';
     data.interval = parseInt(x, 10);
     data.times = parseInt(y, 10);
@@ -473,37 +523,45 @@ const getCommand = (raw) => {
   } else if (code === '210') {
     data.command = 'GETPICTURE';
   } else if (code === '601') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETDATAFLASH';
     data.enable = x === '1';
   } else if (code === '156') {
-    let [x, y, z] = extra;
+    let x = extra[0];
+    let y = extra[1];
+    let z = extra[2];
     data.command = 'SETTRACKINGINTERVAL';
     data.enable = x === '1';
     data.intervalOn = parseInt(y, 10);
     data.intervalOff = parseInt(z, 10);
   } else if (code === '151') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETSENDODOMETER';
     data.enable = x === '1';
     data.range = parseInt(y, 10);
   } else if (code === '155') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETIMEI';
     data.enable = x === '1';
     data.newImei = y;
   } else if (code === '404') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETIDLE';
     data.enable = x === '1';
     data.interval = parseInt(y, 10);
   } else if (code === '023') {
-    let [x, y] = extra;
+    let x = extra[0];
+    let y = extra[1];
     data.command = 'SETINTERVALGPRSSTANDBY';
     data.enable = x === '1';
     data.interval = parseInt(y, 10);
   } else if (code === '201') {
-    let [x, y, z] = extra;
+    let x = extra[0];
+    let y = extra[1];
+    let z = extra[2];
     data.command = 'SETIOPICTURE';
     if (x === '0') {
       data.enable = false;
@@ -529,14 +587,14 @@ const getCommand = (raw) => {
     }
     data.times = parseInt(z, 10);
   } else if (code === '202') {
-    let [x] = extra;
+    let x = extra[0];
     data.command = 'SETPICTUREPACKET';
     data.number = parseInt(x, 10);
   }
   return data;
 };
 
-const getPicture = (raw) => {
+const getPicture = raw => {
   const results = raw.toString().match(/\$U\d{15}\d{5}\d{3}\d{3}[0-9a-fA-F]{1,200}#/g).map(x => {
     const match = /\$U(\d{15})(\d{5})(\d{3})(\d{3})([0-9a-fA-F]{1,200})#/.exec(x);
     return {
@@ -563,12 +621,12 @@ const getPicture = (raw) => {
   };
 };
 
-const getCommandError = (data) => {
+const getCommandError = data => {
   const match = patterns.receiveErr.exec(data.toString());
   return {device: 'TZ-ERROR', type: 'error', command: match[0]};
 };
 
-const getCommandFirmware = (data) => {
+const getCommandFirmware = data => {
   const match = patterns.firmware.exec(data.toString());
   return {
     device: 'TZ-FIRMWARE',
@@ -579,7 +637,7 @@ const getCommandFirmware = (data) => {
   };
 };
 
-const getCommandInfo = (data) => {
+const getCommandInfo = data => {
   const match = patterns.info.exec(data.toString());
   return {
     device: 'TZ-INFO',
@@ -597,7 +655,7 @@ const getCommandInfo = (data) => {
   };
 };
 
-const getCommandMap = (data) => {
+const getCommandMap = data => {
   const match = patterns.map.exec(data.toString());
   return {
     device: 'TZ-MAP',
@@ -608,7 +666,7 @@ const getCommandMap = (data) => {
   };
 };
 
-const parse = (raw) => {
+const parse = raw => {
   let result = {type: 'UNKNOWN', raw: raw.toString()};
   if (patterns.avl05.test(raw.toString())) {
     result = getAvl05(raw);
@@ -632,7 +690,7 @@ const parse = (raw) => {
   return result;
 };
 
-const isTz = (raw) => {
+const isTz = raw => {
   let result = false;
   if (patterns.avl05.test(raw.toString())) {
     result = true;
@@ -656,14 +714,16 @@ const isTz = (raw) => {
   return result;
 };
 
-const parseCommand = (data) => {
+const parseCommand = data => {
   let command = '';
   const password = data.password || '000000';
   let state, digit, port, number, speed, interval, times, trigger, a, b, c, d, e, f, g, h;
   if (/^set_password$/.test(data.instruction)) {
     command = `*${password},001,${data.newPassword}#`;
   } else if (/^[1-4]{1}_(on|off)$/.test(data.instruction)) {
-    [port, state] = data.instruction.split('_');
+    let _data = data.instruction.split('_');
+    port = _data[0];
+    state = _data[1];
     const ports = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'};
     digit = state === 'on' ? 1 : 0;
     command = `*${password},025,${ports[port]},${digit}#`;
@@ -737,7 +797,8 @@ const parseCommand = (data) => {
   return command;
 };
 
-const getRebootCommand = (password='000000') => {
+const getRebootCommand = password => {
+  password = password || '000000';
   return `*${password},991#`;
 };
 
