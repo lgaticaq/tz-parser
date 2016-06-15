@@ -4,6 +4,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/tz-parser.svg?style=flat-square)](https://www.npmjs.com/package/tz-parser)
 [![Build Status](https://img.shields.io/travis/lgaticaq/tz-parser.svg?style=flat-square)](https://travis-ci.org/lgaticaq/tz-parser)
 [![Coverage Status](https://img.shields.io/coveralls/lgaticaq/tz-parser/master.svg?style=flat-square)](https://coveralls.io/github/lgaticaq/tz-parser?branch=master)
+[![Code Climate](https://img.shields.io/codeclimate/github/lgaticaq/tz-parser.svg?style=flat-square)](https://codeclimate.com/github/lgaticaq/tz-parser)
 [![dependency Status](https://img.shields.io/david/lgaticaq/tz-parser.svg?style=flat-square)](https://david-dm.org/lgaticaq/tz-parser#info=dependencies)
 [![devDependency Status](https://img.shields.io/david/dev/lgaticaq/tz-parser.svg?style=flat-square)](https://david-dm.org/lgaticaq/tz-parser#info=devDependencies)
 [![Join the chat at https://gitter.im/lgaticaq/tz-parser](https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/lgaticaq/tz-parser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
