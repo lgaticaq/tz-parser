@@ -1,3 +1,24 @@
+#### 2.4.1 (2016-6-15)
+
+##### Chores
+
+* **src:** Change syntaxis compatible to node >= v4 ([1de7f3c7](https://github.com/lgaticaq/tz-parser/commit/1de7f3c7562ecb497fec32493c943e830ffb5571))
+* **package:**
+  * update eslint to version 2.12.0 ([281c4cad](https://github.com/lgaticaq/tz-parser/commit/281c4cad786fa5ebdb9d8005da280d389013b4c3))
+  * update eslint to version 2.11.1 ([223e81cf](https://github.com/lgaticaq/tz-parser/commit/223e81cf8a93aeb73285b77e19b5b458073824f8))
+  * update eslint to version 2.11.0 ([96b121b3](https://github.com/lgaticaq/tz-parser/commit/96b121b3322ca98482e9cfa43b24c9409933498e))
+  * update eslint to version 2.10.2 ([1f7a16ac](https://github.com/lgaticaq/tz-parser/commit/1f7a16ace0d4ce37f4e2f6878810e315a75336d5))
+  * update eslint to version 2.10.1 ([937d78a2](https://github.com/lgaticaq/tz-parser/commit/937d78a291d9dcafa96a1e839706704858e60eba))
+  * update eslint to version 2.10.0 ([cf286e34](https://github.com/lgaticaq/tz-parser/commit/cf286e3452a0349d692562e541879ae30eb04658))
+  * update babel-core to version 6.7.7 ([3867992d](https://github.com/lgaticaq/tz-parser/commit/3867992d185b12c2bddacae1f660b97b3045ac04))
+  * update eslint to version 2.9.0 ([d96a5098](https://github.com/lgaticaq/tz-parser/commit/d96a5098fbf0ea71d06bfcc383e31c6f52a798ca))
+  * update babel-cli to version 6.7.7 ([ba25cd37](https://github.com/lgaticaq/tz-parser/commit/ba25cd37563cd378726578aa87b37edded812532))
+  * update dependencies ([5cfa88fb](https://github.com/lgaticaq/tz-parser/commit/5cfa88fbcc62e345e14ac77adfa1648dc99b33df))
+
+##### Documentation Changes
+
+* **changelog:** Add changelog ([37b6fa3b](https://github.com/lgaticaq/tz-parser/commit/37b6fa3bb4b338694a0c526a8775156e85eb5186))
+
 #### 2.4.0 (2016-04-01)
 
 * Add getRebootCommand ([cdb2f6b](https://github.com/lgaticaq/tz-parser/commit/cdb2f6b))
