@@ -1,3 +1,9 @@
+#### 2.4.2 (2016-6-16)
+
+##### Bug Fixes
+
+* **package:** Replace isparta to istanbul ([a4632616](https://github.com/lgaticaq/tz-parser/commit/a46326168c713adb3998a0b2eed0f2ff2431d975))
+
 #### 2.4.1 (2016-6-15)
 
 ##### Chores
