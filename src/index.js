@@ -112,7 +112,7 @@ const getAvl05 = raw => {
     cid: parseInt(match[39], 16),
     temperature: parseFloat(match[40]) / 10,
     odometer: parseFloat(match[41]),
-    serialId: parseInt(match[42]),
+    serialId: parseInt(match[42], 10),
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[43], 16))
   };
   return data;
@@ -165,8 +165,8 @@ const getAvl08 = raw => {
     cid: parseInt(match[39], 16),
     temperature: parseFloat(match[40]) / 10,
     odometer: parseFloat(match[41]),
-    serialId: parseInt(match[42]),
-    rfidNumber: match[43] ? parseInt(match[43]) : null,
+    serialId: parseInt(match[42], 10),
+    rfidNumber: match[43] ? parseInt(match[43], 10) : null,
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[44], 16))
   };
   return data;
@@ -211,7 +211,7 @@ const getAvl201 = raw => {
     cid: parseInt(match[37], 16),
     temperature: parseFloat(match[38]) / 10,
     odometer: parseFloat(match[39]),
-    serialId: parseInt(match[40]),
+    serialId: parseInt(match[40], 10),
     valid: isValid(match[0], parseInt(match[1], 16), parseInt(match[41], 16))
   };
   return data;

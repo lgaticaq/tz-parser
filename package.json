@@ -70,6 +70,10 @@
       "semi": [
         2,
         "always"
+      ],
+      "radix": [
+        "error",
+        "always"
       ]
     }
   },
