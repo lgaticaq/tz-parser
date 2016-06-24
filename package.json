@@ -35,7 +35,7 @@
   "dependencies": {
     "crc": "^3.4.0",
     "moment": "^2.13.0",
-    "node-nmea": "^1.0.0"
+    "node-nmea": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -43,9 +43,8 @@
     "coveralls": "^2.11.9",
     "eslint": "2.13.1",
     "generate-changelog": "^1.0.2",
-    "istanbul": "^0.4.3",
-    "mocha": "^2.5.3",
-    "rimraf": "^2.5.2"
+    "istanbul": "^0.4.4",
+    "mocha": "^2.5.3"
   },
   "eslintConfig": {
     "env": {
