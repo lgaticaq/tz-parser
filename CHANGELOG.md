@@ -1,3 +1,17 @@
+#### 2.4.3 (2016-6-24)
+
+##### Chores
+
+* **package:**
+  * Update dependencies ([bc1ad421](https://github.com/lgaticaq/tz-parser/commit/bc1ad42183dd931716bde3be2e50ab1cb7ee6abc))
+  * update node-nmea to version 1.0.0 ([b4896efd](https://github.com/lgaticaq/tz-parser/commit/b4896efd4bef518fdc7a96b9a46b1e2b29383ff7))
+  * update eslint to version 2.13.1 ([4b7119e2](https://github.com/lgaticaq/tz-parser/commit/4b7119e22e02e03e0b60470c2fe305a3182fd9c8))
+  * update eslint to version 2.13.0 ([1a2e3719](https://github.com/lgaticaq/tz-parser/commit/1a2e3719c76ed728e7fa081f26ff763187957ec7))
+
+##### Bug Fixes
+
+* **eslint:** Fix radix ([53fd3211](https://github.com/lgaticaq/tz-parser/commit/53fd321171e1033a565406452a69f83aeddddd2b))
+
 #### 2.4.2 (2016-6-16)
 
 ##### Bug Fixes
