@@ -1,3 +1,16 @@
+#### 2.4.4 (2016-8-11)
+
+##### Chores
+
+* **package:**
+  * Update dependencies ([870615d2](https://github.com/lgaticaq/tz-parser/commit/870615d215cb75dbca6b91e94bd40b3227d48ac7))
+  * update eslint to version 3.2.2 ([47f8f40f](https://github.com/lgaticaq/tz-parser/commit/47f8f40fca95c432e8b2a707ca1186df0e7b5482))
+  * update mocha to version 3.0.0 ([660d18d2](https://github.com/lgaticaq/tz-parser/commit/660d18d24e2fc66cfcc4271e029569a6c02e7e53))
+  * update eslint to version 3.2.0 ([f9fc745c](https://github.com/lgaticaq/tz-parser/commit/f9fc745ce4415f00b58239957d5a82f4946b8f0d))
+  * update eslint to version 3.1.1 ([ebc8871d](https://github.com/lgaticaq/tz-parser/commit/ebc8871d76d4e0c8b10801f620e8d33b5d176e34))
+  * update eslint to version 3.0.1 ([1ac7fa0c](https://github.com/lgaticaq/tz-parser/commit/1ac7fa0cd65dadb8c9e456917ddef614ff14184a))
+  * update eslint to version 3.0.0 ([38718583](https://github.com/lgaticaq/tz-parser/commit/38718583f3bb037159cbfc8b08f55e2b0a768453))
+
 #### 2.4.3 (2016-6-24)
 
 ##### Chores
