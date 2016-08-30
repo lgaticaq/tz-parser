@@ -802,6 +802,19 @@ const getRebootCommand = password => {
   return `*${password},991#`;
 };
 
+const getImei = raw => {
+  let imei = null;
+  const data = raw.toString();
+  if (patterns.avl05.test(data)) {
+    imei = patterns.avl05.exec(data)[2];
+  } else if (patterns.avl08.test(data)) {
+    imei = patterns.avl08.exec(data)[2];
+  } else if (patterns.avl201.test(data)) {
+    imei = patterns.avl201.exec(data)[2];
+  }
+  return imei;
+};
+
 module.exports = {
   parse: parse,
   patterns: patterns,
@@ -818,5 +831,6 @@ module.exports = {
   verifyCrc: verifyCrc,
   isTz: isTz,
   parseCommand: parseCommand,
-  getRebootCommand: getRebootCommand
+  getRebootCommand: getRebootCommand,
+  getImei: getImei
 };

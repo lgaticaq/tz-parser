@@ -955,4 +955,28 @@ describe('tz-parzer', () => {
     const raw = tz.getRebootCommand('123456');
     expect(raw).to.eql('*123456,991#');
   });
+
+  it('should return null imei', () => {
+    const raw = new Buffer('askdhaskjdhakjdhaksjdhaksjdh');
+    const imei = tz.getImei(raw);
+    expect(imei).to.be.null;
+  });
+
+  it('should return avl05 imei', () => {
+    const raw = new Buffer('$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995F\r\n');
+    const imei = tz.getImei(raw);
+    expect(imei).to.eql('869444005480041');
+  });
+
+  it('should return avl08 imei', () => {
+    const raw = new Buffer('$$B7869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100||56E2\r\n');
+    const imei = tz.getImei(raw);
+    expect(imei).to.eql('869444005480041');
+  });
+
+  it('should return avl201 imei', () => {
+    const raw = new Buffer('$$AD869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|5BEB\r\n');
+    const imei = tz.getImei(raw);
+    expect(imei).to.eql('869444005480041');
+  });
 });
