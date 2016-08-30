@@ -1,3 +1,17 @@
+### 2.5.0 (2016-8-30)
+
+##### Chores
+
+* **package:**
+  * Update istanbul ([fca34f4b](https://github.com/lgaticaq/tz-parser/commit/fca34f4b557436a7af0e97aa9a8d16b812a8d4a0))
+  * update eslint to version 3.4.0 ([97ebcf2f](https://github.com/lgaticaq/tz-parser/commit/97ebcf2f91027cd80100e12b3ec202444b5ee513))
+  * update eslint to version 3.3.1 ([8f4cd88d](https://github.com/lgaticaq/tz-parser/commit/8f4cd88df762e8bb90543c8e3f2e2eefc537a21f))
+  * update eslint to version 3.3.0 ([6d041bce](https://github.com/lgaticaq/tz-parser/commit/6d041bce5d58aa0cf74c9471ba3fbf3d34c63457))
+
+##### New Features
+
+* **parser:** Add getImei ([a1c9159f](https://github.com/lgaticaq/tz-parser/commit/a1c9159f0c4c4a9ac0674de2a4e768f51596e97b))
+
 #### 2.4.4 (2016-8-11)
 
 ##### Chores
