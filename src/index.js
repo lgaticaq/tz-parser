@@ -34,7 +34,7 @@ const parse = raw => {
 
 const isTz = raw => {
   const pattern = Object.keys(patterns).map(x => patterns[x]).find(x => x.test(raw.toString()));
-  return pattern !== 'undefined';
+  return typeof pattern !== 'undefined';
 };
 
 const getRebootCommand = password => `*${password || '000000'},991#`;
