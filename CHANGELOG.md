@@ -1,3 +1,16 @@
+#### 2.6.1 (2016-9-6)
+
+##### Chores
+
+* **commands:**
+  * Reduce complexy ([4cce41f4](https://github.com/lgaticaq/tz-parser/commit/4cce41f40be365bb94aa5c5cbe5eaf3b8725e840))
+  * Reduce complexy ([4335ca66](https://github.com/lgaticaq/tz-parser/commit/4335ca66978a12930fc74f2dec26554e7ce51655))
+* **package:** Remove radix rule eslint ([b6bdee8e](https://github.com/lgaticaq/tz-parser/commit/b6bdee8e06c2d4c52b2118b6df7fa2848085317d))
+
+##### Bug Fixes
+
+* **parser:** Fix isTz ([c61e4160](https://github.com/lgaticaq/tz-parser/commit/c61e41609a36e7d1636136dc9e3f3253ae555255))
+
 ### 2.6.0 (2016-9-6)
 
 ##### New Features
