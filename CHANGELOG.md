@@ -1,3 +1,9 @@
+### 2.6.0 (2016-9-6)
+
+##### New Features
+
+* **parser:** Add messages to parse responses. Modularize all components. ([e064d603](https://github.com/lgaticaq/tz-parser/commit/e064d603f4ac321bef6b52532b3853d64a355c87))
+
 ### 2.5.0 (2016-8-30)
 
 ##### Chores
