@@ -80,15 +80,17 @@ const parseRboot = data => {
   return `*${data.password},991#`;
 };
 
+const parseExtendComponent = data => data ? 1 : 0;
+
 const parseSetExtend2 = data => {
-  const a = data.a ? 1 : 0;
-  const b = data.b ? 1 : 0;
-  const c = data.c ? 1 : 0;
-  const d = data.d ? 1 : 0;
-  const e = data.e ? 1 : 0;
-  const f = data.f ? 1 : 0;
-  const g = data.g ? 1 : 0;
-  const h = data.h ? 1 : 0;
+  const a = parseExtendComponent(data.a);
+  const b = parseExtendComponent(data.b);
+  const c = parseExtendComponent(data.c);
+  const d = parseExtendComponent(data.d);
+  const e = parseExtendComponent(data.e);
+  const f = parseExtendComponent(data.f);
+  const g = parseExtendComponent(data.g);
+  const h = parseExtendComponent(data.h);
   return `*${data.password},118,${a}${b}${c}${d}${e}${f}${g}${h}#`;
 };
 
