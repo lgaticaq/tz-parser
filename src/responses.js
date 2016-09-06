@@ -2,8 +2,8 @@
 
 const nmea = require('node-nmea');
 const patterns = require('./patterns');
-
-const langs = ['es'];
+const langEs = require('./messages/es.json');
+const langs = {'es': langEs};
 
 const parseSetUserPassword = extra => {
   return {
@@ -436,29 +436,21 @@ const parseSetintervalgprsstandby = extra => {
 const parseSetiopicture = extra => {
   const x = extra[0];
   const y = extra[1];
-  const data = {command: 'SETIOPICTURE'};
-  if (x === '0') {
-    data.enable = false;
-  } else if (x === '1') {
-    data.enable = true;
-    data.port = 4;
-  } else if (x === '2') {
-    data.enable = true;
-    data.port = 3;
-  } else if (x === '3') {
-    data.enable = true;
-    data.port = 2;
-  } else {
-    data.enable = true;
-    data.port = 1;
-  }
-  if (y === '1') {
-    data.mode = 'open';
-  } else if (y === '2') {
-    data.mode = 'close';
-  } else {
-    data.mode = 'both';
-  }
+  let data = {command: 'SETIOPICTURE'};
+  const dataX = {
+    '0': {enable: false, port: null},
+    '1': {enable: true, port: 4},
+    '2': {enable: true, port: 3},
+    '3': {enable: true, port: 2},
+    '4': {enable: true, port: 1}
+  };
+  const dataY = {
+    '1': {mode: 'open'},
+    '2': {mode: 'close'},
+    '3': {mode: 'both'}
+  };
+  data = Object.assign(dataX[x], data);
+  data = Object.assign(dataY[y], data);
   data.times = parseInt(extra[2], 10);
   return data;
 };
@@ -471,8 +463,7 @@ const parseSetpicturepacket = extra => {
 };
 
 const getCommand = (raw, lang) => {
-  lang = langs[lang] || 'es';
-  const messages = require(`./messages/${lang}.json`);
+  const messages = langs[lang] || langs['es'];
   const match = patterns.receiveOk.exec(raw.toString());
   const password = match[1];
   const code = match[2];
