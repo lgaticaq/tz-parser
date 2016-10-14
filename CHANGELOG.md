@@ -1,3 +1,19 @@
+#### 2.6.2 (2016-10-14)
+
+##### Chores
+
+* **package:**
+  * Add support to yarnpkg ([15ad2606](https://github.com/lgaticaq/tz-parser/commit/15ad2606e60a368762ca7ace30ccd439db201950))
+  * update eslint to version 3.7.1 ([1d1bbacb](https://github.com/lgaticaq/tz-parser/commit/1d1bbacb341dc960ce6c160893134df92e7207b6))
+  * update codeclimate-test-reporter to version 0.4.0 ([1446e1f8](https://github.com/lgaticaq/tz-parser/commit/1446e1f8cdfbb5ac936603f5bc79df1960675953))
+  * update eslint to version 3.6.1 ([4b0299b8](https://github.com/lgaticaq/tz-parser/commit/4b0299b856691e339affd2ed06fab404545bee85))
+  * update eslint to version 3.6.0 ([0caf4adc](https://github.com/lgaticaq/tz-parser/commit/0caf4adcca33ad38f66241fad75b075ecee32642))
+  * update eslint to version 3.5.0 ([5a798c1c](https://github.com/lgaticaq/tz-parser/commit/5a798c1ce56a9944ec5172fea935cba8e6d8281e))
+
+##### New Features
+
+* **parser:** Add manufacturer to data ([a90ceef3](https://github.com/lgaticaq/tz-parser/commit/a90ceef3dc52d17f63146ae50f84707d215facb7))
+
 #### 2.6.1 (2016-9-6)
 
 ##### Chores
