@@ -1,3 +1,9 @@
+#### 2.6.3 (2016-10-14)
+
+##### Chores
+
+* **package:** Update dependencies ([70577509](https://github.com/lgaticaq/tz-parser/commit/705775090f2363984b78f654104f3a336d2d7230))
+
 #### 2.6.2 (2016-10-14)
 
 ##### Chores
