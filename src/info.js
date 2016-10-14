@@ -6,6 +6,7 @@ const patterns = require('./patterns');
 module.exports = data => {
   const match = patterns.info.exec(data.toString());
   return {
+    manufacturer: 'tz',
     device: 'tz',
     type: 'info',
     latitude: match[1],

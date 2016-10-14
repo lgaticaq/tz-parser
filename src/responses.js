@@ -468,7 +468,12 @@ const getCommand = (raw, lang) => {
   const password = match[1];
   const code = match[2];
   const extra = match[3] ? match[3].substr(1).split(',') : null;
-  let defaultData = {device: 'tz', type: 'ok', password: password};
+  let defaultData = {
+    manufacturer: 'tz',
+    device: 'tz',
+    type: 'ok',
+    password: password
+  };
   const parsers = {
     '001': parseSetUserPassword,
     '002': parseSetIntervalOfSms,

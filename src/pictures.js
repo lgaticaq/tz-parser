@@ -12,6 +12,7 @@ module.exports = raw => {
     };
   });
   return {
+    manufacturer: 'tz',
     device: 'tz',
     type: 'image',
     imei: results[0].imei,

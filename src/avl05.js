@@ -10,6 +10,7 @@ module.exports = raw => {
   const gprmcData = nmea.parse(match[4]);
   const data = {
     raw: match[0],
+    manufacturer: 'tz',
     device: 'tz',
     model: 'TZ-AVL05',
     type: 'data',

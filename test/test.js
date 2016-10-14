@@ -15,6 +15,7 @@ describe('tz-parzer', () => {
     const raw = new Buffer('$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995A\r\n');
     const data = tz.parse(raw);
     expect(data.raw).to.eql(raw.toString());
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.model).to.eql('TZ-AVL05');
     expect(data.type).to.eql('data');
@@ -57,6 +58,7 @@ describe('tz-parzer', () => {
     const raw = new Buffer('$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995F\r\n');
     const data = tz.parse(raw);
     expect(data.raw).to.eql(raw.toString());
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.model).to.eql('TZ-AVL05');
     expect(data.type).to.eql('data');
@@ -99,6 +101,7 @@ describe('tz-parzer', () => {
     const raw = new Buffer('$$AE869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|6CCB\r\n');
     const data = tz.parse(raw);
     expect(data.raw).to.eql(raw.toString());
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.model).to.eql('TZ-AVL05');
     expect(data.type).to.eql('data');
@@ -134,6 +137,7 @@ describe('tz-parzer', () => {
     const raw = new Buffer('$$C1869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|0123456789|688C\r\n');
     const data = tz.parse(raw);
     expect(data.raw).to.eql(raw.toString());
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.model).to.eql('TZ-AVL08');
     expect(data.type).to.eql('data');
@@ -179,6 +183,7 @@ describe('tz-parzer', () => {
     const raw = new Buffer('$$AF869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100||8195\r\n');
     const data = tz.parse(raw);
     expect(data.raw).to.eql(raw.toString());
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.model).to.eql('TZ-AVL08');
     expect(data.type).to.eql('data');
@@ -214,6 +219,7 @@ describe('tz-parzer', () => {
     const raw = new Buffer('$$AD869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|5BEB\r\n');
     const data = tz.parse(raw);
     expect(data.raw).to.eql(raw.toString());
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.model).to.eql('TZ-AVL201');
     expect(data.type).to.eql('data');
@@ -250,6 +256,7 @@ describe('tz-parzer', () => {
     const raw = new Buffer('$$A5869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|A683\r\n');
     const data = tz.parse(raw);
     expect(data.raw).to.eql(raw.toString());
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.model).to.eql('TZ-AVL201');
     expect(data.type).to.eql('data');
@@ -278,6 +285,7 @@ describe('tz-parzer', () => {
   it('should return TZ-INFO data parsed', () => {
     const raw = new Buffer('Lat:-3321.6664S\r\nLong:-07030.8921W\r\nSpd:000km/h\r\nFix:A\r\nSat:04\r\nHDOP:02.2\r\nGSM:29\r\nBatt:04.01V\r\nMile:0.1527\r\nTime:19/02/16 15:00:17\r\n');
     const data = tz.parse(raw);
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.type).to.eql('info');
     expect(data.latitude).to.eql('-3321.6664S');
@@ -295,6 +303,7 @@ describe('tz-parzer', () => {
   it('should return TZ-FIRMWARE data parsed', () => {
     const raw = new Buffer('IMEI:869444005480041\r\nVER:TC_AVL05vSST_JOSE10.12\r\nGSMVER:1116B02SIM840WL_MXIC\r\n');
     const data = tz.parse(raw);
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.type).to.eql('firmware');
     expect(data.imei).to.eql('869444005480041');
@@ -305,6 +314,7 @@ describe('tz-parzer', () => {
   it('should return TZ-MAP data parsed', () => {
     const raw = new Buffer('http://maps.google.com/maps?f=q&hl=en&q=-33.361106,-070.514868&ie=UTF8&z=16&iwloc=addr&om=1');
     const data = tz.parse(raw);
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.type).to.eql('map_link');
     expect(data.url).to.eql('http://maps.google.com/maps?f=q&hl=en&q=-33.361106,-070.514868&ie=UTF8&z=16&iwloc=addr&om=1');
@@ -315,6 +325,7 @@ describe('tz-parzer', () => {
   it('should return TZ-ERROR data parsed', () => {
     const raw = new Buffer('Receive:Set Err\r\n*000000,999,9999#');
     const data = tz.parse(raw);
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.type).to.eql('error');
     expect(data.command).to.eql('Receive:Set Err\r\n*000000,999,9999#');
@@ -323,6 +334,7 @@ describe('tz-parzer', () => {
   it('should return TZ-IMAGE data parsed', () => {
     const raw = new Buffer('$U35977203928389100001071001FFD8FFDB008400100B0C0E0C0A100E0D0E1211101318281A181616183123251D283A333D3C3933383740485C4E404457453738506D51575F626768673E4D71797064785C656763011112121815182F1A1A2F634238426363636363636363636363636363#');
     const data = tz.parse(raw);
+    expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.type).to.eql('image');
     expect(data.imei).to.eql('359772039283891');
