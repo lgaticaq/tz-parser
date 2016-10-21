@@ -1,3 +1,15 @@
+## 3.0.0 (2016-10-21)
+
+##### Chores
+
+* **package:**
+  * update eslint to version 3.8.1 ([befdaaeb](https://github.com/lgaticaq/tz-parser/commit/befdaaebd4c371c73275bfa4592250b436b188db))
+  * update eslint to version 3.8.0 ([e255a75f](https://github.com/lgaticaq/tz-parser/commit/e255a75ffba1f5850eb041dddd3061291e5bf85d))
+
+##### New Features
+
+* **package:** Rename track to azimuth. Now azimuth return a float. ([198806fe](https://github.com/lgaticaq/tz-parser/commit/198806fef6fe67182ac2220441fa0df17ad27b7c))
+
 #### 2.6.3 (2016-10-14)
 
 ##### Chores
