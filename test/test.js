@@ -25,7 +25,7 @@ describe('tz-parzer', () => {
     expect(data.loc.coordinates).to.eql([-70.51273333333333, -33.361225]);
     expect(data.speed).to.eql(0);
     expect(data.gpsStatus).to.be.a.true;
-    expect(data.track).to.eql('0.00');
+    expect(data.azimuth).to.eql(0);
     expect(data.magneticVariation).to.be.null;
     expect(data.gpsMode).to.eql('Autonomous');
     expect(data.pdop).to.eql(2.1);
@@ -68,7 +68,7 @@ describe('tz-parzer', () => {
     expect(data.loc.coordinates).to.eql([-70.51273333333333, -33.361225]);
     expect(data.speed).to.eql(0);
     expect(data.gpsStatus).to.be.a.true;
-    expect(data.track).to.eql('0.00');
+    expect(data.azimuth).to.eql(0);
     expect(data.magneticVariation).to.be.null;
     expect(data.gpsMode).to.eql('Autonomous');
     expect(data.pdop).to.eql(2.1);
@@ -147,7 +147,7 @@ describe('tz-parzer', () => {
     expect(data.loc.coordinates).to.eql([-70.51273333333333, -33.361225]);
     expect(data.speed).to.eql(0);
     expect(data.gpsStatus).to.be.a.true;
-    expect(data.track).to.eql('0.00');
+    expect(data.azimuth).to.eql(0);
     expect(data.magneticVariation).to.be.null;
     expect(data.gpsMode).to.eql('Autonomous');
     expect(data.pdop).to.eql(2.1);
@@ -229,7 +229,7 @@ describe('tz-parzer', () => {
     expect(data.loc.coordinates).to.eql([-70.51273333333333, -33.361225]);
     expect(data.speed).to.eql(0);
     expect(data.gpsStatus).to.be.a.true;
-    expect(data.track).to.eql('0.00');
+    expect(data.azimuth).to.eql(0);
     expect(data.magneticVariation).to.be.null;
     expect(data.gpsMode).to.eql('Autonomous');
     expect(data.pdop).to.eql(2.1);

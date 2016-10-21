@@ -19,7 +19,7 @@ module.exports = raw => {
     loc: gprmcData.loc ? gprmcData.loc.geojson : null,
     speed: gprmcData.speed ? gprmcData.speed.kmh : null,
     gpsStatus: gprmcData.gps,
-    track: gprmcData.track,
+    azimuth: gprmcData.track,
     magneticVariation: gprmcData.magneticVariation,
     gpsMode: gprmcData.mode,
     pdop: parseFloat(match[17]),
