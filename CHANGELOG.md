@@ -1,3 +1,13 @@
+#### 3.0.1 (2016-10-25)
+
+##### Chores
+
+* **package:** Update dependencies ([ae8fa65f](https://github.com/lgaticaq/tz-parser/commit/ae8fa65fd9d0e4df53e9d5394287190776d52091))
+
+##### Bug Fixes
+
+* **parser:** Fix parse with empty GPRMC data ([1d4ecc1a](https://github.com/lgaticaq/tz-parser/commit/1d4ecc1a3fa093ad5f460013c67f5378525631fd))
+
 ## 3.0.0 (2016-10-21)
 
 ##### Chores
