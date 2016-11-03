@@ -15,7 +15,6 @@ module.exports = raw => {
     model: 'TZ-AVL05',
     type: 'data',
     imei: match[2],
-    alarm: utils.getAlarm(match[3]),
     loc: gprmcData.loc ? gprmcData.loc.geojson : null,
     speed: gprmcData.speed ? gprmcData.speed.kmh : null,
     gpsStatus: typeof gprmcData.gps !== 'undefined' ? gprmcData.gps : false,
@@ -29,10 +28,10 @@ module.exports = raw => {
       raw: match.slice(20, 32).join(''),
       sos: match[20] === '1',
       input: {
-        '1': match[24] === '1',
-        '2': match[25] === '1',
-        '3': match[26] === '1',
-        '4': match[27] === '1',
+        '1': match[22] === '1',
+        '2': match[23] === '1',
+        '3': match[24] === '1',
+        '4': match[25] === '1',
         '5': match[21] === '1'
       },
       output: {
@@ -55,5 +54,6 @@ module.exports = raw => {
     serialId: parseInt(match[42], 10),
     valid: utils.isValid(match[0], parseInt(match[1], 16), parseInt(match[43], 16))
   };
+  data.alarm = utils.getAlarm(match[3], data.speed);
   return data;
 };
