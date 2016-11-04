@@ -1,3 +1,10 @@
+#### 3.0.3 (2016-11-4)
+
+##### Chores
+
+* **tests:** Remove last test ([3fc649c8](https://github.com/lgaticaq/tz-parser/commit/3fc649c8bc368635dcb2483c10be406f83c5a4b7))
+* **package:** update eslint to version 3.9.0 ([d89a4ada](https://github.com/lgaticaq/tz-parser/commit/d89a4ada53e2d2d8050fa9dcc32b005d99a48ec4))
+
 #### 3.0.2 (2016-11-4)
 
 ##### Chores
