@@ -1,3 +1,19 @@
+#### 3.0.2 (2016-11-4)
+
+##### Chores
+
+* **package:** Update dependencies ([07bdc2f3](https://github.com/lgaticaq/tz-parser/commit/07bdc2f3d80d58fa41ecc72aace5e9de4ce65395))
+* **tests:** Add alarm tests ([c09f734c](https://github.com/lgaticaq/tz-parser/commit/c09f734cf434ca71650c11085fcf3561aa111485))
+
+##### New Features
+
+* **utils:** Add message to getAlarm ([74e1108f](https://github.com/lgaticaq/tz-parser/commit/74e1108f37f53fb2349105e54947744113344abb))
+* **messages:** Add alarms messages ([79a0c058](https://github.com/lgaticaq/tz-parser/commit/79a0c058ec9a870f461c8892a196c81887160d06))
+
+##### Bug Fixes
+
+* **avl05:** Fix parse input status ([d4d775c2](https://github.com/lgaticaq/tz-parser/commit/d4d775c2c745545de18a37673e1faf0f168622fe))
+
 #### 3.0.1 (2016-10-25)
 
 ##### Chores
