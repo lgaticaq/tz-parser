@@ -50,7 +50,7 @@
   "SETPICTUREPACKET": "Ajuste de cantidad de paquetes enviados por imagen",
   "default": "Última acción",
   "01": "Botón SOS presionado",
-  "49": "Entrada digital 5 desactivada",
+  "49": "Entrada digital 5 activada",
   "09": "Dispositivo apagado",
   "10": "Batería baja",
   "11": "Exceso de Velocidad ${speed} km/h)",

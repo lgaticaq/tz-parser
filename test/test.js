@@ -726,8 +726,8 @@ describe('tz-parzer', () => {
     expect(data.imei).to.eql('869444005480041');
     expect(data.alarm.type).to.eql('DI');
     expect(data.alarm.number).to.eql(5);
-    expect(data.alarm.status).to.be.false;
-    expect(data.alarm.message).to.eql('Entrada digital 5 desactivada');
+    expect(data.alarm.status).to.be.true;
+    expect(data.alarm.message).to.eql('Entrada digital 5 activada');
     expect(data.loc.type).to.eql('Point');
     expect(data.loc.coordinates).to.eql([-70.51273333333333, -33.361225]);
     expect(data.speed).to.eql(0);

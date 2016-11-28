@@ -24,7 +24,7 @@ const getAlarm = (alarm, speed, rfid) => {
   const messages = langs['es'];
   const alarmTypes = {
     '01': {type: 'SOS_Button', message: messages[alarm]},
-    '49': {type: 'DI', number: 5, status: false, message: messages[alarm]},
+    '49': {type: 'DI', number: 5, status: true, message: messages[alarm]},
     '09': {type: 'Auto_Shutdown', message: messages[alarm]},
     '10': {type: 'Low_Battery', message: messages[alarm]},
     '11': {type: 'Over_Speed', status: true, message: messages[alarm].replace('${speed}', Math.round(speed))},
