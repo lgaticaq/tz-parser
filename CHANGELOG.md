@@ -1,3 +1,18 @@
+#### 3.0.4 (2016-11-28)
+
+##### Chores
+
+* **travis:** Update node version ([1728753a](https://github.com/lgaticaq/tz-parser/commit/1728753a22ac91ac6d887fe83934d0fee48cce62))
+* **nvm:** Update node version ([ecb935ac](https://github.com/lgaticaq/tz-parser/commit/ecb935ac023ff9af2664ea43ce8487a2984a35b7))
+* **npm:** Update ignores ([eac7d3e1](https://github.com/lgaticaq/tz-parser/commit/eac7d3e13abe65fdc8ffe66d6c4b1883725014cf))
+* **package:**
+  * Update dependencies ([677c9657](https://github.com/lgaticaq/tz-parser/commit/677c9657c6ef660843621d2da81cc1d060d6b471))
+  * update crc to version 3.4.1 ([3dbcda4c](https://github.com/lgaticaq/tz-parser/commit/3dbcda4c2549a8c7445a0cbd53304b1165096beb))
+
+##### Bug Fixes
+
+* **alarms:** Fix status and message of alarm type 49 ([76e50b98](https://github.com/lgaticaq/tz-parser/commit/76e50b9853513be1380f5761d2a8f3198f3a48e7))
+
 #### 3.0.3 (2016-11-4)
 
 ##### Chores
