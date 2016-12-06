@@ -1,3 +1,13 @@
+#### 3.0.5 (2016-12-6)
+
+##### Chores
+
+* **package:** Update dependencies ([7ad95f15](https://github.com/lgaticaq/tz-parser/commit/7ad95f1536b117d5450e68fe072f4899b3d73fe9))
+
+##### Bug Fixes
+
+* **alarms:** Fix parse DI alarms ([bbf8508a](https://github.com/lgaticaq/tz-parser/commit/bbf8508a3cbe9d1a382627e25eb26f43c8249557))
+
 #### 3.0.4 (2016-11-28)
 
 ##### Chores
