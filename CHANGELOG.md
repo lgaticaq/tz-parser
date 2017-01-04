@@ -1,3 +1,13 @@
+#### 3.0.6 (2017-1-4)
+
+##### Chores
+
+* **package:** Update dependencies ([27e467f7](https://github.com/lgaticaq/tz-parser/commit/27e467f75fe20d1d3364c560a4a46cc81a024c8a))
+
+##### Bug Fixes
+
+* **messages:** Fix message for event 11 ([d30e5204](https://github.com/lgaticaq/tz-parser/commit/d30e5204a82b7a3e06e414a996ea7669d633e6b9))
+
 #### 3.0.5 (2016-12-6)
 
 ##### Chores
