@@ -860,7 +860,7 @@ describe('tz-parzer', () => {
     expect(data.imei).to.eql('869444005480041');
     expect(data.alarm.type).to.eql('Over_Speed');
     expect(data.alarm.status).to.be.true;
-    expect(data.alarm.message).to.eql('Exceso de Velocidad 115 km/h)');
+    expect(data.alarm.message).to.eql('Exceso de Velocidad 115 (km/h)');
     expect(data.loc.type).to.eql('Point');
     expect(data.loc.coordinates).to.eql([-70.51273333333333, -33.361225]);
     expect(data.speed).to.eql(114.82400000000001);
