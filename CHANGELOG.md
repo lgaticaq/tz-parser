@@ -1,3 +1,21 @@
+#### 3.0.7 (2017-2-17)
+
+##### Chores
+
+* **package:**
+  * Replace moment with date-fns ([cbc72d42](https://github.com/lgaticaq/tz-parser/commit/cbc72d4218170beab87d65777ec71c1406e93f76))
+  * Upgrade codeclimate-test-reporter to v0.4.1 ([c74b1a3b](https://github.com/lgaticaq/tz-parser/commit/c74b1a3bb40af4b4295a175e77d671d88f7517b7))
+  * Upgrade coveralls to v2.11.16 ([95b19b89](https://github.com/lgaticaq/tz-parser/commit/95b19b8947b110fb7ee7155a3cb0df87cad58222))
+  * Upgrade eslint to v3.15.0 ([b4bca9bd](https://github.com/lgaticaq/tz-parser/commit/b4bca9bd2fd76fc3b54b7af0917130f5a5118718))
+
+##### Documentation Changes
+
+* **LICENSE:** Update year ([fc770e06](https://github.com/lgaticaq/tz-parser/commit/fc770e06911b4659d21cd2da4f48a5eecd1e515f))
+
+##### Bug Fixes
+
+* **travis:** Fix yarn cache ([86ecebd9](https://github.com/lgaticaq/tz-parser/commit/86ecebd9e7d00121488db63f8f664d8831819944))
+
 #### 3.0.6 (2017-1-4)
 
 ##### Chores
