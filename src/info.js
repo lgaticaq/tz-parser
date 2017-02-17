@@ -1,6 +1,6 @@
 'use strict';
 
-const moment = require('moment');
+const dateParse = require('date-fns/parse');
 const patterns = require('./patterns');
 
 module.exports = data => {
@@ -18,6 +18,9 @@ module.exports = data => {
     gsm: parseInt(match[7], 10),
     battery: parseFloat(match[8]),
     odometer: parseFloat(match[9]),
-    datetime: moment(`${match[10]} +00:00`, 'DD/MM/YY HH:mm:ss ZZ').toDate()
+    datetime: dateParse(
+      match[10].replace(
+        /(\d{2})\/(\d{2})\/(\d{2}) (\d{2}:\d{2}:\d{2})/,
+        '20$3-$2-$1T$4+00:00'))
   };
 };

@@ -1,6 +1,6 @@
 'use strict';
 
-const moment = require('moment');
+const dateParse = require('date-fns/parse');
 const nmea = require('node-nmea');
 const patterns = require('./patterns');
 const utils = require('./utils');
@@ -37,7 +37,10 @@ module.exports = raw => {
       },
       charge: match[33] === '1'
     },
-    datetime: moment(`${match[32]}+00:00`, 'YYYYMMDDHHmmssZZ').toDate(),
+    datetime: dateParse(
+      match[32].replace(
+        /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
+        '$1-$2-$3T$4:$5:$6+00:00')),
     voltage: {
       battery: parseInt(match[34], 10) / 100,
       inputCharge: parseInt(match[35], 10) / 100
