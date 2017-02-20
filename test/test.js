@@ -285,19 +285,41 @@ describe('tz-parzer', () => {
   it('should return TZ-INFO data parsed', () => {
     const raw = new Buffer('Lat:-3321.6664S\r\nLong:-07030.8921W\r\nSpd:000km/h\r\nFix:A\r\nSat:04\r\nHDOP:02.2\r\nGSM:29\r\nBatt:04.01V\r\nMile:0.1527\r\nTime:19/02/16 15:00:17\r\n');
     const data = tz.parse(raw);
+
+    expect(data.raw).to.be.null;
     expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
-    expect(data.type).to.eql('info');
-    expect(data.latitude).to.eql('-3321.6664S');
-    expect(data.longitude).to.eql('-07030.8921W');
+    expect(data.model).to.be.null;
+    expect(data.type).to.eql('data');
+    expect(data.imei).to.be.null;
+    expect(data.loc.type).to.eql('Point');
+    expect(data.loc.coordinates).to.eql([-70.51486833333334, -33.361106666666664]);
     expect(data.speed).to.eql(0);
-    expect(data.fix).to.eql('A');
+    expect(data.gpsStatus).to.be.true;
+    expect(data.azimuth).to.be.null;
+    expect(data.magneticVariation).to.be.null;
+    expect(data.gpsMode).to.be.null;
     expect(data.sat).to.eql(4);
+    expect(data.pdop).to.be.null;
     expect(data.hdop).to.eql(2.2);
+    expect(data.vdop).to.be.null;
     expect(data.gsm).to.eql(29);
-    expect(data.battery).to.eql(4.01);
     expect(data.odometer).to.eql(0.1527);
     expect(data.datetime).to.eql(new Date('2016-02-19T15:00:17.000Z'));
+    expect(data.status.raw).to.be.null;
+    expect(data.status.sos).to.be.null;
+    expect(data.status.input).to.be.null;
+    expect(data.status.output).to.be.null;
+    expect(data.status.charge).to.be.null;
+    expect(data.voltage.battery).to.eql(4.01);
+    expect(data.voltage.inputCharge).to.be.null;
+    expect(data.voltage.ada).to.be.null;
+    expect(data.voltage.adb).to.be.null;
+    expect(data.lac).to.be.null;
+    expect(data.cid).to.be.null;
+    expect(data.temperature).to.be.null;
+    expect(data.serialId).to.be.null;
+    expect(data.valid).to.be.true;
   });
 
   it('should return TZ-FIRMWARE data parsed', () => {
@@ -620,6 +642,12 @@ describe('tz-parzer', () => {
     };
     const raw = tz.parseCommand(data);
     expect(raw).to.eql('*000000,404,0,300#');
+  });
+
+  it('should return raw get current position', () => {
+    const data = {instruction: 'get_current_position'};
+    const raw = tz.parseCommand(data);
+    expect(raw).to.eql('*000000,000#');
   });
 
   it('should return raw custom command', () => {

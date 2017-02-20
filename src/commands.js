@@ -110,6 +110,8 @@ const parseSetidle = data => {
   return `*${data.password},404,${digit},${data.times}#`;
 };
 
+const parseInfo = data => `*${data.password},000#`;
+
 const parseCommand = data => {
   let command = null;
   data.password = data.password || '000000';
@@ -133,7 +135,8 @@ const parseCommand = data => {
     {pattern: /^set_extend$/, parser: parseSetExtend2},
     {pattern: /^set_heartbeat_(on|off)$/, parser: parseSetHeartbeatSwitch},
     {pattern: /^set_interval_heartbeat$/, parser: parseSetHeartbeatInterval},
-    {pattern: /^set_idling_(on|off)$/, parser: parseSetidle}
+    {pattern: /^set_idling_(on|off)$/, parser: parseSetidle},
+    {pattern: /^get_current_position$/, parser: parseInfo}
   ];
   const parser = parsers.find(x => x.pattern.test(data.instruction));
   if (parser) {
