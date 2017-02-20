@@ -1,3 +1,13 @@
+### 3.1.0 (2017-2-20)
+
+##### Chores
+
+* **package:** Upgrade eslint to v3.16.0 ([73420a54](https://github.com/lgaticaq/tz-parser/commit/73420a545597e418a3516c228f028672e6303b6c))
+
+##### New Features
+
+* **parser:** Add parse command get_current_position and fix data in info ([aaf0ddb0](https://github.com/lgaticaq/tz-parser/commit/aaf0ddb066bee194995e4ba62ebe50b5b25233fb))
+
 #### 3.0.7 (2017-2-17)
 
 ##### Chores
