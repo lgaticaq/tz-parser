@@ -1,3 +1,9 @@
+#### 3.1.1 (2017-2-20)
+
+##### Bug Fixes
+
+* **parser:** Add alarm in info data ([12c07a90](https://github.com/lgaticaq/tz-parser/commit/12c07a90035527739829b36bbe73704e8b81b60a))
+
 ### 3.1.0 (2017-2-20)
 
 ##### Chores
