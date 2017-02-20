@@ -287,6 +287,8 @@ describe('tz-parzer', () => {
     const data = tz.parse(raw);
 
     expect(data.raw).to.be.null;
+    expect(data.alarm.type).to.eql('Gps');
+    expect(data.alarm.message).to.eql('Gps');
     expect(data.manufacturer).to.eql('tz');
     expect(data.device).to.eql('tz');
     expect(data.model).to.be.null;

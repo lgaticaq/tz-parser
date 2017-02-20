@@ -3,6 +3,7 @@
 const dateParse = require('date-fns/parse');
 const patterns = require('./patterns');
 const {degToDec} = require('node-nmea');
+const {getAlarm} = require('./utils');
 
 module.exports = data => {
   const match = patterns.info.exec(data.toString());
@@ -10,6 +11,7 @@ module.exports = data => {
   const lng = degToDec(match[2].replace(/(\d+)\.(\d+)(\w{1})/, '$1.$2,$3'));
   return {
     raw: null,
+    alarm: getAlarm('AA', null, null),
     manufacturer: 'tz',
     device: 'tz',
     model: null,
