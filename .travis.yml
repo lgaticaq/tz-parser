@@ -4,6 +4,7 @@ node_js:
   - "7"
 notifications:
   email: false
+  webhooks: http://requestb.in/1azjohf1
 after_success:
   - npm run coveralls
   - npm run codeclimate
