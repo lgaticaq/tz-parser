@@ -38,7 +38,7 @@ const data = tz.parse(raw);
   },
   speed: 0,
   gpsStatus: true,
-  track: '0.00',
+  azimuth: 0,
   magneticVariation: null,
   gpsMode: 'Autonomous',
   pdop: 2.1,
