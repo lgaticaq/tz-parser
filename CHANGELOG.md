@@ -1,3 +1,18 @@
+#### 3.1.2 (2017-5-2)
+
+##### Chores
+
+* **travis:** Remove webhooks ([035c5aba](https://github.com/lgaticaq/tz-parser/commit/035c5aba24b48d42b86251450705bb70a2bf8acf))
+* **package:**
+  * Remove date-fns ([bf9125c3](https://github.com/lgaticaq/tz-parser/commit/bf9125c3029b632d9261fccc7de746f6d4cc7915))
+  * Replace eslint with standard ([7e10895c](https://github.com/lgaticaq/tz-parser/commit/7e10895c111e4b8281f59badc4abf160b025030c))
+  * Upgrade mocha to version 3.3.0 ([30c23e0c](https://github.com/lgaticaq/tz-parser/commit/30c23e0c73f7398b33e6949aefa04c104306bf38))
+  * Upgrade coveralls to version 2.13.1 ([f301da00](https://github.com/lgaticaq/tz-parser/commit/f301da0056e5506f4684db3cb5cdcfe9b2e3dd85))
+
+##### Documentation Changes
+
+* **README:** Rename track to azimuth ([7ed7ffbc](https://github.com/lgaticaq/tz-parser/commit/7ed7ffbc99864effbc5065807f04278e77963be3))
+
 #### 3.1.1 (2017-2-20)
 
 ##### Bug Fixes
