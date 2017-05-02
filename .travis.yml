@@ -4,7 +4,6 @@ node_js:
   - "7"
 notifications:
   email: false
-  webhooks: https://puumriblmw.localtunnel.me/travis-ci/eva-dev
 after_success:
   - npm run coveralls
   - npm run codeclimate
