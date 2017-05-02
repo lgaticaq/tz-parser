@@ -4,7 +4,7 @@
   "description": "Parse raw data from TZ-AVL devices",
   "main": "src",
   "scripts": {
-    "pretest": "eslint .",
+    "pretest": "standard src/**/*.js test/**/*.js",
     "test": "istanbul cover _mocha",
     "coveralls": "coveralls < coverage/lcov.info",
     "codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
@@ -41,35 +41,14 @@
     "chai": "^3.5.0",
     "codeclimate-test-reporter": "^0.4.1",
     "coveralls": "^2.13.1",
-    "eslint": "^3.16.0",
     "generate-changelog": "^1.1.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.3.0"
+    "mocha": "^3.3.0",
+    "standard": "^10.0.2"
   },
-  "eslintConfig": {
+  "standard": {
     "env": {
-      "es6": true,
-      "node": true,
       "mocha": true
-    },
-    "extends": "eslint:recommended",
-    "rules": {
-      "indent": [
-        2,
-        2
-      ],
-      "linebreak-style": [
-        2,
-        "unix"
-      ],
-      "quotes": [
-        2,
-        "single"
-      ],
-      "semi": [
-        2,
-        "always"
-      ]
     }
   },
   "tonicExampleFilename": "example.js"

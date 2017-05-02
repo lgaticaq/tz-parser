@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-const dateParse = require('date-fns/parse');
-const patterns = require('./patterns');
-const {degToDec} = require('node-nmea');
-const {getAlarm} = require('./utils');
+const dateParse = require('date-fns/parse')
+const patterns = require('./patterns')
+const {degToDec} = require('node-nmea')
+const {getAlarm} = require('./utils')
 
 module.exports = data => {
-  const match = patterns.info.exec(data.toString());
-  const lat = degToDec(match[1].replace(/(\d+)\.(\d+)(\w{1})/, '$1.$2,$3'));
-  const lng = degToDec(match[2].replace(/(\d+)\.(\d+)(\w{1})/, '$1.$2,$3'));
+  const match = patterns.info.exec(data.toString())
+  const lat = degToDec(match[1].replace(/(\d+)\.(\d+)(\w{1})/, '$1.$2,$3'))
+  const lng = degToDec(match[2].replace(/(\d+)\.(\d+)(\w{1})/, '$1.$2,$3'))
   return {
     raw: null,
     alarm: getAlarm('AA', null, null),
@@ -54,5 +54,5 @@ module.exports = data => {
     temperature: null,
     serialId: null,
     valid: true
-  };
-};
+  }
+}

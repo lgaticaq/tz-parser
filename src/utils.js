@@ -1,33 +1,33 @@
-'use strict';
+'use strict'
 
-const crc = require('crc');
-const langEs = require('./messages/es.json');
-const langs = {'es': langEs};
+const crc = require('crc')
+const langEs = require('./messages/es.json')
+const langs = {'es': langEs}
 
 const verifyCrc = (raw, checksum) => {
-  let crcData;
-  const idx = raw.lastIndexOf('|');
-  const data = raw.slice(0, idx + 1);
-  crcData = crc.crc16modbus(data);
-  return crcData === checksum;
-};
+  let crcData
+  const idx = raw.lastIndexOf('|')
+  const data = raw.slice(0, idx + 1)
+  crcData = crc.crc16modbus(data)
+  return crcData === checksum
+}
 
 const verifyLen = (raw, len) => {
-  return raw.replace('\r\n', '').length === len;
-};
+  return raw.replace('\r\n', '').length === len
+}
 
-const isValid = (raw, len, checksum) =>{
-  return verifyCrc(raw, checksum) && verifyLen(raw, len);
-};
+const isValid = (raw, len, checksum) => {
+  return verifyCrc(raw, checksum) && verifyLen(raw, len)
+}
 
 const getAlarm = (alarm, speed, rfid) => {
-  const messages = langs['es'];
+  const messages = langs['es']
   const alarmTypes = {
     '01': {type: 'SOS_Button', message: messages[alarm]},
     '49': {type: 'DI', number: 5, status: true, message: messages[alarm]},
     '09': {type: 'Auto_Shutdown', message: messages[alarm]},
     '10': {type: 'Low_Battery', message: messages[alarm]},
-    '11': {type: 'Over_Speed', status: true, message: messages[alarm].replace('${speed}', Math.round(speed))},
+    '11': {type: 'Over_Speed', status: true, message: messages[alarm].replace('{{speed}}', Math.round(speed))},
     '13': {type: 'Over_Speed', status: false, message: messages[alarm]},
     '14': {type: 'Aceleration', status: true, message: messages[alarm]},
     '15': {type: 'Aceleration', status: false, message: messages[alarm]},
@@ -44,17 +44,17 @@ const getAlarm = (alarm, speed, rfid) => {
     '57': {type: 'DI', number: 4, status: false, message: messages[alarm]},
     '60': {type: 'Charge', status: true, message: messages[alarm]},
     '61': {type: 'Charge', status: false, message: messages[alarm]},
-    '66': {type: 'Rfid', message: messages[alarm].replace('${rfid}', rfid)},
+    '66': {type: 'Rfid', message: messages[alarm].replace('{{rfid}}', rfid)},
     '77': {type: 'Angle', message: messages[alarm]},
     '88': {type: 'Heartbeat', message: messages[alarm]},
     '91': {type: 'Sleep', status: true, message: messages[alarm]},
     '92': {type: 'Sleep', status: false, message: messages[alarm]},
-    'AA': {type: 'Gps', message: messages[alarm]},
-  };
-  return alarmTypes[alarm];
-};
+    'AA': {type: 'Gps', message: messages[alarm]}
+  }
+  return alarmTypes[alarm]
+}
 
 module.exports = {
   isValid: isValid,
   getAlarm: getAlarm
-};
+}

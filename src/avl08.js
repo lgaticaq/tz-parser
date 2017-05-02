@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-const dateParse = require('date-fns/parse');
-const nmea = require('node-nmea');
-const patterns = require('./patterns');
-const utils = require('./utils');
+const dateParse = require('date-fns/parse')
+const nmea = require('node-nmea')
+const patterns = require('./patterns')
+const utils = require('./utils')
 
 module.exports = raw => {
-  const match = patterns.avl08.exec(raw.toString());
-  const gprmcData = nmea.parse(match[4]);
+  const match = patterns.avl08.exec(raw.toString())
+  const gprmcData = nmea.parse(match[4])
   const data = {
     raw: match[0],
     manufacturer: 'tz',
@@ -60,6 +60,6 @@ module.exports = raw => {
     serialId: parseInt(match[42], 10),
     rfidNumber: match[43] || null,
     valid: utils.isValid(match[0], parseInt(match[1], 16), parseInt(match[44], 16))
-  };
-  return data;
-};
+  }
+  return data
+}
