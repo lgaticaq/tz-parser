@@ -1,6 +1,5 @@
 'use strict'
 
-const dateParse = require('date-fns/parse')
 const patterns = require('./patterns')
 const {degToDec} = require('node-nmea')
 const {getAlarm} = require('./utils')
@@ -32,7 +31,7 @@ module.exports = data => {
     vdop: null,
     gsm: parseInt(match[7], 10),
     odometer: parseFloat(match[9]),
-    datetime: dateParse(
+    datetime: new Date(
       match[10].replace(
         /(\d{2})\/(\d{2})\/(\d{2}) (\d{2}:\d{2}:\d{2})/,
         '20$3-$2-$1T$4+00:00')),
