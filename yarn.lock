@@ -790,9 +790,9 @@ function-bind@^1.0.2, function-bind@^1.1.0, function-bind@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
 
-generate-changelog@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/generate-changelog/-/generate-changelog-1.5.0.tgz#1ec4f88f58539b174d01e1bf6f993b857b470866"
+generate-changelog@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/generate-changelog/-/generate-changelog-1.6.0.tgz#faf302bbc83b147cafe38bfb10487f560f1ad640"
   dependencies:
     bluebird "^3.0.6"
     commander "^2.9.0"
