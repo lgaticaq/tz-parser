@@ -1,3 +1,42 @@
+#### 3.1.3 (2017-11-24)
+
+##### Chores
+
+* **renovate:** remove renovate ([c2be9453](https://github.com/lgaticaq/tz-parser/commit/c2be9453e678542a9af05bc443628b8b96021403))
+* **eslint:** remove eslintignore ([37dea7d4](https://github.com/lgaticaq/tz-parser/commit/37dea7d4e720b6623baa463ae61f6ec6ff30d809))
+* **nvm:** update node to v9 ([e20839a8](https://github.com/lgaticaq/tz-parser/commit/e20839a824f19594ad0ca6f593d022387b907647))
+* **package:**
+  * update dependencies ([1efc432e](https://github.com/lgaticaq/tz-parser/commit/1efc432e664ed11a7adbe6a3abc7466b283dbc3b))
+  * update chai to version 4.0.0 ([bff38026](https://github.com/lgaticaq/tz-parser/commit/bff3802627b4dafe480ca0d0ced1898b072ea669))
+* **deps:**
+  * update dependency generate-changelog to v1.6.0 ([a89aa950](https://github.com/lgaticaq/tz-parser/commit/a89aa9508888f07eb4e69032e17ccabf1bf09a84))
+  * update dependency mocha to v4.0.1 ([3219974a](https://github.com/lgaticaq/tz-parser/commit/3219974aecc45c6f24afff8389e0d4ac8c87950e))
+  * update dependency mocha to v4.0.0 ([7b99df99](https://github.com/lgaticaq/tz-parser/commit/7b99df999260d8048bc886670a5b434f6df198fc))
+  * update dependency coveralls to v3.0.0 ([bb8b6181](https://github.com/lgaticaq/tz-parser/commit/bb8b618125aa71426912abe4ef0bee57df362f12))
+  * update dependency coveralls to v2.13.3 ([e4fa9e38](https://github.com/lgaticaq/tz-parser/commit/e4fa9e38d9b5da35c779113d8d9406c265e80d6a))
+  * update dependency coveralls to v2.13.2 ([06fc8d50](https://github.com/lgaticaq/tz-parser/commit/06fc8d502f46bca3b7978dd8cd11d1b921cadedc))
+  * update dependency generate-changelog to v1.5.0 ([82860839](https://github.com/lgaticaq/tz-parser/commit/828608396d65fe733ebd3fb6ffb760794014ea3b))
+  * update dependency mocha to v3.5.3 ([65f78863](https://github.com/lgaticaq/tz-parser/commit/65f788631a0b75bd3f9c32ac69c2ced5288a9146))
+  * update dependency mocha to v3.5.2 ([c3f56987](https://github.com/lgaticaq/tz-parser/commit/c3f569876c131792081ac408b546c0e9c79c9a8a))
+  * update dependency mocha to v3.5.1 ([1e97fc60](https://github.com/lgaticaq/tz-parser/commit/1e97fc60d82ddf62d95124d0461d3c4111feef35))
+  * update dependency codeclimate-test-reporter to v0.5.0 ([849e60b6](https://github.com/lgaticaq/tz-parser/commit/849e60b6f74f4c08a4df71cb37eae3c33d482046))
+
+##### Continuous Integration
+
+* **node:** update node versions ([1e7f02bd](https://github.com/lgaticaq/tz-parser/commit/1e7f02bd6387a1d2d446973459d48c3f1aeacaf8))
+
+##### Documentation Changes
+
+* **badges:** update codeclimate badge ([f3933fe9](https://github.com/lgaticaq/tz-parser/commit/f3933fe98582a653d13555caff15e6a9c0cff33a))
+
+##### Refactors
+
+* **deps:** renovate pin dependencies packages ([9a3ce186](https://github.com/lgaticaq/tz-parser/commit/9a3ce1860eae4475e4ba47a8e00fdf2b466a0b87))
+
+##### Code Style Changes
+
+* **prettier:** format code with prettier ([73ada633](https://github.com/lgaticaq/tz-parser/commit/73ada633ec92ecb5691ea619daa9747dfb7b1ecc))
+
 #### 3.1.2 (2017-5-2)
 
 ##### Chores
