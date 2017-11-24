@@ -4,16 +4,17 @@
   "description": "Parse raw data from TZ-AVL devices",
   "main": "src",
   "scripts": {
-    "pretest": "standard src/**/*.js test/**/*.js",
+    "lint": "eslint . --fix",
+    "format": "prettier-standard 'src/**/*.js' 'test/**/*.js'",
+    "precommit": "lint-staged",
+    "pretest": "npm run lint -s && npm run format -s",
     "test": "istanbul cover _mocha",
-    "coveralls": "coveralls < coverage/lcov.info",
-    "codeclimate": "codeclimate-test-reporter < coverage/lcov.info",
     "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags && npm publish",
     "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags && npm publish",
     "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags && npm publish"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   },
   "repository": {
     "type": "git",
@@ -33,22 +34,52 @@
   },
   "homepage": "https://github.com/lgaticaq/tz-parser#readme",
   "dependencies": {
-    "crc": "^3.4.4",
-    "node-nmea": "^1.0.3"
+    "crc": "3.5.0",
+    "node-nmea": "1.0.4"
   },
   "devDependencies": {
     "chai": "4.1.2",
-    "codeclimate-test-reporter": "0.5.0",
-    "coveralls": "3.0.0",
+    "eslint-config-standard": "10.2.1",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-node": "5.2.1",
+    "eslint-plugin-promise": "3.6.0",
+    "eslint-plugin-standard": "3.0.1",
     "generate-changelog": "1.6.0",
+    "husky": "0.14.3",
     "istanbul": "0.4.5",
+    "lint-staged": "5.0.0",
     "mocha": "4.0.1",
-    "standard": "10.0.3"
+    "prettier-standard": "7.0.3"
   },
-  "standard": {
-    "env": {
-      "mocha": true
+  "eslintConfig": {
+    "extends": "standard",
+    "rules": {
+      "no-console": [
+        "error"
+      ]
     }
   },
-  "tonicExampleFilename": "example.js"
+  "eslintIgnore": [
+    "coverage",
+    "example.js"
+  ],
+  "lint-staged": {
+    "src/**/*.js": [
+      "eslint --fix",
+      "prettier-standard",
+      "git add"
+    ],
+    "test/**/*.js": [
+      "eslint --fix",
+      "prettier-standard",
+      "git add"
+    ]
+  },
+  "tonicExampleFilename": "example.js",
+  "renovate": {
+    "automerge": "minor",
+    "extends": [
+      ":library"
+    ]
+  }
 }
