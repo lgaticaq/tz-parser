@@ -1,8 +1,8 @@
 'use strict'
 
 const patterns = require('./patterns')
-const {degToDec} = require('node-nmea')
-const {getAlarm} = require('./utils')
+const { degToDec } = require('node-nmea')
+const { getAlarm } = require('./utils')
 
 module.exports = data => {
   const match = patterns.info.exec(data.toString())
@@ -34,7 +34,9 @@ module.exports = data => {
     datetime: new Date(
       match[10].replace(
         /(\d{2})\/(\d{2})\/(\d{2}) (\d{2}:\d{2}:\d{2})/,
-        '20$3-$2-$1T$4+00:00')),
+        '20$3-$2-$1T$4+00:00'
+      )
+    ),
     status: {
       raw: null,
       sos: null,

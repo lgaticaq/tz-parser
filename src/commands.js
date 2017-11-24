@@ -6,8 +6,10 @@ const parseSetUserPassword = data => {
 
 const parseSetIoSwitch = data => {
   const _data = data.instruction.split('_')
-  const ports = {'1': 'A', '2': 'B', '3': 'C', '4': 'D'}
-  return `*${data.password},025,${ports[_data[0]]},${_data[1] === 'on' ? 1 : 0}#`
+  const ports = { '1': 'A', '2': 'B', '3': 'C', '4': 'D' }
+  return `*${data.password},025,${ports[_data[0]]},${_data[1] === 'on'
+    ? 1
+    : 0}#`
 }
 
 const parseSetSysSwitch = data => {
@@ -25,7 +27,9 @@ const parseSetGprsInterval = data => {
 
 const parseSetPhoneSmsForSos = data => {
   const state = data.instruction.split('_')[0]
-  return `*${data.password},003,0,${state === 'set' ? 1 : 0},00569${data.number},00569${data.number}#`
+  return `*${data.password},003,0,${state === 'set'
+    ? 1
+    : 0},00569${data.number},00569${data.number}#`
 }
 
 const parseSetOverSpeedAlarm = data => {
@@ -48,7 +52,7 @@ const parseGetpicture = data => {
 }
 
 const parseSetiopicture = data => {
-  const triggers = {on: 1, off: 2, both: 3}
+  const triggers = { on: 1, off: 2, both: 3 }
   const trigger = triggers[data.trigger || 'both']
   const number = data.number || 1
   return `*${data.password},201,${data.port},${trigger},${number}#`
@@ -80,7 +84,7 @@ const parseRboot = data => {
   return `*${data.password},991#`
 }
 
-const parseExtendComponent = data => data ? 1 : 0
+const parseExtendComponent = data => (data ? 1 : 0)
 
 const parseSetExtend2 = data => {
   const a = parseExtendComponent(data.a)
@@ -116,27 +120,30 @@ const parseCommand = data => {
   let command = null
   data.password = data.password || '000000'
   const parsers = [
-    {pattern: /^set_password$/, parser: parseSetUserPassword},
-    {pattern: /^[1-4]{1}_(on|off)$/, parser: parseSetIoSwitch},
-    {pattern: /^gprs_(on|off)$/, parser: parseSetSysSwitch},
-    {pattern: /^clear_mem$/, parser: parseClearbuf},
-    {pattern: /^set_interval_gprs$/, parser: parseSetGprsInterval},
-    {pattern: /^(set|setoff)_sos_number(E)?$/, parser: parseSetPhoneSmsForSos},
-    {pattern: /^set_speed_(on|off)(E)?$/, parser: parseSetOverSpeedAlarm},
-    {pattern: /^picture$/, parser: parseSetpictureinterval},
-    {pattern: /^take_picture$/, parser: parseGetpicture},
-    {pattern: /^configure_io_picture$/, parser: parseSetiopicture},
-    {pattern: /^Custom$/, parser: parseCustom},
-    {pattern: /^set_memory_(on|off)$/, parser: parseSetdataflash},
-    {pattern: /^set_tremble$/, parser: parseSetTrembleSwitch},
-    {pattern: /^set_into_sleep$/, parser: parseSetTrembleToSleep},
-    {pattern: /^set_wake_up$/, parser: parseSetTrembleToWakeup},
-    {pattern: /^reboot$/, parser: parseRboot},
-    {pattern: /^set_extend$/, parser: parseSetExtend2},
-    {pattern: /^set_heartbeat_(on|off)$/, parser: parseSetHeartbeatSwitch},
-    {pattern: /^set_interval_heartbeat$/, parser: parseSetHeartbeatInterval},
-    {pattern: /^set_idling_(on|off)$/, parser: parseSetidle},
-    {pattern: /^get_current_position$/, parser: parseInfo}
+    { pattern: /^set_password$/, parser: parseSetUserPassword },
+    { pattern: /^[1-4]{1}_(on|off)$/, parser: parseSetIoSwitch },
+    { pattern: /^gprs_(on|off)$/, parser: parseSetSysSwitch },
+    { pattern: /^clear_mem$/, parser: parseClearbuf },
+    { pattern: /^set_interval_gprs$/, parser: parseSetGprsInterval },
+    {
+      pattern: /^(set|setoff)_sos_number(E)?$/,
+      parser: parseSetPhoneSmsForSos
+    },
+    { pattern: /^set_speed_(on|off)(E)?$/, parser: parseSetOverSpeedAlarm },
+    { pattern: /^picture$/, parser: parseSetpictureinterval },
+    { pattern: /^take_picture$/, parser: parseGetpicture },
+    { pattern: /^configure_io_picture$/, parser: parseSetiopicture },
+    { pattern: /^Custom$/, parser: parseCustom },
+    { pattern: /^set_memory_(on|off)$/, parser: parseSetdataflash },
+    { pattern: /^set_tremble$/, parser: parseSetTrembleSwitch },
+    { pattern: /^set_into_sleep$/, parser: parseSetTrembleToSleep },
+    { pattern: /^set_wake_up$/, parser: parseSetTrembleToWakeup },
+    { pattern: /^reboot$/, parser: parseRboot },
+    { pattern: /^set_extend$/, parser: parseSetExtend2 },
+    { pattern: /^set_heartbeat_(on|off)$/, parser: parseSetHeartbeatSwitch },
+    { pattern: /^set_interval_heartbeat$/, parser: parseSetHeartbeatInterval },
+    { pattern: /^set_idling_(on|off)$/, parser: parseSetidle },
+    { pattern: /^get_current_position$/, parser: parseInfo }
   ]
   const parser = parsers.find(x => x.pattern.test(data.instruction))
   if (parser) {

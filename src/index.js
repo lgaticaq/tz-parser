@@ -13,17 +13,17 @@ const info = require('./info')
 const map = require('./map')
 
 const parse = raw => {
-  let result = {type: 'UNKNOWN', raw: raw.toString()}
+  let result = { type: 'UNKNOWN', raw: raw.toString() }
   const _patterns = [
-    {pattern: patterns.avl05, parser: avl05},
-    {pattern: patterns.avl08, parser: avl08},
-    {pattern: patterns.avl201, parser: avl201},
-    {pattern: patterns.receiveOk, parser: responses.getCommand},
-    {pattern: patterns.picture, parser: pictures},
-    {pattern: patterns.receiveErr, parser: errors},
-    {pattern: patterns.info, parser: info},
-    {pattern: patterns.firmware, parser: firmware},
-    {pattern: patterns.map, parser: map}
+    { pattern: patterns.avl05, parser: avl05 },
+    { pattern: patterns.avl08, parser: avl08 },
+    { pattern: patterns.avl201, parser: avl201 },
+    { pattern: patterns.receiveOk, parser: responses.getCommand },
+    { pattern: patterns.picture, parser: pictures },
+    { pattern: patterns.receiveErr, parser: errors },
+    { pattern: patterns.info, parser: info },
+    { pattern: patterns.firmware, parser: firmware },
+    { pattern: patterns.map, parser: map }
   ]
   const parser = _patterns.find(x => x.pattern.test(raw.toString()))
   if (parser) {
@@ -33,7 +33,9 @@ const parse = raw => {
 }
 
 const isTz = raw => {
-  const pattern = Object.keys(patterns).map(x => patterns[x]).find(x => x.test(raw.toString()))
+  const pattern = Object.keys(patterns)
+    .map(x => patterns[x])
+    .find(x => x.test(raw.toString()))
   return typeof pattern !== 'undefined'
 }
 

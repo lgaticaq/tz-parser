@@ -18,7 +18,10 @@ module.exports = raw => {
     speed: gprmcData.speed ? gprmcData.speed.kmh : null,
     gpsStatus: typeof gprmcData.gps !== 'undefined' ? gprmcData.gps : false,
     azimuth: typeof gprmcData.track !== 'undefined' ? gprmcData.track : null,
-    magneticVariation: typeof gprmcData.magneticVariation !== 'undefined' ? gprmcData.magneticVariation : null,
+    magneticVariation:
+      typeof gprmcData.magneticVariation !== 'undefined'
+        ? gprmcData.magneticVariation
+        : null,
     gpsMode: typeof gprmcData.mode !== 'undefined' ? gprmcData.mode : null,
     pdop: parseFloat(match[17]),
     hdop: parseFloat(match[18]),
@@ -42,7 +45,9 @@ module.exports = raw => {
     datetime: new Date(
       match[32].replace(
         /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,
-        '$1-$2-$3T$4:$5:$6+00:00')),
+        '$1-$2-$3T$4:$5:$6+00:00'
+      )
+    ),
     voltage: {
       battery: parseInt(match[34], 10) / 100,
       inputCharge: parseInt(match[35], 10) / 100,
@@ -54,7 +59,11 @@ module.exports = raw => {
     temperature: parseFloat(match[40]) / 10,
     odometer: parseFloat(match[41]),
     serialId: parseInt(match[42], 10),
-    valid: utils.isValid(match[0], parseInt(match[1], 16), parseInt(match[43], 16))
+    valid: utils.isValid(
+      match[0],
+      parseInt(match[1], 16),
+      parseInt(match[43], 16)
+    )
   }
   data.alarm = utils.getAlarm(match[3], data.speed)
   return data

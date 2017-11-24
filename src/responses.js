@@ -3,7 +3,7 @@
 const nmea = require('node-nmea')
 const patterns = require('./patterns')
 const langEs = require('./messages/es.json')
-const langs = {'es': langEs}
+const langs = { es: langEs }
 
 const parseSetUserPassword = extra => {
   return {
@@ -25,7 +25,7 @@ const parseSetIntervalOfSms = extra => {
 const parseSetPhoneSmsForSos = extra => {
   return {
     command: 'SETPHONESMSFORSOS',
-    enable: ((extra[0] === '0') && (extra[1] === '1')),
+    enable: extra[0] === '0' && extra[1] === '1',
     callNumber: extra[2],
     smsNumber: extra[3]
   }
@@ -73,7 +73,7 @@ const parseSetGeofenceAlarm = extra => {
   const lat2 = extra[2]
   const lon2 = extra[3]
   const y = extra[5]
-  const data = {command: 'SETGEOFENCEALARM'}
+  const data = { command: 'SETGEOFENCEALARM' }
   if (y === '0') {
     data.enable = false
   } else {
@@ -81,13 +81,15 @@ const parseSetGeofenceAlarm = extra => {
     data.mode = y === '1' ? 'inside' : 'outside'
     data.geojson = {
       type: 'Polygon',
-      coordinates: [[
-        [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat2))],
-        [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat1))],
-        [nmea.degToDec(parseDir(lon1)), nmea.degToDec(parseDir(lat1))],
-        [nmea.degToDec(parseDir(lon1)), nmea.degToDec(parseDir(lat2))],
-        [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat2))]
-      ]]
+      coordinates: [
+        [
+          [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat2))],
+          [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat1))],
+          [nmea.degToDec(parseDir(lon1)), nmea.degToDec(parseDir(lat1))],
+          [nmea.degToDec(parseDir(lon1)), nmea.degToDec(parseDir(lat2))],
+          [nmea.degToDec(parseDir(lon2)), nmea.degToDec(parseDir(lat2))]
+        ]
+      ]
     }
   }
   return data
@@ -110,7 +112,7 @@ const parseSetExtend = extra => {
 }
 
 const parseSetGsmBaud = extra => {
-  const data = {command: 'SETGSMBAUD'}
+  const data = { command: 'SETGSMBAUD' }
   if (extra[0] === '0') {
     data.band = '900/1800'
   } else if (extra[0] === '1') {
@@ -188,7 +190,7 @@ const parseSetSleepSwitch = extra => {
 }
 
 const parseSetIoSwitch = extra => {
-  const ports = {'A': 1, 'B': 2, 'C': 3, 'D': 4}
+  const ports = { A: 1, B: 2, C: 3, D: 4 }
   return {
     command: 'SETIOSWITCH',
     enable: extra[1] === '1',
@@ -213,7 +215,7 @@ const parseSetHeartbeatInterval = extra => {
 }
 
 const parseSetHeartbeatIntit = () => {
-  return {command: 'SETHEARTBEATINIT'}
+  return { command: 'SETHEARTBEATINIT' }
 }
 
 const parseSetTrembleToSleep = extra => {
@@ -238,11 +240,11 @@ const parseSetParkingAlarm = extra => {
 }
 
 const parseFactoryReset = () => {
-  return {command: 'FACTORYRESET'}
+  return { command: 'FACTORYRESET' }
 }
 
 const parseRboot = () => {
-  return {command: 'RBOOT'}
+  return { command: 'RBOOT' }
 }
 
 const parseSetOilSenser = extra => {
@@ -305,7 +307,7 @@ const parseSetPin = extra => {
 
 const parseSetAngle = extra => {
   const x = extra[0]
-  const data = {command: 'SETANGLE'}
+  const data = { command: 'SETANGLE' }
   if (x === '0') {
     data.enable = false
   } else if (x === '1') {
@@ -378,11 +380,11 @@ const parseSetpictureinterval = extra => {
 }
 
 const parseClearbuf = () => {
-  return {command: 'CLEARBUF'}
+  return { command: 'CLEARBUF' }
 }
 
 const parseGetpicture = () => {
-  return {command: 'GETPICTURE'}
+  return { command: 'GETPICTURE' }
 }
 
 const parseSetdataflash = extra => {
@@ -436,18 +438,18 @@ const parseSetintervalgprsstandby = extra => {
 const parseSetiopicture = extra => {
   const x = extra[0]
   const y = extra[1]
-  let data = {command: 'SETIOPICTURE'}
+  let data = { command: 'SETIOPICTURE' }
   const dataX = {
-    '0': {enable: false, port: null},
-    '1': {enable: true, port: 4},
-    '2': {enable: true, port: 3},
-    '3': {enable: true, port: 2},
-    '4': {enable: true, port: 1}
+    '0': { enable: false, port: null },
+    '1': { enable: true, port: 4 },
+    '2': { enable: true, port: 3 },
+    '3': { enable: true, port: 2 },
+    '4': { enable: true, port: 1 }
   }
   const dataY = {
-    '1': {mode: 'open'},
-    '2': {mode: 'close'},
-    '3': {mode: 'both'}
+    '1': { mode: 'open' },
+    '2': { mode: 'close' },
+    '3': { mode: 'both' }
   }
   data = Object.assign(dataX[x], data)
   data = Object.assign(dataY[y], data)

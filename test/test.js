@@ -1,18 +1,23 @@
 'use strict'
 
+const { describe, it } = require('mocha')
 const tz = require('../src')
 const expect = require('chai').expect
 
 describe('tz-parzer', () => {
   it('should return UNKNOWN data parsed', () => {
-    const raw = Buffer.from('+RESP:GTFRI,350302,867844003012625,,12372,10,1,0,0.0,0,820.8,-70.514872,-33.361021,20160811154617,0730,0002,7410,C789,00,0.0,00000:15:30,2788,705,164,0D,00,,,20160811154651,061D$')
+    const raw = Buffer.from(
+      '+RESP:GTFRI,350302,867844003012625,,12372,10,1,0,0.0,0,820.8,-70.514872,-33.361021,20160811154617,0730,0002,7410,C789,00,0.0,00000:15:30,2788,705,164,0D,00,,,20160811154651,061D$'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.type).to.eql('UNKNOWN')
   })
 
   it('should return TZ-AVL05 data parsed with invalid checksum', () => {
-    const raw = Buffer.from('$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995A\r\n')
+    const raw = Buffer.from(
+      '$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995A\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -55,7 +60,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL05 data parsed', () => {
-    const raw = Buffer.from('$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|2FBD\r\n')
+    const raw = Buffer.from(
+      '$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|2FBD\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -98,7 +105,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL05 data with empty GPRMC parsed', () => {
-    const raw = Buffer.from('$$AE869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|6CCB\r\n')
+    const raw = Buffer.from(
+      '$$AE869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|6CCB\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -134,7 +143,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL08 data parsed', () => {
-    const raw = Buffer.from('$$C1869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|010010110011|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|0123456789|7986\r\n')
+    const raw = Buffer.from(
+      '$$C1869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|010010110011|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|0123456789|7986\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -180,7 +191,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL08 data with empty GPRMC parsed', () => {
-    const raw = Buffer.from('$$AF869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100||8195\r\n')
+    const raw = Buffer.from(
+      '$$AF869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100||8195\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -216,7 +229,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL201 data parsed', () => {
-    const raw = Buffer.from('$$AD869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|100100000010|20160209194326|13981188|32D3A03F|0000|0.6376|0100|0232\r\n')
+    const raw = Buffer.from(
+      '$$AD869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|100100000010|20160209194326|13981188|32D3A03F|0000|0.6376|0100|0232\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -253,7 +268,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL201 data with empty GPRMC parsed', () => {
-    const raw = Buffer.from('$$A5869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|A683\r\n')
+    const raw = Buffer.from(
+      '$$A5869444005480041|AA000000000000000000000000000000000000000000000000000000000000|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|A683\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -283,7 +300,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-INFO data parsed', () => {
-    const raw = Buffer.from('Lat:-3321.6664S\r\nLong:-07030.8921W\r\nSpd:000km/h\r\nFix:A\r\nSat:04\r\nHDOP:02.2\r\nGSM:29\r\nBatt:04.01V\r\nMile:0.1527\r\nTime:19/02/16 15:00:17\r\n')
+    const raw = Buffer.from(
+      'Lat:-3321.6664S\r\nLong:-07030.8921W\r\nSpd:000km/h\r\nFix:A\r\nSat:04\r\nHDOP:02.2\r\nGSM:29\r\nBatt:04.01V\r\nMile:0.1527\r\nTime:19/02/16 15:00:17\r\n'
+    )
     const data = tz.parse(raw)
 
     expect(data.raw).to.eql(null)
@@ -295,7 +314,10 @@ describe('tz-parzer', () => {
     expect(data.type).to.eql('data')
     expect(data.imei).to.eql(null)
     expect(data.loc.type).to.eql('Point')
-    expect(data.loc.coordinates).to.eql([-70.51486833333334, -33.361106666666664])
+    expect(data.loc.coordinates).to.eql([
+      -70.51486833333334,
+      -33.361106666666664
+    ])
     expect(data.speed).to.eql(0)
     expect(data.gpsStatus).to.eql(true)
     expect(data.azimuth).to.eql(null)
@@ -325,7 +347,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-FIRMWARE data parsed', () => {
-    const raw = Buffer.from('IMEI:869444005480041\r\nVER:TC_AVL05vSST_JOSE10.12\r\nGSMVER:1116B02SIM840WL_MXIC\r\n')
+    const raw = Buffer.from(
+      'IMEI:869444005480041\r\nVER:TC_AVL05vSST_JOSE10.12\r\nGSMVER:1116B02SIM840WL_MXIC\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.manufacturer).to.eql('tz')
     expect(data.device).to.eql('tz')
@@ -336,12 +360,16 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-MAP data parsed', () => {
-    const raw = Buffer.from('http://maps.google.com/maps?f=q&hl=en&q=-33.361106,-070.514868&ie=UTF8&z=16&iwloc=addr&om=1')
+    const raw = Buffer.from(
+      'http://maps.google.com/maps?f=q&hl=en&q=-33.361106,-070.514868&ie=UTF8&z=16&iwloc=addr&om=1'
+    )
     const data = tz.parse(raw)
     expect(data.manufacturer).to.eql('tz')
     expect(data.device).to.eql('tz')
     expect(data.type).to.eql('map_link')
-    expect(data.url).to.eql('http://maps.google.com/maps?f=q&hl=en&q=-33.361106,-070.514868&ie=UTF8&z=16&iwloc=addr&om=1')
+    expect(data.url).to.eql(
+      'http://maps.google.com/maps?f=q&hl=en&q=-33.361106,-070.514868&ie=UTF8&z=16&iwloc=addr&om=1'
+    )
     expect(data.latitude).to.eql(-33.361106)
     expect(data.longitude).to.eql(-70.514868)
   })
@@ -356,7 +384,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-IMAGE data parsed', () => {
-    const raw = Buffer.from('$U35977203928389100001071001FFD8FFDB008400100B0C0E0C0A100E0D0E1211101318281A181616183123251D283A333D3C3933383740485C4E404457453738506D51575F626768673E4D71797064785C656763011112121815182F1A1A2F634238426363636363636363636363636363#')
+    const raw = Buffer.from(
+      '$U35977203928389100001071001FFD8FFDB008400100B0C0E0C0A100E0D0E1211101318281A181616183123251D283A333D3C3933383740485C4E404457453738506D51575F626768673E4D71797064785C656763011112121815182F1A1A2F634238426363636363636363636363636363#'
+    )
     const data = tz.parse(raw)
     expect(data.manufacturer).to.eql('tz')
     expect(data.device).to.eql('tz')
@@ -364,20 +394,27 @@ describe('tz-parzer', () => {
     expect(data.imei).to.eql('359772039283891')
     expect(data.number).to.eql(1)
     expect(data.total).to.eql(71)
-    expect(data.data).to.eql([{
-      sequence: 1,
-      data: 'FFD8FFDB008400100B0C0E0C0A100E0D0E1211101318281A181616183123251D283A333D3C3933383740485C4E404457453738506D51575F626768673E4D71797064785C656763011112121815182F1A1A2F634238426363636363636363636363636363'
-    }])
+    expect(data.data).to.eql([
+      {
+        sequence: 1,
+        data:
+          'FFD8FFDB008400100B0C0E0C0A100E0D0E1211101318281A181616183123251D283A333D3C3933383740485C4E404457453738506D51575F626768673E4D71797064785C656763011112121815182F1A1A2F634238426363636363636363636363636363'
+      }
+    ])
   })
 
   it('should return true for valid tz data', () => {
-    const raw = Buffer.from('$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995F\r\n')
+    const raw = Buffer.from(
+      '$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995F\r\n'
+    )
     const data = tz.isTz(raw)
     expect(data).to.eql(true)
   })
 
   it('should return true for valid tz data', () => {
-    const raw = Buffer.from('$$A138,862170013556541,AAA,35,7.092076,79.960473,140412132808,A,10,9,57,275,1,14,5783799,7403612,413|1|F6E0|3933,0000,000B|0009||02D8|0122,*EE\r\n')
+    const raw = Buffer.from(
+      '$$A138,862170013556541,AAA,35,7.092076,79.960473,140412132808,A,10,9,57,275,1,14,5783799,7403612,413|1|F6E0|3933,0000,000B|0009||02D8|0122,*EE\r\n'
+    )
     const data = tz.isTz(raw)
     expect(data).to.eql(false)
   })
@@ -647,7 +684,7 @@ describe('tz-parzer', () => {
   })
 
   it('should return raw get current position', () => {
-    const data = {instruction: 'get_current_position'}
+    const data = { instruction: 'get_current_position' }
     const raw = tz.parseCommand(data)
     expect(raw).to.eql('*000000,000#')
   })
@@ -662,7 +699,7 @@ describe('tz-parzer', () => {
   })
 
   it('should return raw null command', () => {
-    const data = {instruction: 'asdf'}
+    const data = { instruction: 'asdf' }
     const raw = tz.parseCommand(data)
     expect(raw).to.eql(null)
   })
@@ -684,25 +721,33 @@ describe('tz-parzer', () => {
   })
 
   it('should return avl05 imei', () => {
-    const raw = Buffer.from('$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995F\r\n')
+    const raw = Buffer.from(
+      '$$B6869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|995F\r\n'
+    )
     const imei = tz.getImei(raw)
     expect(imei).to.eql('869444005480041')
   })
 
   it('should return avl08 imei', () => {
-    const raw = Buffer.from('$$B7869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100||56E2\r\n')
+    const raw = Buffer.from(
+      '$$B7869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100||56E2\r\n'
+    )
     const imei = tz.getImei(raw)
     expect(imei).to.eql('869444005480041')
   })
 
   it('should return avl201 imei', () => {
-    const raw = Buffer.from('$$AD869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|5BEB\r\n')
+    const raw = Buffer.from(
+      '$$AD869444005480041|AA$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|000000000000|20160209194326|13981188|32D3A03F|0000|0.6376|0100|5BEB\r\n'
+    )
     const imei = tz.getImei(raw)
     expect(imei).to.eql('869444005480041')
   })
 
   it('should return TZ-AVL05 01 alarm parsed', () => {
-    const raw = Buffer.from('$$B6869444005480041|01$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|40C7\r\n')
+    const raw = Buffer.from(
+      '$$B6869444005480041|01$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|40C7\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -746,7 +791,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL05 49 alarm parsed', () => {
-    const raw = Buffer.from('$$B6869444005480041|49$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|50A5\r\n')
+    const raw = Buffer.from(
+      '$$B6869444005480041|49$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|50A5\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -792,7 +839,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL05 09 alarm parsed', () => {
-    const raw = Buffer.from('$$B6869444005480041|09$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|44A7\r\n')
+    const raw = Buffer.from(
+      '$$B6869444005480041|09$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|44A7\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -836,7 +885,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL05 10 alarm parsed', () => {
-    const raw = Buffer.from('$$B6869444005480041|10$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|E54A\r\n')
+    const raw = Buffer.from(
+      '$$B6869444005480041|10$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,0.00,0.00,090216,,,A*6C|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|E54A\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
@@ -880,7 +931,9 @@ describe('tz-parzer', () => {
   })
 
   it('should return TZ-AVL05 11 alarm parsed', () => {
-    const raw = Buffer.from('$$B7869444005480041|11$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,62.00,0.00,090216,,,A*58|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|F433\r\n')
+    const raw = Buffer.from(
+      '$$B7869444005480041|11$GPRMC,194329.000,A,3321.6735,S,07030.7640,W,62.00,0.00,090216,,,A*58|02.1|01.3|01.7|101100001100|20160209194326|13981188|00000000|32D3A03F|0000|0.6376|0100|F433\r\n'
+    )
     const data = tz.parse(raw)
     expect(data.raw).to.eql(raw.toString())
     expect(data.manufacturer).to.eql('tz')
