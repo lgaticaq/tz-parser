@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/lgaticaq/tz-parser#readme",
   "dependencies": {
-    "crc": "3.5.0",
+    "crc": "3.6.0",
     "node-nmea": "1.0.4"
   },
   "devDependencies": {
