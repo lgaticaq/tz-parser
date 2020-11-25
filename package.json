@@ -35,7 +35,7 @@
   "homepage": "https://github.com/lgaticaq/tz-parser#readme",
   "dependencies": {
     "crc": "3.8.0",
-    "node-nmea": "1.0.4"
+    "node-nmea": "2.0.0"
   },
   "devDependencies": {
     "chai": "4.1.2",
